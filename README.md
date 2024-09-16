@@ -65,7 +65,7 @@ Once the server is running, the application can be accessed by navigating to `ht
 - **Demonstrator Interface**: Demonstrators can view their allocated classes and update their availability.
 - **Lecturer Interface**: Lecturers can manage class requirements and review demonstrator assignments.
 
-For detailed usage information, refer to the [User Manual](docs/user_manual.html).
+For detailed usage information, refer to the [User Manual](docs/user_manual.md).
 
 ## Contributing
 
