@@ -27,7 +27,6 @@ Follow these steps to set up the project in your local development environment.
 Ensure the following are installed on your system:
 - **Python 3.x**
 - **PowerShell** (for Windows setup)
-- **PostgreSQL** (for database management)
 
 ### Steps to Set Up the Environment
 
