@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>allocations.utils.allocation_manager &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">allocations.utils.allocation_manager</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for allocations.utils.allocation_manager</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">allocations.models</span> <span class="kn">import</span> <span class="n">Allocation</span><span class="p">,</span> <span class="n">AllocationDomain</span>
+<span class="kn">from</span> <span class="nn">users.models</span> <span class="kn">import</span> <span class="n">Demonstrator</span>
+<span class="kn">from</span> <span class="nn">allocations.utils.constraint_manager</span> <span class="kn">import</span> <span class="n">HardConstraintManager</span><span class="p">,</span> <span class="n">PrimaryConstraintManager</span><span class="p">,</span> <span class="n">SecondaryConstraintManager</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<div class="viewcode-block" id="AllocationManager">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.allocation_manager.AllocationManager">[docs]</a>
+<span class="k">class</span> <span class="nc">AllocationManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `AllocationManager` class provides a set of static methods for managing and allocating demonstrators to </span>
+<span class="sd">    various allocations based on a series of constraints. The allocation process involves filtering demonstrators </span>
+<span class="sd">    through a series of hard, primary, secondary, and tertiary soft constraints to find the most suitable candidates </span>
+<span class="sd">    for each allocation.</span>
+
+<span class="sd">    The class includes methods for retrieving unallocated objects, filtering demonstrators based on different levels </span>
+<span class="sd">    of constraints, and assigning demonstrators through various allocation strategies.</span>
+
+<span class="sd">    This class interacts with several models including `Allocation`, `AllocationDomain`, and `Demonstrator`, and utilizes </span>
+<span class="sd">    constraint managers to enforce the constraints during allocation.</span>
+
+<span class="sd">    :param allocation: An instance of the `Allocation` model representing the current allocation for which demonstrators </span>
+<span class="sd">        need to be assigned.</span>
+<span class="sd">    :type allocation: `Allocation`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="AllocationManager.get_unallocated">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.get_unallocated">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_unallocated</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve all allocations that have not yet been assigned to a demonstrator.</span>
+
+<span class="sd">        :return: A queryset of `Allocation` objects where `demonstrator` is `None`.</span>
+<span class="sd">        :rtype: QuerySet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">demonstrator__isnull</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="AllocationManager.get_demonstrators_by_hard_constraints">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.get_demonstrators_by_hard_constraints">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_demonstrators_by_hard_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter demonstrators by applying hard constraints to an allocation.</span>
+
+<span class="sd">        :param allocation: The allocation for which demonstrators need to be filtered.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        :return: A list of demonstrators that satisfy all hard constraints for the given allocation.</span>
+<span class="sd">        :rtype: list of `Demonstrator`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid_demonstrators</span> <span class="o">=</span> <span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">valid_demonstrators</span> <span class="o">=</span> <span class="p">[</span><span class="n">dem</span> <span class="k">for</span> <span class="n">dem</span> <span class="ow">in</span> <span class="n">valid_demonstrators</span> <span class="k">if</span>
+                               <span class="kc">True</span> <span class="ow">and</span>
+                               <span class="c1">#Add Constraints here</span>
+                               <span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstrator_not_double_booked</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span> <span class="ow">and</span>
+                               <span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstator_available_for_all</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span> <span class="ow">and</span>
+                               <span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_allocation_not_previously_approved</span><span class="p">(</span><span class="n">allocation</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">valid_demonstrators</span></div>
+
+    
+<div class="viewcode-block" id="AllocationManager.get_demonstrators_by_primary_soft_constraints">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.get_demonstrators_by_primary_soft_constraints">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_demonstrators_by_primary_soft_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter demonstrators by applying primary soft constraints after applying hard constraints.</span>
+
+<span class="sd">        :param allocation: The allocation for which demonstrators need to be filtered.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        :return: A list of demonstrators that satisfy both hard and primary soft constraints for the given allocation.</span>
+<span class="sd">        :rtype: list of `Demonstrator`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid_demonstrators</span> <span class="o">=</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">get_demonstrators_by_hard_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+        <span class="n">valid_demonstrators</span> <span class="o">=</span> <span class="p">[</span><span class="n">dem</span> <span class="k">for</span> <span class="n">dem</span> <span class="ow">in</span> <span class="n">valid_demonstrators</span> <span class="k">if</span>
+                               <span class="kc">True</span> <span class="ow">and</span>
+                               <span class="c1">#Add Constraints here</span>
+                               <span class="n">PrimaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_beginner_skill</span><span class="p">(</span><span class="n">allocation</span><span class="p">,</span> <span class="n">dem</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">valid_demonstrators</span></div>
+
+    
+<div class="viewcode-block" id="AllocationManager.get_demonstrators_by_secondary_soft_constraints">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.get_demonstrators_by_secondary_soft_constraints">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_demonstrators_by_secondary_soft_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter demonstrators by applying secondary soft constraints after applying primary soft constraints.</span>
+
+<span class="sd">        :param allocation: The allocation for which demonstrators need to be filtered.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        :return: A list of demonstrators that satisfy hard, primary, and secondary soft constraints for the given allocation.</span>
+<span class="sd">        :rtype: list of `Demonstrator`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid_demonstrators</span> <span class="o">=</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">get_demonstrators_by_primary_soft_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+        <span class="n">valid_demonstrators</span> <span class="o">=</span> <span class="p">[</span><span class="n">dem</span> <span class="k">for</span> <span class="n">dem</span> <span class="ow">in</span> <span class="n">valid_demonstrators</span> <span class="k">if</span>
+                               <span class="kc">True</span> <span class="ow">and</span>
+                               <span class="c1">#Add Constraints here</span>
+                               <span class="n">SecondaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_skill_or_higher</span><span class="p">(</span><span class="n">allocation</span><span class="p">,</span> <span class="n">dem</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">valid_demonstrators</span></div>
+
+    
+<div class="viewcode-block" id="AllocationManager.get_demonstrators_by_tertiary_soft_constraints">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.get_demonstrators_by_tertiary_soft_constraints">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_demonstrators_by_tertiary_soft_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter demonstrators by applying tertiary soft constraints after applying secondary soft constraints.</span>
+
+<span class="sd">        :param allocation: The allocation for which demonstrators need to be filtered.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        :return: A list of demonstrators that satisfy hard, primary, secondary, and tertiary soft constraints for the given allocation.</span>
+<span class="sd">        :rtype: list of `Demonstrator`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid_demonstrators</span> <span class="o">=</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">get_demonstrators_by_secondary_soft_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+        <span class="n">valid_demonstrators</span> <span class="o">=</span> <span class="p">[</span><span class="n">dem</span> <span class="k">for</span> <span class="n">dem</span> <span class="ow">in</span> <span class="n">valid_demonstrators</span> <span class="k">if</span>
+                               <span class="kc">True</span>
+                               <span class="c1">#Add Constraints here</span>
+                               <span class="p">]</span>
+        <span class="k">return</span> <span class="n">valid_demonstrators</span></div>
+
+    
+<div class="viewcode-block" id="AllocationManager.get_solution_domain">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.get_solution_domain">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_solution_domain</span><span class="p">(</span><span class="n">allocation</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate and save the solution domain for a given allocation, including demonstrators filtered by </span>
+<span class="sd">        hard and soft constraints.</span>
+
+<span class="sd">        :param allocation: The allocation for which the solution domain needs to be generated.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">allocation_domain</span> <span class="o">=</span> <span class="n">AllocationDomain</span><span class="p">(</span><span class="n">allocation</span> <span class="o">=</span> <span class="n">allocation</span><span class="p">)</span>
+        <span class="n">allocation_domain</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        
+        <span class="n">hard_constraint_demonstrators</span> <span class="o">=</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">get_demonstrators_by_hard_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+        <span class="n">primary_soft_constraint_demonstrators</span> <span class="o">=</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">get_demonstrators_by_primary_soft_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+        <span class="n">secondary_soft_constraint_demonstrators</span> <span class="o">=</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">get_demonstrators_by_secondary_soft_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+        <span class="n">tertiary_soft_constraint_demonstrators</span> <span class="o">=</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">get_demonstrators_by_tertiary_soft_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+        
+        <span class="n">allocation_domain</span><span class="o">.</span><span class="n">hard_constraint_demonstrators</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">hard_constraint_demonstrators</span><span class="p">)</span>
+        <span class="n">allocation_domain</span><span class="o">.</span><span class="n">primary_soft_constraint_demonstrators</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">primary_soft_constraint_demonstrators</span><span class="p">)</span>
+        <span class="n">allocation_domain</span><span class="o">.</span><span class="n">secondary_soft_constraint_demonstrators</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">secondary_soft_constraint_demonstrators</span><span class="p">)</span>
+        <span class="n">allocation_domain</span><span class="o">.</span><span class="n">tertiary_soft_constraint_demonstrators</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">tertiary_soft_constraint_demonstrators</span><span class="p">)</span>
+        
+        <span class="n">allocation_domain</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="AllocationManager.allocate_with_constraints">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.allocate_with_constraints">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">allocate_with_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Attempt to allocate a demonstrator to the allocation by applying constraints from harshest to least harsh.</span>
+
+<span class="sd">        :param allocation: The allocation to be fulfilled.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        :return: `True` if a demonstrator is successfully allocated, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">try_allocate_with_tertiary_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">try_allocate_with_secondary_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">try_allocate_with_primary_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+    
+<div class="viewcode-block" id="AllocationManager.try_allocate_with_tertiary_constraints">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.try_allocate_with_tertiary_constraints">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">try_allocate_with_tertiary_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Attempt to allocate a demonstrator by applying tertiary soft constraints.</span>
+
+<span class="sd">        :param allocation: The allocation to be fulfilled.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        :return: `True` if a demonstrator is successfully allocated, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid_demonstrators</span> <span class="o">=</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">get_demonstrators_by_tertiary_soft_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">try_allocation</span><span class="p">(</span><span class="n">allocation</span><span class="p">,</span> <span class="n">valid_demonstrators</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AllocationManager.try_allocate_with_secondary_constraints">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.try_allocate_with_secondary_constraints">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">try_allocate_with_secondary_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Attempt to allocate a demonstrator by applying secondary soft constraints.</span>
+
+<span class="sd">        :param allocation: The allocation to be fulfilled.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        :return: `True` if a demonstrator is successfully allocated, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid_demonstrators</span> <span class="o">=</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">get_demonstrators_by_secondary_soft_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">try_allocation</span><span class="p">(</span><span class="n">allocation</span><span class="p">,</span> <span class="n">valid_demonstrators</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AllocationManager.try_allocate_with_primary_constraints">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.try_allocate_with_primary_constraints">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">try_allocate_with_primary_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Attempt to allocate a demonstrator by applying primary soft constraints.</span>
+
+<span class="sd">        :param allocation: The allocation to be fulfilled.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        :return: `True` if a demonstrator is successfully allocated, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid_demonstrators</span> <span class="o">=</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">get_demonstrators_by_primary_soft_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">try_allocation</span><span class="p">(</span><span class="n">allocation</span><span class="p">,</span> <span class="n">valid_demonstrators</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="AllocationManager.try_allocation">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.try_allocation">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">try_allocation</span><span class="p">(</span><span class="n">allocation</span><span class="p">,</span> <span class="n">valid_demonstrators</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Try to allocate one of the valid demonstrators to the allocation. The allocation is saved if </span>
+<span class="sd">        successful.</span>
+
+<span class="sd">        :param allocation: The allocation to be fulfilled.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        :param valid_demonstrators: A list of demonstrators that satisfy the necessary constraints.</span>
+<span class="sd">        :type valid_demonstrators: list of `Demonstrator`</span>
+<span class="sd">        :return: `True` if a demonstrator is successfully allocated, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">demonstrator</span> <span class="ow">in</span> <span class="n">valid_demonstrators</span><span class="p">:</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="n">demonstrator</span>
+            <span class="k">if</span> <span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstrator_not_double_booked</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span> <span class="ow">and</span> \
+               <span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstator_available_for_all</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span> <span class="ow">and</span> \
+               <span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_allocation_not_previously_approved</span><span class="p">(</span><span class="n">allocation</span><span class="p">):</span>
+                <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+    
+<div class="viewcode-block" id="AllocationManager.backtracking">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.backtracking">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">backtracking</span><span class="p">(</span><span class="n">queryset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform backtracking to allocate demonstrators to unallocated allocations within the queryset.</span>
+
+<span class="sd">        :param queryset: A queryset of allocations to be fulfilled.</span>
+<span class="sd">        :type queryset: QuerySet</span>
+<span class="sd">        :return: `True` if all allocations are successfully assigned, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">unallocated_allocations</span> <span class="o">=</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">demonstrator__isnull</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">unallocated_allocations</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">allocate_with_constraints</span><span class="p">(</span><span class="n">allocation</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    
+<div class="viewcode-block" id="AllocationManager.assign_demonstrators">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.assign_demonstrators">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">assign_demonstrators</span><span class="p">(</span><span class="n">queryset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Assign demonstrators to allocations in the provided queryset by applying the backtracking algorithm.</span>
+
+<span class="sd">        :param queryset: A queryset of allocations to be fulfilled.</span>
+<span class="sd">        :type queryset: QuerySet</span>
+<span class="sd">        :return: `True` if all allocations are successfully assigned and approved, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">backtracking</span><span class="p">(</span><span class="n">queryset</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">res</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">queryset</span><span class="p">:</span>
+                <span class="n">allocation</span><span class="o">.</span><span class="n">approved</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+    
+    
+<div class="viewcode-block" id="AllocationManager.batch_allocate">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.batch_allocate">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">batch_allocate</span><span class="p">(</span><span class="n">batch_size</span> <span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Batch allocate demonstrators to allocations by dividing unallocated objects into batches.</span>
+
+<span class="sd">        :param batch_size: The number of allocations to process in each batch.</span>
+<span class="sd">        :type batch_size: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">unallocated</span> <span class="o">=</span> <span class="n">AllocationManager</span><span class="o">.</span><span class="n">get_unallocated</span><span class="p">()</span>
+        
+        <span class="n">to_allocate</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">unallocated</span><span class="p">)</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">to_allocate</span><span class="p">)</span>
+        
+        <span class="n">batches</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">while</span> <span class="n">to_allocate</span><span class="p">:</span>
+            <span class="n">batch</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">to_allocate</span><span class="p">))):</span>
+                <span class="n">batch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">to_allocate</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span>
+            <span class="n">batches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+            
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">batches</span><span class="p">:</span>
+            <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">instance</span><span class="o">.</span><span class="n">pk</span> <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">]</span>
+            <span class="n">queryset</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk__in</span><span class="o">=</span><span class="n">ids</span><span class="p">)</span>
+            <span class="n">AllocationManager</span><span class="o">.</span><span class="n">assign_demonstrators</span><span class="p">(</span><span class="n">queryset</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

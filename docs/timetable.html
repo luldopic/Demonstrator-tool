@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>timetable package &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="timetable.management package" href="timetable.management.html" />
+    <link rel="prev" title="tests.views package" href="tests.views.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_issues.html">Known Issues</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API References</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="admin.html">admin package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.html">allocations package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html">classes package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demonstrator_timetabling_tool.html">demonstrator_timetabling_tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">timetable package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timetable.management.html">timetable.management package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-timetable.admin">timetable.admin module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#timetable.admin.SemesterAdmin"><code class="docutils literal notranslate"><span class="pre">SemesterAdmin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#timetable.admin.SessionScheduleMixin"><code class="docutils literal notranslate"><span class="pre">SessionScheduleMixin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#timetable.admin.TimeslotAdmin"><code class="docutils literal notranslate"><span class="pre">TimeslotAdmin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#timetable.admin.TimetableMixin"><code class="docutils literal notranslate"><span class="pre">TimetableMixin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#timetable.admin.UserAvailabilityAdmin"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityAdmin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#timetable.admin.UserAvailabilityMixin"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityMixin</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-timetable.apps">timetable.apps module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#timetable.apps.TimetableConfig"><code class="docutils literal notranslate"><span class="pre">TimetableConfig</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-timetable.models">timetable.models module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#timetable.models.Semester"><code class="docutils literal notranslate"><span class="pre">Semester</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#timetable.models.Timeslot"><code class="docutils literal notranslate"><span class="pre">Timeslot</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-timetable.utils">timetable.utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#timetable.utils.Timetable"><code class="docutils literal notranslate"><span class="pre">Timetable</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-timetable">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="users.html">users package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API References</a></li>
+      <li class="breadcrumb-item active">timetable package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/timetable.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="timetable-package">
+<h1>timetable package<a class="headerlink" href="#timetable-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="timetable.management.html">timetable.management package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="timetable.management.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="timetable.management.commands.html">timetable.management.commands package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timetable.management.commands.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.management.commands.html#module-timetable.management.commands.create_new_semester">timetable.management.commands.create_new_semester module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.management.commands.html#module-timetable.management.commands.populate_default_timeslots">timetable.management.commands.populate_default_timeslots module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.management.commands.html#module-timetable.management.commands.timeslots">timetable.management.commands.timeslots module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.management.commands.html#module-timetable.management.commands">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="timetable.management.html#module-timetable.management">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-timetable.admin">
+<span id="timetable-admin-module"></span><h2>timetable.admin module<a class="headerlink" href="#module-timetable.admin" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="timetable.admin.SemesterAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">timetable.admin.</span></span><span class="sig-name descname"><span class="pre">SemesterAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin_site</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timetable/admin.html#SemesterAdmin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.admin.SemesterAdmin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelAdmin</span></code></p>
+<p>The <cite>SemesterAdmin</cite> class customizes the Django admin interface for the <cite>Semester</cite> model. It includes search fields 
+and list displays to manage semesters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>search_fields</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to include in the search functionality.</p></li>
+<li><p><strong>list_display</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to display in the list view of the admin interface.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.admin.SemesterAdmin.list_display">
+<span class="sig-name descname"><span class="pre">list_display</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['year',</span> <span class="pre">'semester']</span></em><a class="headerlink" href="#timetable.admin.SemesterAdmin.list_display" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="timetable.admin.SemesterAdmin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#timetable.admin.SemesterAdmin.media" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.admin.SemesterAdmin.search_fields">
+<span class="sig-name descname"><span class="pre">search_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['year',</span> <span class="pre">'semester']</span></em><a class="headerlink" href="#timetable.admin.SemesterAdmin.search_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="timetable.admin.SessionScheduleMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">timetable.admin.</span></span><span class="sig-name descname"><span class="pre">SessionScheduleMixin</span></span><a class="reference internal" href="_modules/timetable/admin.html#SessionScheduleMixin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.admin.SessionScheduleMixin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#timetable.admin.TimetableMixin" title="timetable.admin.TimetableMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimetableMixin</span></code></a></p>
+<p>The <cite>SessionScheduleMixin</cite> class is a subclass of <cite>TimetableMixin</cite> that provides additional functionality 
+for models related to session schedules.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="timetable.admin.TimeslotAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">timetable.admin.</span></span><span class="sig-name descname"><span class="pre">TimeslotAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin_site</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timetable/admin.html#TimeslotAdmin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.admin.TimeslotAdmin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelAdmin</span></code></p>
+<p>The <cite>TimeslotAdmin</cite> class customizes the Django admin interface for the <cite>Timeslot</cite> model. It includes list displays 
+and ordering to manage timeslots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_display</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to display in the list view of the admin interface.</p></li>
+<li><p><strong>ordering</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields by which to order the list view.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.admin.TimeslotAdmin.list_display">
+<span class="sig-name descname"><span class="pre">list_display</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['day',</span> <span class="pre">'start_time',</span> <span class="pre">'end_time']</span></em><a class="headerlink" href="#timetable.admin.TimeslotAdmin.list_display" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="timetable.admin.TimeslotAdmin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#timetable.admin.TimeslotAdmin.media" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.admin.TimeslotAdmin.ordering">
+<span class="sig-name descname"><span class="pre">ordering</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['day',</span> <span class="pre">'start_time']</span></em><a class="headerlink" href="#timetable.admin.TimeslotAdmin.ordering" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="timetable.admin.TimetableMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">timetable.admin.</span></span><span class="sig-name descname"><span class="pre">TimetableMixin</span></span><a class="reference internal" href="_modules/timetable/admin.html#TimetableMixin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.admin.TimetableMixin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>The <cite>TimetableMixin</cite> class provides utility methods for displaying information about timeslots in related models.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="timetable.admin.TimetableMixin.get_timeslot">
+<span class="sig-name descname"><span class="pre">get_timeslot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timetable/admin.html#TimetableMixin.get_timeslot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.admin.TimetableMixin.get_timeslot" title="Link to this definition"></a></dt>
+<dd><p>Return a formatted string representing the timeslot associated with the object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<em>Model instance</em>) -- The instance of the model that contains a timeslot.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A formatted string of the day and time range.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="timetable.admin.UserAvailabilityAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">timetable.admin.</span></span><span class="sig-name descname"><span class="pre">UserAvailabilityAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin_site</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timetable/admin.html#UserAvailabilityAdmin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.admin.UserAvailabilityAdmin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelAdmin</span></code>, <a class="reference internal" href="#timetable.admin.UserAvailabilityMixin" title="timetable.admin.UserAvailabilityMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserAvailabilityMixin</span></code></a></p>
+<p>The <cite>UserAvailabilityAdmin</cite> class customizes the Django admin interface for the <cite>UserAvailability</cite> model. 
+It includes list displays, search fields, and a custom search results method for managing user availability.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_display</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to display in the list view of the admin interface.</p></li>
+<li><p><strong>search_fields</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to include in the search functionality.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="timetable.admin.UserAvailabilityAdmin.get_search_results">
+<span class="sig-name descname"><span class="pre">get_search_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">HttpRequest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/querysets/#django.db.models.query.QuerySet" title="(in Django v5.1)"><span class="pre">QuerySet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_term</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/querysets/#django.db.models.query.QuerySet" title="(in Django v5.1)"><span class="pre">QuerySet</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/timetable/admin.html#UserAvailabilityAdmin.get_search_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.admin.UserAvailabilityAdmin.get_search_results" title="Link to this definition"></a></dt>
+<dd><p>Customize the search results to include user names that match the search term.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>queryset</strong> (<em>QuerySet</em>) -- The queryset of user availability records to search.</p></li>
+<li><p><strong>search_term</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- The search term entered by the user.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The filtered queryset and a boolean indicating whether distinct results are required.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>[QuerySet[Any], <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.admin.UserAvailabilityAdmin.list_display">
+<span class="sig-name descname"><span class="pre">list_display</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['get_user_name',</span> <span class="pre">'get_timeslot',</span> <span class="pre">'is_available']</span></em><a class="headerlink" href="#timetable.admin.UserAvailabilityAdmin.list_display" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="timetable.admin.UserAvailabilityAdmin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#timetable.admin.UserAvailabilityAdmin.media" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.admin.UserAvailabilityAdmin.search_fields">
+<span class="sig-name descname"><span class="pre">search_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['user__first_name',</span> <span class="pre">'user__last_name',</span> <span class="pre">'user__username']</span></em><a class="headerlink" href="#timetable.admin.UserAvailabilityAdmin.search_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="timetable.admin.UserAvailabilityMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">timetable.admin.</span></span><span class="sig-name descname"><span class="pre">UserAvailabilityMixin</span></span><a class="reference internal" href="_modules/timetable/admin.html#UserAvailabilityMixin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.admin.UserAvailabilityMixin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#timetable.admin.TimetableMixin" title="timetable.admin.TimetableMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimetableMixin</span></code></a></p>
+<p>The <cite>UserAvailabilityMixin</cite> class is a subclass of <cite>TimetableMixin</cite> that provides additional functionality 
+for models related to user availability.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="timetable.admin.UserAvailabilityMixin.get_user_name">
+<span class="sig-name descname"><span class="pre">get_user_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timetable/admin.html#UserAvailabilityMixin.get_user_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.admin.UserAvailabilityMixin.get_user_name" title="Link to this definition"></a></dt>
+<dd><p>Return the full name of the user associated with the availability record.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<em>Model instance</em>) -- The instance of the model that contains user availability.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The user's full name.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-timetable.apps">
+<span id="timetable-apps-module"></span><h2>timetable.apps module<a class="headerlink" href="#module-timetable.apps" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="timetable.apps.TimetableConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">timetable.apps.</span></span><span class="sig-name descname"><span class="pre">TimetableConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_module</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timetable/apps.html#TimetableConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.apps.TimetableConfig" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/applications/#django.apps.AppConfig" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppConfig</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.apps.TimetableConfig.default_auto_field">
+<span class="sig-name descname"><span class="pre">default_auto_field</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'django.db.models.BigAutoField'</span></em><a class="headerlink" href="#timetable.apps.TimetableConfig.default_auto_field" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.apps.TimetableConfig.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'timetable'</span></em><a class="headerlink" href="#timetable.apps.TimetableConfig.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.apps.TimetableConfig.verbose_name">
+<span class="sig-name descname"><span class="pre">verbose_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Calendar</span> <span class="pre">Management'</span></em><a class="headerlink" href="#timetable.apps.TimetableConfig.verbose_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-timetable.models">
+<span id="timetable-models-module"></span><h2>timetable.models module<a class="headerlink" href="#module-timetable.models" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="timetable.models.Semester">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">timetable.models.</span></span><span class="sig-name descname"><span class="pre">Semester</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timetable/models.html#Semester"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.models.Semester" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/instances/#django.db.models.Model" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a></p>
+<p>The <cite>Semester</cite> model represents an academic semester, including the year, semester name, and the start and end dates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>SEMESTER_NAME</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a>) -- A list of tuples representing the possible semester names.</p></li>
+<li><p><strong>year</strong> (<em>CharField</em>) -- A string representing the academic year (e.g., &quot;2023-2024&quot;).</p></li>
+<li><p><strong>semester</strong> (<em>IntegerField</em>) -- An integer field representing the semester (0 for Semester 1, 1 for Semester 2, 2 for Full Year).</p></li>
+<li><p><strong>start_date</strong> (<em>DateField</em>) -- The start date of the semester.</p></li>
+<li><p><strong>end_date</strong> (<em>DateField</em>) -- The end date of the semester.</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><em>BigAutoField</em></a>) -- Primary key: ID</p></li>
+</ul>
+</dd>
+</dl>
+<p>Reverse relationships:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>module</strong> (Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="classes.html#classes.models.Module" title="classes.models.Module"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a>) -- All modules of this semester (related name of <a class="reference internal" href="classes.html#classes.models.Module.semester" title="classes.models.Module.semester"><code class="xref py py-attr docutils literal notranslate"><span class="pre">semester</span></code></a>)</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="timetable.models.Semester.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#timetable.models.Semester.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.ObjectDoesNotExist" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="timetable.models.Semester.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#timetable.models.Semester.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.MultipleObjectsReturned" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.models.Semester.SEMESTER_NAME">
+<span class="sig-name descname"><span class="pre">SEMESTER_NAME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[(0,</span> <span class="pre">'Semester</span> <span class="pre">1'),</span> <span class="pre">(1,</span> <span class="pre">'Semester</span> <span class="pre">2'),</span> <span class="pre">(2,</span> <span class="pre">'Full</span> <span class="pre">Year')]</span></em><a class="headerlink" href="#timetable.models.Semester.SEMESTER_NAME" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.models.Semester.end_date">
+<span class="sig-name descname"><span class="pre">end_date</span></span><a class="headerlink" href="#timetable.models.Semester.end_date" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.DateField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DateField</span></code></a></p>
+<p>End date</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="timetable.models.Semester.get_semester_display">
+<span class="sig-name descname"><span class="pre">get_semester_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.IntegerField:</span> <span class="pre">semester&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#timetable.models.Semester.get_semester_display" title="Link to this definition"></a></dt>
+<dd><p>Shows the label of the <a class="reference internal" href="#timetable.models.Semester.semester" title="timetable.models.Semester.semester"><code class="xref py py-attr docutils literal notranslate"><span class="pre">semester</span></code></a>. See <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/instances/#django.db.models.Model.get_FOO_display" title="(in Django v5.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_FOO_display()</span></code></a> for more information.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.models.Semester.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#timetable.models.Semester.id" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BigAutoField</span></code></a></p>
+<p>Primary key: ID</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.models.Semester.module_set">
+<span class="sig-name descname"><span class="pre">module_set</span></span><a class="headerlink" href="#timetable.models.Semester.module_set" title="Link to this definition"></a></dt>
+<dd><p>Type: Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="classes.html#classes.models.Module" title="classes.models.Module"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<p>All modules of this semester (related name of <a class="reference internal" href="classes.html#classes.models.Module.semester" title="classes.models.Module.semester"><code class="xref py py-attr docutils literal notranslate"><span class="pre">semester</span></code></a>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.models.Semester.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#timetable.models.Semester.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.models.Semester.semester">
+<span class="sig-name descname"><span class="pre">semester</span></span><a class="headerlink" href="#timetable.models.Semester.semester" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.IntegerField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntegerField</span></code></a></p>
+<p>Semester</p>
+<p>Choices:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></li>
+</ul>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.models.Semester.start_date">
+<span class="sig-name descname"><span class="pre">start_date</span></span><a class="headerlink" href="#timetable.models.Semester.start_date" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.DateField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DateField</span></code></a></p>
+<p>Start date</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.models.Semester.year">
+<span class="sig-name descname"><span class="pre">year</span></span><a class="headerlink" href="#timetable.models.Semester.year" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.CharField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code></a></p>
+<p>Year</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="timetable.models.Timeslot">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">timetable.models.</span></span><span class="sig-name descname"><span class="pre">Timeslot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timetable/models.html#Timeslot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.models.Timeslot" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/instances/#django.db.models.Model" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a></p>
+<p>The <cite>Timeslot</cite> model represents a specific time slot within a week. Each time slot is associated with a day of the week, 
+and has defined start and end times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>WEEKDAY</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a>) -- A list of tuples representing the days of the week, mapped to integers (0 for Monday, 6 for Sunday).</p></li>
+<li><p><strong>day</strong> (<em>IntegerField</em>) -- An integer field representing the day of the week.</p></li>
+<li><p><strong>start_time</strong> (<em>TimeField</em>) -- The starting time for the time slot.</p></li>
+<li><p><strong>end_time</strong> (<em>TimeField</em>) -- The ending time for the time slot.</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><em>BigAutoField</em></a>) -- Primary key: ID</p></li>
+</ul>
+</dd>
+</dl>
+<p>Reverse relationships:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>useravailability</strong> (Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="users.html#users.models.UserAvailability" title="users.models.UserAvailability"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserAvailability</span></code></a>) -- All User Availability of this timeslot (related name of <a class="reference internal" href="users.html#users.models.UserAvailability.timeslot" title="users.models.UserAvailability.timeslot"><code class="xref py py-attr docutils literal notranslate"><span class="pre">timeslot</span></code></a>)</p></li>
+<li><p><strong>sessionschedule</strong> (Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="classes.html#classes.models.SessionSchedule" title="classes.models.SessionSchedule"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionSchedule</span></code></a>) -- All session schedules of this timeslot (related name of <a class="reference internal" href="classes.html#classes.models.SessionSchedule.timeslot" title="classes.models.SessionSchedule.timeslot"><code class="xref py py-attr docutils literal notranslate"><span class="pre">timeslot</span></code></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="timetable.models.Timeslot.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#timetable.models.Timeslot.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.ObjectDoesNotExist" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="timetable.models.Timeslot.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#timetable.models.Timeslot.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.MultipleObjectsReturned" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.models.Timeslot.WEEKDAY">
+<span class="sig-name descname"><span class="pre">WEEKDAY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[(0,</span> <span class="pre">'Monday'),</span> <span class="pre">(1,</span> <span class="pre">'Tuesday'),</span> <span class="pre">(2,</span> <span class="pre">'Wednesday'),</span> <span class="pre">(3,</span> <span class="pre">'Thursday'),</span> <span class="pre">(4,</span> <span class="pre">'Friday'),</span> <span class="pre">(5,</span> <span class="pre">'Saturday'),</span> <span class="pre">(6,</span> <span class="pre">'Sunday')]</span></em><a class="headerlink" href="#timetable.models.Timeslot.WEEKDAY" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="timetable.models.Timeslot.are_same_day">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">are_same_day</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeslots</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timetable/models.html#Timeslot.are_same_day"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.models.Timeslot.are_same_day" title="Link to this definition"></a></dt>
+<dd><p>Check if all the provided time slots occur on the same day.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>timeslots</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- A list of <cite>Timeslot</cite> objects.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if all time slots occur on the same day, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.models.Timeslot.day">
+<span class="sig-name descname"><span class="pre">day</span></span><a class="headerlink" href="#timetable.models.Timeslot.day" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.IntegerField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntegerField</span></code></a></p>
+<p>Day</p>
+<p>Choices:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">4</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">5</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">6</span></code></p></li>
+</ul>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.models.Timeslot.end_time">
+<span class="sig-name descname"><span class="pre">end_time</span></span><a class="headerlink" href="#timetable.models.Timeslot.end_time" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.TimeField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeField</span></code></a></p>
+<p>End time</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="timetable.models.Timeslot.get_day_display">
+<span class="sig-name descname"><span class="pre">get_day_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.IntegerField:</span> <span class="pre">day&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#timetable.models.Timeslot.get_day_display" title="Link to this definition"></a></dt>
+<dd><p>Shows the label of the <a class="reference internal" href="#timetable.models.Timeslot.day" title="timetable.models.Timeslot.day"><code class="xref py py-attr docutils literal notranslate"><span class="pre">day</span></code></a>. See <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/instances/#django.db.models.Model.get_FOO_display" title="(in Django v5.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_FOO_display()</span></code></a> for more information.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="timetable.models.Timeslot.get_next">
+<span class="sig-name descname"><span class="pre">get_next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/timetable/models.html#Timeslot.get_next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.models.Timeslot.get_next" title="Link to this definition"></a></dt>
+<dd><p>Retrieve the next time slot in sequence, based on the day and start time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The next <cite>Timeslot</cite> object, or <cite>None</cite> if no time slots exist.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#timetable.models.Timeslot" title="timetable.models.Timeslot">Timeslot</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="timetable.models.Timeslot.get_random_slot">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_random_slot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/timetable/models.html#Timeslot.get_random_slot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.models.Timeslot.get_random_slot" title="Link to this definition"></a></dt>
+<dd><p>Retrieve a random time slot from the available time slots in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A randomly selected <cite>Timeslot</cite> object, or <cite>None</cite> if no time slots exist.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#timetable.models.Timeslot" title="timetable.models.Timeslot">Timeslot</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.models.Timeslot.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#timetable.models.Timeslot.id" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BigAutoField</span></code></a></p>
+<p>Primary key: ID</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.models.Timeslot.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#timetable.models.Timeslot.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.models.Timeslot.sessionschedule_set">
+<span class="sig-name descname"><span class="pre">sessionschedule_set</span></span><a class="headerlink" href="#timetable.models.Timeslot.sessionschedule_set" title="Link to this definition"></a></dt>
+<dd><p>Type: Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="classes.html#classes.models.SessionSchedule" title="classes.models.SessionSchedule"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionSchedule</span></code></a></p>
+<p>All session schedules of this timeslot (related name of <a class="reference internal" href="classes.html#classes.models.SessionSchedule.timeslot" title="classes.models.SessionSchedule.timeslot"><code class="xref py py-attr docutils literal notranslate"><span class="pre">timeslot</span></code></a>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.models.Timeslot.start_time">
+<span class="sig-name descname"><span class="pre">start_time</span></span><a class="headerlink" href="#timetable.models.Timeslot.start_time" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.TimeField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeField</span></code></a></p>
+<p>Start time</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="timetable.models.Timeslot.useravailability_set">
+<span class="sig-name descname"><span class="pre">useravailability_set</span></span><a class="headerlink" href="#timetable.models.Timeslot.useravailability_set" title="Link to this definition"></a></dt>
+<dd><p>Type: Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="users.html#users.models.UserAvailability" title="users.models.UserAvailability"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserAvailability</span></code></a></p>
+<p>All User Availability of this timeslot (related name of <a class="reference internal" href="users.html#users.models.UserAvailability.timeslot" title="users.models.UserAvailability.timeslot"><code class="xref py py-attr docutils literal notranslate"><span class="pre">timeslot</span></code></a>)</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-timetable.utils">
+<span id="timetable-utils-module"></span><h2>timetable.utils module<a class="headerlink" href="#module-timetable.utils" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="timetable.utils.Timetable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">timetable.utils.</span></span><span class="sig-name descname"><span class="pre">Timetable</span></span><a class="reference internal" href="_modules/timetable/utils.html#Timetable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.utils.Timetable" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>The <cite>Timetable</cite> class represents a weekly schedule. It provides functionality to generate time slots, 
+populate them into a schedule, and manage the timetable for an entire week.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>timeslot</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- A list that stores all time slots generated for the week.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="timetable.utils.Timetable.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/timetable/utils.html#Timetable.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.utils.Timetable.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the <cite>Timetable</cite> by generating and populating time slots for the week.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="timetable.utils.Timetable.generate_time_slots">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_time_slots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'09:00'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'18:00'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval_minutes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timetable/utils.html#Timetable.generate_time_slots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.utils.Timetable.generate_time_slots" title="Link to this definition"></a></dt>
+<dd><p>Generate a list of time slots for a single day, based on the given start time, end time, and interval.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- The starting time of the first slot (default is 09:00).</p></li>
+<li><p><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- The ending time after which no slots should start (default is 18:00).</p></li>
+<li><p><strong>interval_minutes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) -- The length of each time slot in minutes (default is 60 minutes).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of tuples, each representing a time slot (start time, end time).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="timetable.utils.Timetable.populate_timeslot">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">populate_timeslot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timetable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timetable/utils.html#Timetable.populate_timeslot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#timetable.utils.Timetable.populate_timeslot" title="Link to this definition"></a></dt>
+<dd><p>Populate the timetable with time slots for each day of the week. Each slot is stored as a tuple.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>timetable</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- The list to populate with time slots.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-timetable">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-timetable" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tests.views.html" class="btn btn-neutral float-left" title="tests.views package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="timetable.management.html" class="btn btn-neutral float-right" title="timetable.management package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>classes.management.commands.create_test_timetables &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">classes.management.commands.create_test_timetables</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for classes.management.commands.create_test_timetables</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.core.management.base</span> <span class="kn">import</span> <span class="n">BaseCommand</span><span class="p">,</span> <span class="n">CommandParser</span>
+<span class="kn">from</span> <span class="nn">classes.models</span> <span class="kn">import</span> <span class="n">SessionSchedule</span><span class="p">,</span> <span class="n">ModuleSession</span><span class="p">,</span> <span class="n">Module</span>
+<span class="kn">from</span> <span class="nn">timetable.models</span> <span class="kn">import</span> <span class="n">Timeslot</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">MIN_LAB_DURATION</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">MAX_LAB_DURATION</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">TUTORIAL_DURATION</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">LECTURE_MIN_DURATION</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">LECTURE_MAX_DURATION</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">MAX_TEACHING_HOURS</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">MAX_LABS_PER_WEEK</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">MAX_TUTORIALS_PER_WEEK</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">MAX_LECTURES_PER_WEEK</span> <span class="o">=</span> <span class="mi">2</span>
+
+<div class="viewcode-block" id="Command">
+<a class="viewcode-back" href="../../../../classes.management.commands.html#classes.management.commands.create_test_timetables.Command">[docs]</a>
+<span class="k">class</span> <span class="nc">Command</span><span class="p">(</span><span class="n">BaseCommand</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `Command` class defines a custom Django management command to generate random timetables for testing purposes. </span>
+<span class="sd">    The command can create timetables for specific classes or all classes that need schedules, with various constraints </span>
+<span class="sd">    to simulate realistic teaching loads.</span>
+
+<span class="sd">    :param help: A brief description of what the command does, which is displayed when the `help` flag is used.</span>
+<span class="sd">    :type help: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">help</span> <span class="o">=</span> <span class="s2">&quot;Generates random timetables for testing purposes&quot;</span>
+    
+<div class="viewcode-block" id="Command.get_constraints">
+<a class="viewcode-back" href="../../../../classes.management.commands.html#classes.management.commands.create_test_timetables.Command.get_constraints">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">Module</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve the session constraints for a specific module. These constraints define the minimum and maximum </span>
+<span class="sd">        number of lectures, tutorials, and labs per week, as well as the maximum allowed teaching hours.</span>
+
+<span class="sd">        :param module: The module for which constraints are being retrieved.</span>
+<span class="sd">        :type module: Module</span>
+<span class="sd">        :return: A tuple containing the constraints for lectures, tutorials, and labs.</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session_types</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">get_session_types</span><span class="p">()</span>
+        <span class="n">min_lec</span><span class="p">,</span> <span class="n">max_lec</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">min_tut</span><span class="p">,</span> <span class="n">max_tut</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">min_lab</span><span class="p">,</span> <span class="n">max_lab</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">session_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">min_lec</span><span class="p">,</span> <span class="n">max_lec</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">MAX_LECTURES_PER_WEEK</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">session_types</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">min_tut</span><span class="p">,</span> <span class="n">max_tut</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">MAX_TUTORIALS_PER_WEEK</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">session_types</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+            <span class="n">min_lab</span><span class="p">,</span> <span class="n">max_lab</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">MAX_LABS_PER_WEEK</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="p">(</span><span class="n">min_lec</span><span class="p">,</span> <span class="n">max_lec</span><span class="p">,</span> <span class="n">min_tut</span><span class="p">,</span> <span class="n">max_tut</span><span class="p">,</span> <span class="n">min_lab</span><span class="p">,</span> <span class="n">max_lab</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Command.get_total_hours">
+<a class="viewcode-back" href="../../../../classes.management.commands.html#classes.management.commands.create_test_timetables.Command.get_total_hours">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_total_hours</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timetable</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the total number of teaching hours in the given timetable.</span>
+
+<span class="sd">        :param timetable: The timetable to calculate hours for.</span>
+<span class="sd">        :type timetable: list</span>
+<span class="sd">        :return: The total number of teaching hours.</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">total_hours</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">timetable</span><span class="p">:</span>
+            <span class="n">total_hours</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s2">&quot;timeslots&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">total_hours</span></div>
+
+    
+<div class="viewcode-block" id="Command.count_session_type">
+<a class="viewcode-back" href="../../../../classes.management.commands.html#classes.management.commands.create_test_timetables.Command.count_session_type">[docs]</a>
+    <span class="k">def</span> <span class="nf">count_session_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timetable</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Count the number of sessions of each type (lecture, tutorial, lab) in the timetable.</span>
+
+<span class="sd">        :param timetable: The timetable to analyze.</span>
+<span class="sd">        :type timetable: dict</span>
+<span class="sd">        :return: A tuple containing the counts of lectures, tutorials, and labs.</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lecture_count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">timetable</span> <span class="k">if</span> <span class="n">session</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Lecture&quot;</span><span class="p">)</span>
+        <span class="n">tutorial_count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">timetable</span> <span class="k">if</span> <span class="n">session</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Tutorial&quot;</span><span class="p">)</span>
+        <span class="n">lab_count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">timetable</span> <span class="k">if</span> <span class="n">session</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Lab&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">lecture_count</span><span class="p">,</span> <span class="n">tutorial_count</span><span class="p">,</span> <span class="n">lab_count</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Command.check_max_constraints">
+<a class="viewcode-back" href="../../../../classes.management.commands.html#classes.management.commands.create_test_timetables.Command.check_max_constraints">[docs]</a>
+    <span class="k">def</span> <span class="nf">check_max_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timetable</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">constraints</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the timetable exceeds the maximum constraints for lectures, tutorials, labs, and total teaching hours.</span>
+
+<span class="sd">        :param timetable: The timetable to check.</span>
+<span class="sd">        :type timetable: list</span>
+<span class="sd">        :param constraints: The constraints to apply.</span>
+<span class="sd">        :type constraints: tuple</span>
+<span class="sd">        :return: `True` if the timetable meets the constraints, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lecture_count</span><span class="p">,</span> <span class="n">tutorial_count</span><span class="p">,</span> <span class="n">lab_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count_session_type</span><span class="p">(</span><span class="n">timetable</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">max_lec</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">max_tut</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">max_lab</span> <span class="o">=</span> <span class="n">constraints</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">lecture_count</span> <span class="o">&lt;=</span> <span class="n">max_lec</span> <span class="ow">and</span>
+            <span class="n">tutorial_count</span> <span class="o">&lt;=</span> <span class="n">max_tut</span> <span class="ow">and</span>
+            <span class="n">lab_count</span> <span class="o">&lt;=</span> <span class="n">max_lab</span> <span class="ow">and</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_total_hours</span><span class="p">(</span><span class="n">timetable</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">MAX_TEACHING_HOURS</span> <span class="ow">and</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_scheduling_conflicts</span><span class="p">(</span><span class="n">timetable</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+    
+    
+<div class="viewcode-block" id="Command.check_constraint_fulfilled">
+<a class="viewcode-back" href="../../../../classes.management.commands.html#classes.management.commands.create_test_timetables.Command.check_constraint_fulfilled">[docs]</a>
+    <span class="k">def</span> <span class="nf">check_constraint_fulfilled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timetable</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">constraints</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the timetable fulfills the minimum and maximum constraints for lectures, tutorials, labs, </span>
+<span class="sd">        and total teaching hours.</span>
+
+<span class="sd">        :param timetable: The timetable to check.</span>
+<span class="sd">        :type timetable: dict</span>
+<span class="sd">        :param constraints: The constraints to apply.</span>
+<span class="sd">        :type constraints: tuple</span>
+<span class="sd">        :return: `True` if the timetable fulfills the constraints, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lecture_count</span><span class="p">,</span> <span class="n">tutorial_count</span><span class="p">,</span> <span class="n">lab_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count_session_type</span><span class="p">(</span><span class="n">timetable</span><span class="p">)</span>
+        <span class="n">min_lec</span><span class="p">,</span> <span class="n">max_lec</span><span class="p">,</span> <span class="n">min_tut</span><span class="p">,</span> <span class="n">max_tut</span><span class="p">,</span> <span class="n">min_lab</span><span class="p">,</span> <span class="n">max_lab</span> <span class="o">=</span> <span class="n">constraints</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">lecture_count</span> <span class="o">&gt;=</span> <span class="n">min_lec</span> <span class="ow">and</span> <span class="n">lecture_count</span> <span class="o">&lt;=</span> <span class="n">max_lec</span> <span class="ow">and</span>
+            <span class="n">tutorial_count</span> <span class="o">&gt;=</span> <span class="n">min_tut</span> <span class="ow">and</span> <span class="n">tutorial_count</span> <span class="o">&lt;=</span> <span class="n">max_tut</span> <span class="ow">and</span>
+            <span class="n">lab_count</span> <span class="o">&gt;=</span> <span class="n">min_lab</span> <span class="ow">and</span> <span class="n">lab_count</span> <span class="o">&lt;=</span> <span class="n">max_lab</span> <span class="ow">and</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_total_hours</span><span class="p">(</span><span class="n">timetable</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">MAX_TEACHING_HOURS</span> <span class="ow">and</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_scheduling_conflicts</span><span class="p">(</span><span class="n">timetable</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Command.check_scheduling_conflicts">
+<a class="viewcode-back" href="../../../../classes.management.commands.html#classes.management.commands.create_test_timetables.Command.check_scheduling_conflicts">[docs]</a>
+    <span class="k">def</span> <span class="nf">check_scheduling_conflicts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timetable</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check for any scheduling conflicts within the timetable.</span>
+
+<span class="sd">        :param timetable: The timetable to check.</span>
+<span class="sd">        :type timetable: list</span>
+<span class="sd">        :return: `True` if there are no conflicts, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_schedule</span><span class="p">(</span><span class="n">timetable</span><span class="p">))</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_schedule</span><span class="p">(</span><span class="n">timetable</span><span class="p">)))</span></div>
+
+    
+<div class="viewcode-block" id="Command.get_schedule">
+<a class="viewcode-back" href="../../../../classes.management.commands.html#classes.management.commands.create_test_timetables.Command.get_schedule">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timetable</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract the schedule (list of timeslots) from the timetable.</span>
+
+<span class="sd">        :param timetable: The timetable to extract the schedule from.</span>
+<span class="sd">        :type timetable: list</span>
+<span class="sd">        :return: A list of timeslots.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">schedule</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">timetable</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">timeslot</span> <span class="ow">in</span> <span class="n">session</span><span class="p">[</span><span class="s2">&quot;timeslots&quot;</span><span class="p">]:</span>
+                <span class="n">schedule</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">timeslot</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">schedule</span></div>
+
+    
+<div class="viewcode-block" id="Command.get_timeslots">
+<a class="viewcode-back" href="../../../../classes.management.commands.html#classes.management.commands.create_test_timetables.Command.get_timeslots">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_timeslots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">include_weekend</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a list of timeslots for a session, ensuring they occur on the same day and possibly excluding weekends.</span>
+
+<span class="sd">        :param num: The number of timeslots to generate.</span>
+<span class="sd">        :type num: int</span>
+<span class="sd">        :param include_weekend: Whether to include weekends in the timeslot selection.</span>
+<span class="sd">        :type include_weekend: bool</span>
+<span class="sd">        :return: A list of timeslots.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">days_range</span> <span class="o">=</span> <span class="mi">6</span> <span class="k">if</span> <span class="n">include_weekend</span> <span class="k">else</span> <span class="mi">4</span>
+        <span class="n">timeslots</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Timeslot</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">all_conditions</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">init_num</span> <span class="o">=</span> <span class="n">num</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">all_conditions</span><span class="p">:</span>
+            <span class="n">timeslots</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="n">first_timeslot</span> <span class="o">=</span> <span class="n">Timeslot</span><span class="o">.</span><span class="n">get_random_slot</span><span class="p">()</span>
+            <span class="n">timeslot_allowed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">while</span> <span class="n">first_timeslot</span><span class="o">.</span><span class="n">day</span> <span class="o">&gt;=</span> <span class="n">days_range</span><span class="p">:</span>  <span class="c1"># ensure first timeslot is within allowed days</span>
+                <span class="n">first_timeslot</span> <span class="o">=</span> <span class="n">Timeslot</span><span class="o">.</span><span class="n">get_random_slot</span><span class="p">()</span>
+            <span class="n">timeslots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">first_timeslot</span><span class="p">)</span>
+            <span class="n">timeslot_allowed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">num</span> <span class="o">=</span> <span class="n">init_num</span>
+            <span class="k">while</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">next_timeslot</span> <span class="o">=</span> <span class="n">timeslots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_next</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">next_timeslot</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="n">timeslots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_timeslot</span><span class="p">)</span>
+                <span class="n">num</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">all_conditions</span> <span class="o">=</span> <span class="n">Timeslot</span><span class="o">.</span><span class="n">are_same_day</span><span class="p">(</span><span class="n">timeslots</span><span class="p">)</span> <span class="ow">and</span> <span class="n">timeslot_allowed</span>
+        <span class="k">return</span> <span class="n">timeslots</span></div>
+
+    
+<div class="viewcode-block" id="Command.add_lecture">
+<a class="viewcode-back" href="../../../../classes.management.commands.html#classes.management.commands.create_test_timetables.Command.add_lecture">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_lecture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timetable</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">include_weekend</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a lecture session to the timetable.</span>
+
+<span class="sd">        :param timetable: The timetable to add the lecture to.</span>
+<span class="sd">        :type timetable: list</span>
+<span class="sd">        :param include_weekend: Whether to include weekends in the lecture timeslot selection.</span>
+<span class="sd">        :type include_weekend: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">class_time</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">LECTURE_MIN_DURATION</span><span class="p">,</span><span class="n">LECTURE_MAX_DURATION</span><span class="p">)</span>
+        <span class="n">timetable</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;Lecture&quot;</span><span class="p">,</span>
+                          <span class="s2">&quot;timeslots&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timeslots</span><span class="p">(</span><span class="n">class_time</span><span class="p">,</span><span class="n">include_weekend</span><span class="p">)})</span></div>
+
+    
+<div class="viewcode-block" id="Command.add_tutorial">
+<a class="viewcode-back" href="../../../../classes.management.commands.html#classes.management.commands.create_test_timetables.Command.add_tutorial">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_tutorial</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timetable</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">include_weekend</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a tutorial session to the timetable.</span>
+
+<span class="sd">        :param timetable: The timetable to add the tutorial to.</span>
+<span class="sd">        :type timetable: list</span>
+<span class="sd">        :param include_weekend: Whether to include weekends in the tutorial timeslot selection.</span>
+<span class="sd">        :type include_weekend: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">class_time</span> <span class="o">=</span> <span class="n">TUTORIAL_DURATION</span>
+        <span class="n">timetable</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;Tutorial&quot;</span><span class="p">,</span>
+                          <span class="s2">&quot;timeslots&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timeslots</span><span class="p">(</span><span class="n">class_time</span><span class="p">,</span><span class="n">include_weekend</span><span class="p">)})</span></div>
+
+        
+<div class="viewcode-block" id="Command.add_lab">
+<a class="viewcode-back" href="../../../../classes.management.commands.html#classes.management.commands.create_test_timetables.Command.add_lab">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_lab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timetable</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">include_weekend</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a lab session to the timetable.</span>
+
+<span class="sd">        :param timetable: The timetable to add the lab to.</span>
+<span class="sd">        :type timetable: list</span>
+<span class="sd">        :param include_weekend: Whether to include weekends in the lab timeslot selection.</span>
+<span class="sd">        :type include_weekend: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">class_time</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">MIN_LAB_DURATION</span><span class="p">,</span> <span class="n">MAX_LAB_DURATION</span><span class="p">)</span>
+        <span class="n">timetable</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;Lab&quot;</span><span class="p">,</span>
+                          <span class="s2">&quot;timeslots&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timeslots</span><span class="p">(</span><span class="n">class_time</span><span class="p">,</span><span class="n">include_weekend</span><span class="p">)})</span></div>
+
+    
+<div class="viewcode-block" id="Command.assign_timeslots">
+<a class="viewcode-back" href="../../../../classes.management.commands.html#classes.management.commands.create_test_timetables.Command.assign_timeslots">[docs]</a>
+    <span class="k">def</span> <span class="nf">assign_timeslots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constraints</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">class_timetable</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">include_weekend</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Assign timeslots to the sessions in the timetable, ensuring that constraints are met.</span>
+
+<span class="sd">        :param constraints: The constraints to apply.</span>
+<span class="sd">        :type constraints: tuple</span>
+<span class="sd">        :param class_timetable: The timetable to assign timeslots to.</span>
+<span class="sd">        :type class_timetable: list, optional</span>
+<span class="sd">        :param include_weekend: Whether to include weekends in the timeslot selection.</span>
+<span class="sd">        :type include_weekend: bool</span>
+<span class="sd">        :return: The updated timetable with assigned timeslots.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">remaining_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Lecture&quot;</span><span class="p">,</span> <span class="s2">&quot;Tutorial&quot;</span><span class="p">,</span> <span class="s2">&quot;Lab&quot;</span><span class="p">]</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_constraint_fulfilled</span><span class="p">(</span><span class="n">class_timetable</span><span class="p">,</span> <span class="n">constraints</span><span class="p">):</span>
+            <span class="c1">#print(self.count_session_type(class_timetable))           </span>
+            <span class="n">session_type</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">remaining_types</span><span class="p">)</span>
+            <span class="n">initial_timetable</span> <span class="o">=</span> <span class="n">class_timetable</span><span class="p">[:]</span>
+            
+            <span class="k">if</span> <span class="n">session_type</span> <span class="o">==</span> <span class="s2">&quot;Lecture&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_lecture</span><span class="p">(</span><span class="n">class_timetable</span><span class="p">,</span> <span class="n">include_weekend</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">session_type</span> <span class="o">==</span> <span class="s2">&quot;Tutorial&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_tutorial</span><span class="p">(</span><span class="n">class_timetable</span><span class="p">,</span> <span class="n">include_weekend</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">session_type</span> <span class="o">==</span> <span class="s2">&quot;Lab&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_lab</span><span class="p">(</span><span class="n">class_timetable</span><span class="p">,</span> <span class="n">include_weekend</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_max_constraints</span><span class="p">(</span><span class="n">class_timetable</span><span class="p">,</span> <span class="n">constraints</span><span class="p">):</span>
+                <span class="n">class_timetable</span> <span class="o">=</span> <span class="n">initial_timetable</span>
+        
+        <span class="k">return</span> <span class="n">class_timetable</span></div>
+
+        
+<div class="viewcode-block" id="Command.create_schedule">
+<a class="viewcode-back" href="../../../../classes.management.commands.html#classes.management.commands.create_test_timetables.Command.create_schedule">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">Module</span><span class="p">,</span> <span class="n">timetable</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create session schedules based on the generated timetable and save them to the database.</span>
+
+<span class="sd">        :param module: The module for which the schedule is being created.</span>
+<span class="sd">        :type module: Module</span>
+<span class="sd">        :param timetable: The generated timetable with session types and timeslots.</span>
+<span class="sd">        :type timetable: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">timetable</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">timeslot</span> <span class="ow">in</span> <span class="n">session</span><span class="p">[</span><span class="s2">&quot;timeslots&quot;</span><span class="p">]:</span>
+                <span class="n">SessionSchedule</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                    <span class="n">class_session</span><span class="o">=</span><span class="n">ModuleSession</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">class_code</span><span class="o">=</span><span class="n">module</span><span class="p">,</span> <span class="n">session_type</span><span class="o">=</span><span class="n">session</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]),</span>
+                    <span class="n">timeslot</span><span class="o">=</span><span class="n">timeslot</span>
+                <span class="p">)</span></div>
+
+        
+    
+<div class="viewcode-block" id="Command.add_arguments">
+<a class="viewcode-back" href="../../../../classes.management.commands.html#classes.management.commands.create_test_timetables.Command.add_arguments">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">:</span> <span class="n">CommandParser</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the arguments that the command accepts. The command can accept a class code to generate a schedule </span>
+<span class="sd">        for a specific module, an option to generate schedules for all modules that require them, and options </span>
+<span class="sd">        to include weekends and set a random seed.</span>
+
+<span class="sd">        :param parser: The argument parser for the command.</span>
+<span class="sd">        :type parser: CommandParser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s1">&#39;--class-code&#39;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Specify the class code for which the schedule needs to be created&#39;</span>
+        <span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s1">&#39;--all&#39;</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Specify to create schedules for all classes with no schedules&#39;</span>
+        <span class="p">)</span>
+        
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--include-weekend&quot;</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">help</span> <span class="o">=</span> <span class="s1">&#39;Include weekends in the generated schedule&#39;</span>
+        <span class="p">)</span>
+        
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--debug-seed&quot;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Set a random seed for debugging purposes&#39;</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Command.handle">
+<a class="viewcode-back" href="../../../../classes.management.commands.html#classes.management.commands.create_test_timetables.Command.handle">[docs]</a>
+    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the command execution, generating timetables based on the provided options. The method will </span>
+<span class="sd">        create schedules for either a specific module or all modules, with an option to include weekends in the scheduling.</span>
+
+<span class="sd">        :param args: Additional positional arguments.</span>
+<span class="sd">        :type args: list</span>
+<span class="sd">        :param kwargs: A dictionary of options passed to the command.</span>
+<span class="sd">        :type kwargs: dict</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">class_code</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;class_code&#39;</span><span class="p">)</span>
+        <span class="n">all_classes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+        <span class="n">include_weekend</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;include_weekend&#39;</span><span class="p">)</span>
+        <span class="n">debug_seed</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;debug_seed&#39;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">debug_seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">debug_seed</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">debug_seed</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+            <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">debug_seed</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">NOTICE</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Random seed used: </span><span class="si">{</span><span class="n">debug_seed</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">))</span>
+            <span class="n">SessionSchedule</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session__test_session</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="n">class_code</span><span class="p">:</span>
+            <span class="n">modules</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_code</span><span class="o">=</span><span class="n">class_code</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">all_classes</span><span class="p">:</span>
+            <span class="n">modules</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">modulesession__test_session</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">ERROR</span><span class="p">(</span><span class="s1">&#39;Please provide either --class-code or --all option&#39;</span><span class="p">))</span>
+            <span class="k">return</span>
+        
+        <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
+            <span class="n">constraints</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_constraints</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+            <span class="n">timetable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">assign_timeslots</span><span class="p">(</span><span class="n">constraints</span><span class="p">,</span> <span class="p">[],</span> <span class="n">include_weekend</span><span class="o">=</span><span class="n">include_weekend</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">create_schedule</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">timetable</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Schedule created for module: </span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">class_code</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">))</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

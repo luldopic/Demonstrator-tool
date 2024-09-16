@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>users.admin &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">users.admin</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for users.admin</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span> <span class="nn">users.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">Demonstrator</span><span class="p">,</span> <span class="n">Lecturer</span>
+<span class="kn">from</span> <span class="nn">classes.models</span> <span class="kn">import</span> <span class="n">UserAvailability</span>
+<span class="kn">from</span> <span class="nn">timetable.models</span> <span class="kn">import</span> <span class="n">Timeslot</span>
+<span class="kn">from</span> <span class="nn">classes.admin_inlines.skill_inline</span> <span class="kn">import</span> <span class="n">CompetencyInline</span>
+<span class="kn">from</span> <span class="nn">classes.admin_inlines.module_lecturer_inline</span> <span class="kn">import</span> <span class="n">ModuleInline</span>
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">django.utils.html</span> <span class="kn">import</span> <span class="n">format_html</span>
+
+<div class="viewcode-block" id="UserAdmin">
+<a class="viewcode-back" href="../../users.html#users.admin.UserAdmin">[docs]</a>
+<span class="k">class</span> <span class="nc">UserAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `UserAdmin` class customizes the Django admin interface for the `User` model. It includes search fields, </span>
+<span class="sd">    list displays, list filters, and actions for managing users.</span>
+
+<span class="sd">    :param search_fields: Fields to include in the search functionality.</span>
+<span class="sd">    :type search_fields: list</span>
+<span class="sd">    :param list_display: Fields to display in the list view of the admin interface.</span>
+<span class="sd">    :type list_display: list</span>
+<span class="sd">    :param list_filter: Filters to apply to the list view of the admin interface.</span>
+<span class="sd">    :type list_filter: list</span>
+<span class="sd">    :param actions: Custom actions available in the admin interface.</span>
+<span class="sd">    :type actions: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">search_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;last_name&quot;</span><span class="p">,</span><span class="s2">&quot;username&quot;</span><span class="p">]</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">,</span><span class="s2">&quot;first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;last_name&quot;</span><span class="p">]</span>
+    <span class="n">list_filter</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;is_lecturer&quot;</span><span class="p">,</span> <span class="s2">&quot;is_demonstrator&quot;</span><span class="p">]</span>
+    <span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;create_user_availability&quot;</span><span class="p">]</span>
+    
+<div class="viewcode-block" id="UserAdmin.create_user_availability">
+<a class="viewcode-back" href="../../users.html#users.admin.UserAdmin.create_user_availability">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_user_availability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create or update the availability records for selected users across all available timeslots.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :param queryset: The queryset of selected users.</span>
+<span class="sd">        :type queryset: QuerySet</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">timeslots</span> <span class="o">=</span> <span class="n">Timeslot</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">queryset</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="n">timeslots</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="n">slot</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                    <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="n">slot</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message_user</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;User availability created/updated for </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s1"> users.&#39;</span><span class="p">)</span></div>
+
+
+    <span class="n">create_user_availability</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Create/Update User Availability&quot;</span></div>
+
+
+<div class="viewcode-block" id="RoleAdminMixin">
+<a class="viewcode-back" href="../../users.html#users.admin.RoleAdminMixin">[docs]</a>
+<span class="k">class</span> <span class="nc">RoleAdminMixin</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `RoleAdminMixin` class provides utility methods and permissions for models related to user roles, </span>
+<span class="sd">    such as `Lecturer` and `Demonstrator`. These methods include retrieving user names and viewing user details.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="RoleAdminMixin.get_first_name">
+<a class="viewcode-back" href="../../users.html#users.admin.RoleAdminMixin.get_first_name">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_first_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the first name of the user associated with the role.</span>
+
+<span class="sd">        :param obj: The role instance (e.g., `Lecturer` or `Demonstrator`).</span>
+<span class="sd">        :type obj: Model instance</span>
+<span class="sd">        :return: The user&#39;s first name.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">first_name</span></div>
+
+    <span class="n">get_first_name</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;First Name&quot;</span>
+    
+<div class="viewcode-block" id="RoleAdminMixin.get_last_name">
+<a class="viewcode-back" href="../../users.html#users.admin.RoleAdminMixin.get_last_name">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_last_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the last name of the user associated with the role.</span>
+
+<span class="sd">        :param obj: The role instance (e.g., `Lecturer` or `Demonstrator`).</span>
+<span class="sd">        :type obj: Model instance</span>
+<span class="sd">        :return: The user&#39;s last name.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">last_name</span></div>
+
+    <span class="n">get_last_name</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Last Name&quot;</span>
+    
+<div class="viewcode-block" id="RoleAdminMixin.view_user">
+<a class="viewcode-back" href="../../users.html#users.admin.RoleAdminMixin.view_user">[docs]</a>
+    <span class="k">def</span> <span class="nf">view_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide a link to view the user details in the admin interface.</span>
+
+<span class="sd">        :param obj: The role instance (e.g., `Lecturer` or `Demonstrator`).</span>
+<span class="sd">        :type obj: Model instance</span>
+<span class="sd">        :return: A formatted HTML link to the user&#39;s details page.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;admin:users_user_change&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">format_html</span><span class="p">(</span><span class="s1">&#39;&lt;a href=&quot;</span><span class="si">{}</span><span class="s1">&quot;&gt;View User&lt;/a&gt;&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span></div>
+
+    <span class="n">view_user</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;User Details&quot;</span>
+    
+<div class="viewcode-block" id="RoleAdminMixin.has_delete_permission">
+<a class="viewcode-back" href="../../users.html#users.admin.RoleAdminMixin.has_delete_permission">[docs]</a>
+    <span class="k">def</span> <span class="nf">has_delete_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return `True` to allow delete permissions for the role.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :param obj: The role instance (optional).</span>
+<span class="sd">        :type obj: Model instance, optional</span>
+<span class="sd">        :return: `True` to allow delete permissions.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="RoleAdminMixin.has_change_permission">
+<a class="viewcode-back" href="../../users.html#users.admin.RoleAdminMixin.has_change_permission">[docs]</a>
+    <span class="k">def</span> <span class="nf">has_change_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return `True` to allow change permissions for the role.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :param obj: The role instance (optional).</span>
+<span class="sd">        :type obj: Model instance, optional</span>
+<span class="sd">        :return: `True` to allow change permissions.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="RoleAdminMixin.has_view_permission">
+<a class="viewcode-back" href="../../users.html#users.admin.RoleAdminMixin.has_view_permission">[docs]</a>
+    <span class="k">def</span> <span class="nf">has_view_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return `True` to allow view permissions for the role.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :param obj: The role instance (optional).</span>
+<span class="sd">        :type obj: Model instance, optional</span>
+<span class="sd">        :return: `True` to allow view permissions.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+</div>
+
+
+<div class="viewcode-block" id="LecturerAdmin">
+<a class="viewcode-back" href="../../users.html#users.admin.LecturerAdmin">[docs]</a>
+<span class="k">class</span> <span class="nc">LecturerAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">,</span> <span class="n">RoleAdminMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `LecturerAdmin` class customizes the Django admin interface for the `Lecturer` model. It includes inline models,</span>
+<span class="sd">    search fields, and list displays for managing lecturers.</span>
+
+<span class="sd">    :param inlines: Inline models to include in the form.</span>
+<span class="sd">    :type inlines: list</span>
+<span class="sd">    :param search_fields: Fields to include in the search functionality.</span>
+<span class="sd">    :type search_fields: list</span>
+<span class="sd">    :param list_display: Fields to display in the list view of the admin interface.</span>
+<span class="sd">    :type list_display: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">inlines</span> <span class="o">=</span> <span class="p">[</span><span class="n">ModuleInline</span><span class="p">]</span>
+    <span class="n">search_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;user__first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;user__last_name&quot;</span><span class="p">,</span><span class="s2">&quot;department&quot;</span><span class="p">]</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;get_first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;get_last_name&quot;</span><span class="p">,</span> <span class="s2">&quot;department&quot;</span><span class="p">,</span> <span class="s2">&quot;view_user&quot;</span><span class="p">]</span></div>
+
+    
+<div class="viewcode-block" id="DemonstratorAdmin">
+<a class="viewcode-back" href="../../users.html#users.admin.DemonstratorAdmin">[docs]</a>
+<span class="k">class</span> <span class="nc">DemonstratorAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">,</span> <span class="n">RoleAdminMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `DemonstratorAdmin` class customizes the Django admin interface for the `Demonstrator` model. It includes inline models,</span>
+<span class="sd">    search fields, and list displays for managing demonstrators.</span>
+
+<span class="sd">    :param inlines: Inline models to include in the form.</span>
+<span class="sd">    :type inlines: list</span>
+<span class="sd">    :param search_fields: Fields to include in the search functionality.</span>
+<span class="sd">    :type search_fields: list</span>
+<span class="sd">    :param list_display: Fields to display in the list view of the admin interface.</span>
+<span class="sd">    :type list_display: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">inlines</span> <span class="o">=</span> <span class="p">[</span><span class="n">CompetencyInline</span><span class="p">]</span>
+    <span class="n">search_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;user__first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;user__last_name&quot;</span><span class="p">,</span> <span class="s2">&quot;competency__skill__name&quot;</span><span class="p">]</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;get_first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;get_last_name&quot;</span><span class="p">,</span> <span class="s2">&quot;view_user&quot;</span><span class="p">]</span></div>
+
+
+
+<span class="c1"># Register your models here.</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">UserAdmin</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Demonstrator</span><span class="p">,</span> <span class="n">DemonstratorAdmin</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Lecturer</span><span class="p">,</span> <span class="n">LecturerAdmin</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

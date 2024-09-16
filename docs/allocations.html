@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>allocations package &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="allocations.utils package" href="allocations.utils.html" />
+    <link rel="prev" title="admin package" href="admin.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_issues.html">Known Issues</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API References</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="admin.html">admin package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">allocations package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html">allocations.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-allocations.admin">allocations.admin module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#allocations.admin.AllocationAdmin"><code class="docutils literal notranslate"><span class="pre">AllocationAdmin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#allocations.admin.AllocationDomainAdmin"><code class="docutils literal notranslate"><span class="pre">AllocationDomainAdmin</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-allocations.apps">allocations.apps module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#allocations.apps.AllocationsConfig"><code class="docutils literal notranslate"><span class="pre">AllocationsConfig</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-allocations.models">allocations.models module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#allocations.models.Allocation"><code class="docutils literal notranslate"><span class="pre">Allocation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#allocations.models.AllocationDomain"><code class="docutils literal notranslate"><span class="pre">AllocationDomain</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#allocations.models.reset_allocation_approved_status"><code class="docutils literal notranslate"><span class="pre">reset_allocation_approved_status()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-allocations">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html">classes package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demonstrator_timetabling_tool.html">demonstrator_timetabling_tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timetable.html">timetable package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="users.html">users package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API References</a></li>
+      <li class="breadcrumb-item active">allocations package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/allocations.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="allocations-package">
+<h1>allocations package<a class="headerlink" href="#allocations-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="allocations.utils.html">allocations.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="allocations.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.utils.html#module-allocations.utils.allocation_manager">allocations.utils.allocation_manager module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="allocations.utils.html#allocations.utils.allocation_manager.AllocationManager"><code class="docutils literal notranslate"><span class="pre">AllocationManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.allocate_with_constraints"><code class="docutils literal notranslate"><span class="pre">AllocationManager.allocate_with_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.assign_demonstrators"><code class="docutils literal notranslate"><span class="pre">AllocationManager.assign_demonstrators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.backtracking"><code class="docutils literal notranslate"><span class="pre">AllocationManager.backtracking()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.batch_allocate"><code class="docutils literal notranslate"><span class="pre">AllocationManager.batch_allocate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.get_demonstrators_by_hard_constraints"><code class="docutils literal notranslate"><span class="pre">AllocationManager.get_demonstrators_by_hard_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.get_demonstrators_by_primary_soft_constraints"><code class="docutils literal notranslate"><span class="pre">AllocationManager.get_demonstrators_by_primary_soft_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.get_demonstrators_by_secondary_soft_constraints"><code class="docutils literal notranslate"><span class="pre">AllocationManager.get_demonstrators_by_secondary_soft_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.get_demonstrators_by_tertiary_soft_constraints"><code class="docutils literal notranslate"><span class="pre">AllocationManager.get_demonstrators_by_tertiary_soft_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.get_solution_domain"><code class="docutils literal notranslate"><span class="pre">AllocationManager.get_solution_domain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.get_unallocated"><code class="docutils literal notranslate"><span class="pre">AllocationManager.get_unallocated()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.try_allocate_with_primary_constraints"><code class="docutils literal notranslate"><span class="pre">AllocationManager.try_allocate_with_primary_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.try_allocate_with_secondary_constraints"><code class="docutils literal notranslate"><span class="pre">AllocationManager.try_allocate_with_secondary_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.try_allocate_with_tertiary_constraints"><code class="docutils literal notranslate"><span class="pre">AllocationManager.try_allocate_with_tertiary_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.allocation_manager.AllocationManager.try_allocation"><code class="docutils literal notranslate"><span class="pre">AllocationManager.try_allocation()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.utils.html#module-allocations.utils.constraint_filter">allocations.utils.constraint_filter module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.ConstrantFilterQuery"><code class="docutils literal notranslate"><span class="pre">ConstrantFilterQuery</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.ConstrantFilterQuery.filter_allocation_by_primary_soft_constraints"><code class="docutils literal notranslate"><span class="pre">ConstrantFilterQuery.filter_allocation_by_primary_soft_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.ConstrantFilterQuery.filter_allocation_by_secondary_soft_constraints"><code class="docutils literal notranslate"><span class="pre">ConstrantFilterQuery.filter_allocation_by_secondary_soft_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.ConstrantFilterQuery.filter_allocations_by_hard_constraints"><code class="docutils literal notranslate"><span class="pre">ConstrantFilterQuery.filter_allocations_by_hard_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.ConstrantFilterQuery.filter_allocations_by_hard_constraints_post_approve"><code class="docutils literal notranslate"><span class="pre">ConstrantFilterQuery.filter_allocations_by_hard_constraints_post_approve()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.HardConstraintFilter"><code class="docutils literal notranslate"><span class="pre">HardConstraintFilter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.HardConstraintFilter.lookups"><code class="docutils literal notranslate"><span class="pre">HardConstraintFilter.lookups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.HardConstraintFilter.parameter_name"><code class="docutils literal notranslate"><span class="pre">HardConstraintFilter.parameter_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.HardConstraintFilter.queryset"><code class="docutils literal notranslate"><span class="pre">HardConstraintFilter.queryset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.HardConstraintFilter.title"><code class="docutils literal notranslate"><span class="pre">HardConstraintFilter.title</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.SoftPrimaryConstraintFilter"><code class="docutils literal notranslate"><span class="pre">SoftPrimaryConstraintFilter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.SoftPrimaryConstraintFilter.lookups"><code class="docutils literal notranslate"><span class="pre">SoftPrimaryConstraintFilter.lookups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.SoftPrimaryConstraintFilter.parameter_name"><code class="docutils literal notranslate"><span class="pre">SoftPrimaryConstraintFilter.parameter_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.SoftPrimaryConstraintFilter.queryset"><code class="docutils literal notranslate"><span class="pre">SoftPrimaryConstraintFilter.queryset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.SoftPrimaryConstraintFilter.title"><code class="docutils literal notranslate"><span class="pre">SoftPrimaryConstraintFilter.title</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.SoftSecondaryConstraintFilter"><code class="docutils literal notranslate"><span class="pre">SoftSecondaryConstraintFilter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.SoftSecondaryConstraintFilter.lookups"><code class="docutils literal notranslate"><span class="pre">SoftSecondaryConstraintFilter.lookups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.SoftSecondaryConstraintFilter.parameter_name"><code class="docutils literal notranslate"><span class="pre">SoftSecondaryConstraintFilter.parameter_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.SoftSecondaryConstraintFilter.queryset"><code class="docutils literal notranslate"><span class="pre">SoftSecondaryConstraintFilter.queryset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_filter.SoftSecondaryConstraintFilter.title"><code class="docutils literal notranslate"><span class="pre">SoftSecondaryConstraintFilter.title</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.utils.html#module-allocations.utils.constraint_manager">allocations.utils.constraint_manager module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_manager.ConstraintManager"><code class="docutils literal notranslate"><span class="pre">ConstraintManager</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_manager.HardConstraintManager"><code class="docutils literal notranslate"><span class="pre">HardConstraintManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_manager.HardConstraintManager.is_allocation_not_previously_approved"><code class="docutils literal notranslate"><span class="pre">HardConstraintManager.is_allocation_not_previously_approved()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_manager.HardConstraintManager.is_demonstator_available_for_all"><code class="docutils literal notranslate"><span class="pre">HardConstraintManager.is_demonstator_available_for_all()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_manager.HardConstraintManager.is_demonstrator_not_double_booked"><code class="docutils literal notranslate"><span class="pre">HardConstraintManager.is_demonstrator_not_double_booked()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_manager.PrimaryConstraintManager"><code class="docutils literal notranslate"><span class="pre">PrimaryConstraintManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_manager.PrimaryConstraintManager.demonstrator_has_beginner_skill"><code class="docutils literal notranslate"><span class="pre">PrimaryConstraintManager.demonstrator_has_beginner_skill()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_manager.PrimaryConstraintManager.session_has_half_demonstrators"><code class="docutils literal notranslate"><span class="pre">PrimaryConstraintManager.session_has_half_demonstrators()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_manager.SecondaryConstraintManager"><code class="docutils literal notranslate"><span class="pre">SecondaryConstraintManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_manager.SecondaryConstraintManager.demonstrator_has_skill_or_higher"><code class="docutils literal notranslate"><span class="pre">SecondaryConstraintManager.demonstrator_has_skill_or_higher()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_manager.SecondaryConstraintManager.session_has_all_demonstrators"><code class="docutils literal notranslate"><span class="pre">SecondaryConstraintManager.session_has_all_demonstrators()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_manager.SoftConstraintManager"><code class="docutils literal notranslate"><span class="pre">SoftConstraintManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_manager.SoftConstraintManager.is_subset"><code class="docutils literal notranslate"><span class="pre">SoftConstraintManager.is_subset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="allocations.utils.html#allocations.utils.constraint_manager.TertiaryConstraintManager"><code class="docutils literal notranslate"><span class="pre">TertiaryConstraintManager</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.utils.html#module-allocations.utils.goodness_of_fit">allocations.utils.goodness_of_fit module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.calculate_overall_fit"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.calculate_overall_fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.convert_seconds_to_hms"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.convert_seconds_to_hms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.generate_report"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.generate_report()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_demonstrator_time_load_balance_chi_square"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_demonstrator_time_load_balance_chi_square()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_distribution_competencies"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_distribution_competencies()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_distribution_required_skills"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_distribution_required_skills()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_distribution_tertiary_constraint"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_distribution_tertiary_constraint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_hard_constraint_compliance"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_hard_constraint_compliance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_percentage_allocated"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_percentage_allocated()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_preference_fulfillment"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_preference_fulfillment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_primary_constraint_compliance"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_primary_constraint_compliance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_ratio_hard_constraint"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_ratio_hard_constraint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_ratio_primary_constraint"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_ratio_primary_constraint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_ratio_secondary_constraint"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_ratio_secondary_constraint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_secondary_constraint_compliance"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_secondary_constraint_compliance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_skill_match_score_distribution"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_skill_match_score_distribution()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_skill_match_score_single"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_skill_match_score_single()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_tertiary_constraint_compliance"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_tertiary_constraint_compliance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_total_allocation"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_total_allocation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_total_allocation_notnull"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_total_allocation_notnull()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_utilisation_rate"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.get_utilisation_rate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.normalise_chi_square_stat"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.normalise_chi_square_stat()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.normalise_weights"><code class="docutils literal notranslate"><span class="pre">GoodnessOfFit.normalise_weights()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.utils.html#module-allocations.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-allocations.admin">
+<span id="allocations-admin-module"></span><h2>allocations.admin module<a class="headerlink" href="#module-allocations.admin" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="allocations.admin.AllocationAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allocations.admin.</span></span><span class="sig-name descname"><span class="pre">AllocationAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin_site</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/admin.html#AllocationAdmin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.admin.AllocationAdmin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelAdmin</span></code></p>
+<p>The <cite>AllocationAdmin</cite> class customizes the Django admin interface for the <cite>Allocation</cite> model. It provides 
+functionalities such as filtering allocations by constraints, displaying session details, and managing 
+the approval status of allocations.</p>
+<p>This class defines custom actions for ensuring correct approval statuses, populating solution domains, 
+automatically assigning demonstrators, and resetting allocations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_display</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- A list of fields or methods to display in the admin list view.</p></li>
+<li><p><strong>list_filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- A list of filters available in the admin list view.</p></li>
+<li><p><strong>actions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- A list of custom actions available in the admin interface.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.admin.AllocationAdmin.actions">
+<span class="sig-name descname"><span class="pre">actions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['ensure_correct_approved_status',</span> <span class="pre">'populate_solution_domain',</span> <span class="pre">'assign_demonstrator',</span> <span class="pre">'reset_allocation']</span></em><a class="headerlink" href="#allocations.admin.AllocationAdmin.actions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.admin.AllocationAdmin.assign_demonstrator">
+<span class="sig-name descname"><span class="pre">assign_demonstrator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/admin.html#AllocationAdmin.assign_demonstrator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.admin.AllocationAdmin.assign_demonstrator" title="Link to this definition"></a></dt>
+<dd><p>Automatically assign demonstrators to selected allocations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>queryset</strong> (<em>QuerySet</em>) -- A queryset of selected allocations.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.admin.AllocationAdmin.changelist_view">
+<span class="sig-name descname"><span class="pre">changelist_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/admin.html#AllocationAdmin.changelist_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.admin.AllocationAdmin.changelist_view" title="Link to this definition"></a></dt>
+<dd><p>Customize the changelist view to filter allocations by class session ID if specified in the query parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>extra_context</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>, </em><em>optional</em>) -- Additional context for the changelist view.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The modified changelist view.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.admin.AllocationAdmin.ensure_correct_approved_status">
+<span class="sig-name descname"><span class="pre">ensure_correct_approved_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/admin.html#AllocationAdmin.ensure_correct_approved_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.admin.AllocationAdmin.ensure_correct_approved_status" title="Link to this definition"></a></dt>
+<dd><p>Ensure that allocations are not approved if no demonstrator is assigned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>queryset</strong> (<em>QuerySet</em>) -- A queryset of selected allocations.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.admin.AllocationAdmin.get_demonstrator_name">
+<span class="sig-name descname"><span class="pre">get_demonstrator_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/admin.html#AllocationAdmin.get_demonstrator_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.admin.AllocationAdmin.get_demonstrator_name" title="Link to this definition"></a></dt>
+<dd><p>Display the name of the demonstrator assigned to the allocation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#allocations.models.Allocation" title="allocations.models.Allocation"><em>Allocation</em></a>) -- The <cite>Allocation</cite> instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The full name of the demonstrator or '-' if none is assigned.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.admin.AllocationAdmin.get_session_details">
+<span class="sig-name descname"><span class="pre">get_session_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/admin.html#AllocationAdmin.get_session_details"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.admin.AllocationAdmin.get_session_details" title="Link to this definition"></a></dt>
+<dd><p>Display session details including the class code and session type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#allocations.models.Allocation" title="allocations.models.Allocation"><em>Allocation</em></a>) -- The <cite>Allocation</cite> instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string combining the class code and session type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.admin.AllocationAdmin.list_display">
+<span class="sig-name descname"><span class="pre">list_display</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['get_session_details',</span> <span class="pre">'get_demonstrator_name',</span> <span class="pre">'approved']</span></em><a class="headerlink" href="#allocations.admin.AllocationAdmin.list_display" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.admin.AllocationAdmin.list_filter">
+<span class="sig-name descname"><span class="pre">list_filter</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['approved',</span> <span class="pre">&lt;class</span> <span class="pre">'allocations.utils.constraint_filter.HardConstraintFilter'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'allocations.utils.constraint_filter.SoftPrimaryConstraintFilter'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'allocations.utils.constraint_filter.SoftSecondaryConstraintFilter'&gt;]</span></em><a class="headerlink" href="#allocations.admin.AllocationAdmin.list_filter" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="allocations.admin.AllocationAdmin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#allocations.admin.AllocationAdmin.media" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.admin.AllocationAdmin.populate_solution_domain">
+<span class="sig-name descname"><span class="pre">populate_solution_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/admin.html#AllocationAdmin.populate_solution_domain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.admin.AllocationAdmin.populate_solution_domain" title="Link to this definition"></a></dt>
+<dd><p>Populate the solution domain for selected allocations, determining viable demonstrators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>queryset</strong> (<em>QuerySet</em>) -- A queryset of selected allocations.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.admin.AllocationAdmin.reset_allocation">
+<span class="sig-name descname"><span class="pre">reset_allocation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/admin.html#AllocationAdmin.reset_allocation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.admin.AllocationAdmin.reset_allocation" title="Link to this definition"></a></dt>
+<dd><p>Reset selected allocations by unassigning the demonstrators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>queryset</strong> (<em>QuerySet</em>) -- A queryset of selected allocations.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.admin.AllocationAdmin.view_module_session">
+<span class="sig-name descname"><span class="pre">view_module_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/admin.html#AllocationAdmin.view_module_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.admin.AllocationAdmin.view_module_session" title="Link to this definition"></a></dt>
+<dd><p>Provide a link to view the related module session in the admin interface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#allocations.models.Allocation" title="allocations.models.Allocation"><em>Allocation</em></a>) -- The <cite>Allocation</cite> instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An HTML link to the module session change page.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="allocations.admin.AllocationDomainAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allocations.admin.</span></span><span class="sig-name descname"><span class="pre">AllocationDomainAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin_site</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/admin.html#AllocationDomainAdmin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.admin.AllocationDomainAdmin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelAdmin</span></code></p>
+<p>The <cite>AllocationDomainAdmin</cite> class customizes the Django admin interface for the <cite>AllocationDomain</cite> model. 
+It provides functionalities to display details about the session and the number of viable demonstrators 
+for each constraint level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list_display</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- A list of fields or methods to display in the admin list view.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.admin.AllocationDomainAdmin.get_session_details">
+<span class="sig-name descname"><span class="pre">get_session_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/admin.html#AllocationDomainAdmin.get_session_details"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.admin.AllocationDomainAdmin.get_session_details" title="Link to this definition"></a></dt>
+<dd><p>Display session details including the class code and session type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#allocations.models.AllocationDomain" title="allocations.models.AllocationDomain"><em>AllocationDomain</em></a>) -- The <cite>AllocationDomain</cite> instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string combining the class code and session type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.admin.AllocationDomainAdmin.get_viable_hard_constraint_number">
+<span class="sig-name descname"><span class="pre">get_viable_hard_constraint_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/admin.html#AllocationDomainAdmin.get_viable_hard_constraint_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.admin.AllocationDomainAdmin.get_viable_hard_constraint_number" title="Link to this definition"></a></dt>
+<dd><p>Display the number of demonstrators that meet hard constraints for the session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#allocations.models.AllocationDomain" title="allocations.models.AllocationDomain"><em>AllocationDomain</em></a>) -- The <cite>AllocationDomain</cite> instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of viable demonstrators that meet hard constraints.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.admin.AllocationDomainAdmin.get_viable_primary_constraint_number">
+<span class="sig-name descname"><span class="pre">get_viable_primary_constraint_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/admin.html#AllocationDomainAdmin.get_viable_primary_constraint_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.admin.AllocationDomainAdmin.get_viable_primary_constraint_number" title="Link to this definition"></a></dt>
+<dd><p>Display the number of demonstrators that meet primary soft constraints for the session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#allocations.models.AllocationDomain" title="allocations.models.AllocationDomain"><em>AllocationDomain</em></a>) -- The <cite>AllocationDomain</cite> instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of viable demonstrators that meet primary soft constraints.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.admin.AllocationDomainAdmin.get_viable_secondary_constraint_number">
+<span class="sig-name descname"><span class="pre">get_viable_secondary_constraint_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/admin.html#AllocationDomainAdmin.get_viable_secondary_constraint_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.admin.AllocationDomainAdmin.get_viable_secondary_constraint_number" title="Link to this definition"></a></dt>
+<dd><p>Display the number of demonstrators that meet secondary soft constraints for the session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#allocations.models.AllocationDomain" title="allocations.models.AllocationDomain"><em>AllocationDomain</em></a>) -- The <cite>AllocationDomain</cite> instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of viable demonstrators that meet secondary soft constraints.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.admin.AllocationDomainAdmin.get_viable_tertiary_constraint_number">
+<span class="sig-name descname"><span class="pre">get_viable_tertiary_constraint_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/admin.html#AllocationDomainAdmin.get_viable_tertiary_constraint_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.admin.AllocationDomainAdmin.get_viable_tertiary_constraint_number" title="Link to this definition"></a></dt>
+<dd><p>Display the number of demonstrators that meet tertiary constraints for the session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#allocations.models.AllocationDomain" title="allocations.models.AllocationDomain"><em>AllocationDomain</em></a>) -- The <cite>AllocationDomain</cite> instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of viable demonstrators that meet tertiary constraints.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.admin.AllocationDomainAdmin.list_display">
+<span class="sig-name descname"><span class="pre">list_display</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['get_session_details',</span> <span class="pre">'get_viable_hard_constraint_number',</span> <span class="pre">'get_viable_primary_constraint_number',</span> <span class="pre">'get_viable_secondary_constraint_number',</span> <span class="pre">'get_viable_tertiary_constraint_number',</span> <span class="pre">'view_module_session']</span></em><a class="headerlink" href="#allocations.admin.AllocationDomainAdmin.list_display" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="allocations.admin.AllocationDomainAdmin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#allocations.admin.AllocationDomainAdmin.media" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.admin.AllocationDomainAdmin.view_module_session">
+<span class="sig-name descname"><span class="pre">view_module_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/admin.html#AllocationDomainAdmin.view_module_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.admin.AllocationDomainAdmin.view_module_session" title="Link to this definition"></a></dt>
+<dd><p>Provide a link to view the related module session in the admin interface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#allocations.models.AllocationDomain" title="allocations.models.AllocationDomain"><em>AllocationDomain</em></a>) -- The <cite>AllocationDomain</cite> instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An HTML link to the module session change page.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-allocations.apps">
+<span id="allocations-apps-module"></span><h2>allocations.apps module<a class="headerlink" href="#module-allocations.apps" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="allocations.apps.AllocationsConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allocations.apps.</span></span><span class="sig-name descname"><span class="pre">AllocationsConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_module</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/apps.html#AllocationsConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.apps.AllocationsConfig" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/applications/#django.apps.AppConfig" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppConfig</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.apps.AllocationsConfig.default_auto_field">
+<span class="sig-name descname"><span class="pre">default_auto_field</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'django.db.models.BigAutoField'</span></em><a class="headerlink" href="#allocations.apps.AllocationsConfig.default_auto_field" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.apps.AllocationsConfig.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'allocations'</span></em><a class="headerlink" href="#allocations.apps.AllocationsConfig.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.apps.AllocationsConfig.verbose_name">
+<span class="sig-name descname"><span class="pre">verbose_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Allocation</span> <span class="pre">Management'</span></em><a class="headerlink" href="#allocations.apps.AllocationsConfig.verbose_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-allocations.models">
+<span id="allocations-models-module"></span><h2>allocations.models module<a class="headerlink" href="#module-allocations.models" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="allocations.models.Allocation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allocations.models.</span></span><span class="sig-name descname"><span class="pre">Allocation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/models.html#Allocation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.models.Allocation" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/instances/#django.db.models.Model" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a></p>
+<p>The <cite>Allocation</cite> model represents the assignment of a demonstrator to a specific class session. 
+It includes information about the session, the assigned demonstrator, and whether the allocation 
+has been approved.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>demonstrator</strong> (<cite>Demonstrator</cite>, optional) -- A foreign key linking the allocation to a <cite>Demonstrator</cite>. This field can be null.</p></li>
+<li><p><strong>class_session</strong> (<cite>ModuleSession</cite>) -- A foreign key linking the allocation to a <cite>ModuleSession</cite> from the <cite>classes</cite> app.</p></li>
+<li><p><strong>approved</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) -- A boolean field indicating whether the allocation has been approved.</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><em>BigAutoField</em></a>) -- Primary key: ID</p></li>
+</ul>
+</dd>
+</dl>
+<p>Reverse relationships:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocationdomain</strong> (Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="#allocations.models.AllocationDomain" title="allocations.models.AllocationDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">AllocationDomain</span></code></a>) -- All Valid Demonstrators of this allocation (related name of <a class="reference internal" href="#allocations.models.AllocationDomain.allocation" title="allocations.models.AllocationDomain.allocation"><code class="xref py py-attr docutils literal notranslate"><span class="pre">allocation</span></code></a>)</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="allocations.models.Allocation.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#allocations.models.Allocation.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.ObjectDoesNotExist" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="allocations.models.Allocation.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#allocations.models.Allocation.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.MultipleObjectsReturned" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.models.Allocation.allocationdomain_set">
+<span class="sig-name descname"><span class="pre">allocationdomain_set</span></span><a class="headerlink" href="#allocations.models.Allocation.allocationdomain_set" title="Link to this definition"></a></dt>
+<dd><p>Type: Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="#allocations.models.AllocationDomain" title="allocations.models.AllocationDomain"><code class="xref py py-class docutils literal notranslate"><span class="pre">AllocationDomain</span></code></a></p>
+<p>All Valid Demonstrators of this allocation (related name of <a class="reference internal" href="#allocations.models.AllocationDomain.allocation" title="allocations.models.AllocationDomain.allocation"><code class="xref py py-attr docutils literal notranslate"><span class="pre">allocation</span></code></a>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.models.Allocation.approved">
+<span class="sig-name descname"><span class="pre">approved</span></span><a class="headerlink" href="#allocations.models.Allocation.approved" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BooleanField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BooleanField</span></code></a></p>
+<p>Approved</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.models.Allocation.class_session">
+<span class="sig-name descname"><span class="pre">class_session</span></span><a class="headerlink" href="#allocations.models.Allocation.class_session" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> to <a class="reference internal" href="classes.html#classes.models.ModuleSession" title="classes.models.ModuleSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModuleSession</span></code></a></p>
+<p>Class session (related name: <code class="xref py py-attr docutils literal notranslate"><span class="pre">allocation</span></code>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.models.Allocation.class_session_id">
+<span class="sig-name descname"><span class="pre">class_session_id</span></span><a class="headerlink" href="#allocations.models.Allocation.class_session_id" title="Link to this definition"></a></dt>
+<dd><p>Internal field, use <a class="reference internal" href="#allocations.models.Allocation.class_session" title="allocations.models.Allocation.class_session"><code class="xref py py-class docutils literal notranslate"><span class="pre">class_session</span></code></a> instead.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.models.Allocation.demonstrator">
+<span class="sig-name descname"><span class="pre">demonstrator</span></span><a class="headerlink" href="#allocations.models.Allocation.demonstrator" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> to <a class="reference internal" href="users.html#users.models.Demonstrator" title="users.models.Demonstrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Demonstrator</span></code></a></p>
+<p>Demonstrator (related name: <code class="xref py py-attr docutils literal notranslate"><span class="pre">allocation</span></code>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.models.Allocation.demonstrator_id">
+<span class="sig-name descname"><span class="pre">demonstrator_id</span></span><a class="headerlink" href="#allocations.models.Allocation.demonstrator_id" title="Link to this definition"></a></dt>
+<dd><p>Internal field, use <a class="reference internal" href="#allocations.models.Allocation.demonstrator" title="allocations.models.Allocation.demonstrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">demonstrator</span></code></a> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.models.Allocation.ensure_not_approved_if_no_demonstrator">
+<span class="sig-name descname"><span class="pre">ensure_not_approved_if_no_demonstrator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/models.html#Allocation.ensure_not_approved_if_no_demonstrator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.models.Allocation.ensure_not_approved_if_no_demonstrator" title="Link to this definition"></a></dt>
+<dd><p>Ensure that the allocation is not marked as approved if no demonstrator is assigned.</p>
+<p>If the <cite>demonstrator</cite> field is <cite>None</cite>, this method will set <cite>approved</cite> to <cite>False</cite> and save the model instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.models.Allocation.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#allocations.models.Allocation.id" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BigAutoField</span></code></a></p>
+<p>Primary key: ID</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.models.Allocation.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#allocations.models.Allocation.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="allocations.models.AllocationDomain">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allocations.models.</span></span><span class="sig-name descname"><span class="pre">AllocationDomain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/models.html#AllocationDomain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.models.AllocationDomain" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/instances/#django.db.models.Model" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a></p>
+<p>The <cite>AllocationDomain</cite> model represents the set of demonstrators that are considered valid for a particular 
+allocation based on various constraint levels. These constraint levels include hard constraints, primary soft 
+constraints, secondary soft constraints, and tertiary soft constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allocation</strong> (<cite>Allocation</cite>) -- A foreign key linking the allocation domain to an <cite>Allocation</cite>.</p></li>
+<li><p><strong>hard_constraint_demonstrators</strong> (<em>ManyToManyField</em>) -- A many-to-many relationship to <cite>Demonstrator</cite> for those who meet the hard constraints.</p></li>
+<li><p><strong>primary_soft_constraint_demonstrators</strong> (<em>ManyToManyField</em>) -- A many-to-many relationship to <cite>Demonstrator</cite> for those who meet the primary soft constraints.</p></li>
+<li><p><strong>secondary_soft_constraint_demonstrators</strong> (<em>ManyToManyField</em>) -- A many-to-many relationship to <cite>Demonstrator</cite> for those who meet the secondary soft constraints.</p></li>
+<li><p><strong>tertiary_soft_constraint_demonstrators</strong> (<em>ManyToManyField</em>) -- A many-to-many relationship to <cite>Demonstrator</cite> for those who meet the tertiary soft constraints.</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><em>BigAutoField</em></a>) -- Primary key: ID</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="allocations.models.AllocationDomain.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#allocations.models.AllocationDomain.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.ObjectDoesNotExist" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="allocations.models.AllocationDomain.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#allocations.models.AllocationDomain.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.MultipleObjectsReturned" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.models.AllocationDomain.allocation">
+<span class="sig-name descname"><span class="pre">allocation</span></span><a class="headerlink" href="#allocations.models.AllocationDomain.allocation" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> to <a class="reference internal" href="#allocations.models.Allocation" title="allocations.models.Allocation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Allocation</span></code></a></p>
+<p>Allocation (related name: <code class="xref py py-attr docutils literal notranslate"><span class="pre">allocationdomain</span></code>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.models.AllocationDomain.allocation_id">
+<span class="sig-name descname"><span class="pre">allocation_id</span></span><a class="headerlink" href="#allocations.models.AllocationDomain.allocation_id" title="Link to this definition"></a></dt>
+<dd><p>Internal field, use <a class="reference internal" href="#allocations.models.AllocationDomain.allocation" title="allocations.models.AllocationDomain.allocation"><code class="xref py py-class docutils literal notranslate"><span class="pre">allocation</span></code></a> instead.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.models.AllocationDomain.hard_constraint_demonstrators">
+<span class="sig-name descname"><span class="pre">hard_constraint_demonstrators</span></span><a class="headerlink" href="#allocations.models.AllocationDomain.hard_constraint_demonstrators" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ManyToManyField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ManyToManyField</span></code></a> to <a class="reference internal" href="users.html#users.models.Demonstrator" title="users.models.Demonstrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Demonstrator</span></code></a></p>
+<p>Hard constraint demonstrators (related name: <a class="reference internal" href="users.html#users.models.Demonstrator.hard_constraint_demonstrators" title="users.models.Demonstrator.hard_constraint_demonstrators"><code class="xref py py-attr docutils literal notranslate"><span class="pre">hard_constraint_demonstrators</span></code></a>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.models.AllocationDomain.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#allocations.models.AllocationDomain.id" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BigAutoField</span></code></a></p>
+<p>Primary key: ID</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.models.AllocationDomain.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#allocations.models.AllocationDomain.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.models.AllocationDomain.primary_soft_constraint_demonstrators">
+<span class="sig-name descname"><span class="pre">primary_soft_constraint_demonstrators</span></span><a class="headerlink" href="#allocations.models.AllocationDomain.primary_soft_constraint_demonstrators" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ManyToManyField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ManyToManyField</span></code></a> to <a class="reference internal" href="users.html#users.models.Demonstrator" title="users.models.Demonstrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Demonstrator</span></code></a></p>
+<p>Primary soft constraint demonstrators (related name: <a class="reference internal" href="users.html#users.models.Demonstrator.primary_soft_constraint_demonstrators" title="users.models.Demonstrator.primary_soft_constraint_demonstrators"><code class="xref py py-attr docutils literal notranslate"><span class="pre">primary_soft_constraint_demonstrators</span></code></a>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.models.AllocationDomain.secondary_soft_constraint_demonstrators">
+<span class="sig-name descname"><span class="pre">secondary_soft_constraint_demonstrators</span></span><a class="headerlink" href="#allocations.models.AllocationDomain.secondary_soft_constraint_demonstrators" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ManyToManyField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ManyToManyField</span></code></a> to <a class="reference internal" href="users.html#users.models.Demonstrator" title="users.models.Demonstrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Demonstrator</span></code></a></p>
+<p>Secondary soft constraint demonstrators (related name: <a class="reference internal" href="users.html#users.models.Demonstrator.secondary_soft_constraint_demonstrators" title="users.models.Demonstrator.secondary_soft_constraint_demonstrators"><code class="xref py py-attr docutils literal notranslate"><span class="pre">secondary_soft_constraint_demonstrators</span></code></a>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.models.AllocationDomain.tertiary_soft_constraint_demonstrators">
+<span class="sig-name descname"><span class="pre">tertiary_soft_constraint_demonstrators</span></span><a class="headerlink" href="#allocations.models.AllocationDomain.tertiary_soft_constraint_demonstrators" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ManyToManyField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ManyToManyField</span></code></a> to <a class="reference internal" href="users.html#users.models.Demonstrator" title="users.models.Demonstrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Demonstrator</span></code></a></p>
+<p>Tertiary soft constraint demonstrators (related name: <a class="reference internal" href="users.html#users.models.Demonstrator.tertiary_soft_constraint_demonstrators" title="users.models.Demonstrator.tertiary_soft_constraint_demonstrators"><code class="xref py py-attr docutils literal notranslate"><span class="pre">tertiary_soft_constraint_demonstrators</span></code></a>)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="allocations.models.reset_allocation_approved_status">
+<span class="sig-prename descclassname"><span class="pre">allocations.models.</span></span><span class="sig-name descname"><span class="pre">reset_allocation_approved_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/models.html#reset_allocation_approved_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.models.reset_allocation_approved_status" title="Link to this definition"></a></dt>
+<dd><p>Signal receiver that resets the approval status of allocations when a demonstrator is deleted.</p>
+<p>This function listens for the <cite>post_delete</cite> signal from the <cite>Demonstrator</cite> model and updates any <cite>Allocation</cite> 
+instances that were linked to the deleted <cite>Demonstrator</cite>, setting their <cite>approved</cite> status to <cite>False</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sender</strong> (<em>Model</em>) -- The model class that sent the signal, in this case, <cite>Demonstrator</cite>.</p></li>
+<li><p><strong>instance</strong> (<cite>Demonstrator</cite>) -- The actual instance of <cite>Demonstrator</cite> that was deleted.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) -- Additional arguments passed to the signal handler.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-allocations">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-allocations" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="admin.html" class="btn btn-neutral float-left" title="admin package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="allocations.utils.html" class="btn btn-neutral float-right" title="allocations.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Manual &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Known Issues" href="known_issues.html" />
+    <link rel="prev" title="URL Endpoints" href="url_endpoint.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User Manual</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#launching-the-service">Launching the service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#admin-functionality">Admin functionality</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#user-management">User Management</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#admin-user-creation">Admin user creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#normal-user-creation">Normal user creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#editing-user-information">Editing user information</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deleting-user">Deleting user</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#class-management">Class Management</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#differences-between-modules-and-module-sessions">Differences between modules and module sessions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#creating-modules">Creating modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#editing-module-session-skill-requirements">Editing module session skill requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#creating-skills">Creating skills</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#allocation-management">Allocation Management</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#constraint-tiers">Constraint Tiers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ensuring-correct-allocation-slot-number">Ensuring correct allocation slot number</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#manually-allocating-demonstrators">Manually allocating demonstrators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#algorithmically-batch-allocating-demonstrators">Algorithmically batch allocating demonstrators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resetting-allocations">Resetting allocations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#regular-user-functionality">Regular user functionality</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#user-registration">User registration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user-login">User Login</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user-logout">User Logout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explaining-the-dashboard">Explaining the dashboard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#all-users">All users</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lecturers">Lecturers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demonstrators">Demonstrators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#managing-your-profile">Managing your profile</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#updating-your-availability">Updating your availability</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#updating-your-demonstrator-competencies">Updating your demonstrator competencies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#viewing-your-timetable">Viewing your timetable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lecturer-functionality">Lecturer functionality</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#viewing-your-classes">Viewing your classes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#editing-class-requirements">Editing class requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#demonstrator-functionality">Demonstrator functionality</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#viewing-your-allocations">Viewing your allocations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">User Manual</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/user_manual.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="user-manual">
+<span id="id1"></span><h1>User Manual<a class="headerlink" href="#user-manual" title="Link to this heading"></a></h1>
+<p>Welcome to the Demonstrator Timetabling Tool User Manual. This guide is designed to assist administrators, lecturers, and demonstrators in using the site effectively.</p>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id4">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#launching-the-service" id="id5">Launching the service</a></p></li>
+<li><p><a class="reference internal" href="#admin-functionality" id="id6">Admin functionality</a></p>
+<ul>
+<li><p><a class="reference internal" href="#user-management" id="id7">User Management</a></p>
+<ul>
+<li><p><a class="reference internal" href="#admin-user-creation" id="id8">Admin user creation</a></p></li>
+<li><p><a class="reference internal" href="#normal-user-creation" id="id9">Normal user creation</a></p></li>
+<li><p><a class="reference internal" href="#editing-user-information" id="id10">Editing user information</a></p></li>
+<li><p><a class="reference internal" href="#deleting-user" id="id11">Deleting user</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#class-management" id="id12">Class Management</a></p>
+<ul>
+<li><p><a class="reference internal" href="#differences-between-modules-and-module-sessions" id="id13">Differences between modules and module sessions</a></p></li>
+<li><p><a class="reference internal" href="#creating-modules" id="id14">Creating modules</a></p></li>
+<li><p><a class="reference internal" href="#editing-module-session-skill-requirements" id="id15">Editing module session skill requirements</a></p></li>
+<li><p><a class="reference internal" href="#creating-skills" id="id16">Creating skills</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#allocation-management" id="id17">Allocation Management</a></p>
+<ul>
+<li><p><a class="reference internal" href="#constraint-tiers" id="id18">Constraint Tiers</a></p></li>
+<li><p><a class="reference internal" href="#ensuring-correct-allocation-slot-number" id="id19">Ensuring correct allocation slot number</a></p></li>
+<li><p><a class="reference internal" href="#manually-allocating-demonstrators" id="id20">Manually allocating demonstrators</a></p></li>
+<li><p><a class="reference internal" href="#algorithmically-batch-allocating-demonstrators" id="id21">Algorithmically batch allocating demonstrators</a></p></li>
+<li><p><a class="reference internal" href="#resetting-allocations" id="id22">Resetting allocations</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#regular-user-functionality" id="id23">Regular user functionality</a></p>
+<ul>
+<li><p><a class="reference internal" href="#user-registration" id="id24">User registration</a></p></li>
+<li><p><a class="reference internal" href="#user-login" id="id25">User Login</a></p></li>
+<li><p><a class="reference internal" href="#user-logout" id="id26">User Logout</a></p></li>
+<li><p><a class="reference internal" href="#explaining-the-dashboard" id="id27">Explaining the dashboard</a></p>
+<ul>
+<li><p><a class="reference internal" href="#all-users" id="id28">All users</a></p></li>
+<li><p><a class="reference internal" href="#lecturers" id="id29">Lecturers</a></p></li>
+<li><p><a class="reference internal" href="#demonstrators" id="id30">Demonstrators</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#managing-your-profile" id="id31">Managing your profile</a></p>
+<ul>
+<li><p><a class="reference internal" href="#updating-your-availability" id="id32">Updating your availability</a></p></li>
+<li><p><a class="reference internal" href="#updating-your-demonstrator-competencies" id="id33">Updating your demonstrator competencies</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#viewing-your-timetable" id="id34">Viewing your timetable</a></p></li>
+<li><p><a class="reference internal" href="#lecturer-functionality" id="id35">Lecturer functionality</a></p>
+<ul>
+<li><p><a class="reference internal" href="#viewing-your-classes" id="id36">Viewing your classes</a></p></li>
+<li><p><a class="reference internal" href="#editing-class-requirements" id="id37">Editing class requirements</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#demonstrator-functionality" id="id38">Demonstrator functionality</a></p>
+<ul>
+<li><p><a class="reference internal" href="#viewing-your-allocations" id="id39">Viewing your allocations</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="introduction">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Introduction</a><a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>The Demonstrator Timetabling Tool is designed to streamline the scheduling and management of timetables for educational institutions. This guide covers the essential operations for all users of the system.</p>
+</section>
+<section id="launching-the-service">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Launching the service</a><a class="headerlink" href="#launching-the-service" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p><strong>Open your terminal or command prompt</strong>.</p>
+<p>Navigate to the root directory of your Django project. This is the directory that contains the <cite>manage.py</cite> file.</p>
+</li>
+<li><p><strong>Apply migrations</strong></p>
+<blockquote>
+<div><p>This can be done by running the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>migrate
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><strong>Run the server</strong></p>
+<blockquote>
+<div><p>This can be done by run the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>runserver
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="admin-functionality">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Admin functionality</a><a class="headerlink" href="#admin-functionality" title="Link to this heading"></a></h2>
+<p>The following functionality refers to functionality found at <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000/admin</span></code> on the development server.</p>
+<section id="user-management">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">User Management</a><a class="headerlink" href="#user-management" title="Link to this heading"></a></h3>
+<section id="admin-user-creation">
+<h4><a class="toc-backref" href="#id8" role="doc-backlink">Admin user creation</a><a class="headerlink" href="#admin-user-creation" title="Link to this heading"></a></h4>
+<section id="method-1-using-the-command-line-interface">
+<h5><strong>Method 1: Using the command line interface</strong><a class="headerlink" href="#method-1-using-the-command-line-interface" title="Link to this heading"></a></h5>
+<p><strong>Prerequisites</strong></p>
+<p>Before you can create an admin user, ensure that you have:</p>
+<ul class="simple">
+<li><p>The Django project set up and running.</p></li>
+<li><p>Applied all necessary migrations to your database.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can apply migrations by running the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>migrate
+</pre></div>
+</div>
+</div>
+<p><strong>Instructions</strong></p>
+<ol class="arabic">
+<li><p><strong>Open your terminal or command prompt</strong>.</p>
+<p>Navigate to the root directory of your Django project. This is the directory that contains the <cite>manage.py</cite> file.</p>
+</li>
+<li><p><strong>Run the `createsuperuser` command</strong>.</p>
+<p>In your terminal, type the following command and press Enter:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>createsuperuser
+</pre></div>
+</div>
+</li>
+<li><p><strong>Enter the required information</strong>.</p>
+<p>You will be prompted to enter the following details:</p>
+<ul class="simple">
+<li><p><strong>Username</strong>: Choose a username for the admin account.</p></li>
+<li><p><strong>Email address</strong>: Provide an email address for the admin user.</p></li>
+<li><p><strong>Password</strong>: Enter a password for the admin account. You will be asked to confirm it by typing it again.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The password must meet Django's password validation criteria. If it does not, you will be prompted to enter a valid password.</p>
+</div>
+</li>
+<li><p><strong>Complete the process</strong>.</p>
+<p>After you have entered the required information, the admin user will be created. You should see a confirmation message indicating that the user has been successfully created.</p>
+</li>
+<li><p><strong>Access the Django Admin interface</strong>.</p>
+<p>You can now log in to the Django Admin interface using the newly created admin account. To do this:</p>
+<ul>
+<li><p>Start the Django development server if it's not already running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>runserver
+</pre></div>
+</div>
+</li>
+<li><p>Open your web browser and go to <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000/admin/</span></code>.</p></li>
+<li><p>Log in with the username and password you created.</p></li>
+</ul>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Users created using this methods are not assigned any additional roles nor have a default blank user availability tinetable generated</p>
+</div>
+</section>
+</section>
+<section id="normal-user-creation">
+<h4><a class="toc-backref" href="#id9" role="doc-backlink">Normal user creation</a><a class="headerlink" href="#normal-user-creation" title="Link to this heading"></a></h4>
+<ol class="arabic">
+<li><p><strong>Accees the Django Admin interface</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Open your web browser and navigate to <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000/admin/</span></code></p></li>
+<li><p>Log in with a valid admin username and password</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Navigate to the User admin panel</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>This can be found in the Users link in the User Management section</p></li>
+<li><p>This can also be access through <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000/admin/users/user/</span></code></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Create a new user</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The button for this functionality can be found on the top right of the page.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Enter the required and desired information</strong></p>
+<blockquote>
+<div><p><strong>Required information</strong></p>
+<ul class="simple">
+<li><p><strong>Username</strong></p></li>
+<li><p><strong>Password</strong></p></li>
+<li><p><strong>First Name</strong></p></li>
+<li><p><strong>Last Name</strong></p></li>
+<li><p><strong>Email</strong></p></li>
+</ul>
+<p>Username and email have to be unique.</p>
+<p><strong>Optional selection</strong></p>
+<ul class="simple">
+<li><p>You may select the staff status alongside the superuser status to create a new admin user.</p></li>
+<li><p>You may select the lecturer and demonstrators role to add those roles to the user.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Lecturers created with this method will not have a department assigned to them.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Records of the user will be added on the Lecturer and Demonstrator admin page.</p>
+</div>
+</div></blockquote>
+</li>
+<li><p><strong>Complete the form</strong></p>
+<blockquote>
+<div><p>Once you are satisfied with the form, click one of the save options at the bottom (depending on your needs) to complete process</p>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="editing-user-information">
+<h4><a class="toc-backref" href="#id10" role="doc-backlink">Editing user information</a><a class="headerlink" href="#editing-user-information" title="Link to this heading"></a></h4>
+<section id="editing-user-information-name-email-password">
+<h5>Editing User Information (Name, Email, Password)<a class="headerlink" href="#editing-user-information-name-email-password" title="Link to this heading"></a></h5>
+<p>To edit user information such as name, email, or password, follow these steps:</p>
+<ol class="arabic simple">
+<li><p><strong>Log in to the Admin Interface</strong>:</p>
+<ul class="simple">
+<li><p>Open your web browser and navigate to the Django Admin interface at <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000/admin/</span></code>.</p></li>
+<li><p>Log in using your admin credentials.</p></li>
+</ul>
+</li>
+<li><p><strong>Navigate to Users</strong>:</p>
+<ul class="simple">
+<li><p>In the admin panel, click on the <strong>Users</strong> section to view the list of registered users.</p></li>
+</ul>
+</li>
+<li><p><strong>Select the User to Edit</strong>:</p>
+<ul class="simple">
+<li><p>Click on the username of the user whose information you want to edit.</p></li>
+</ul>
+</li>
+<li><p><strong>Edit User Details</strong>:</p>
+<ul class="simple">
+<li><p>Update the user's <strong>name</strong>, <strong>email address</strong>, or <strong>password</strong> in the respective fields.</p></li>
+</ul>
+</li>
+<li><p><strong>Save Changes</strong>:</p>
+<ul class="simple">
+<li><p>Once you've made the necessary changes, click the <strong>Save</strong> button at the bottom of the page to apply the updates.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="creating-user-availability-slots">
+<h5>Creating User Availability slots<a class="headerlink" href="#creating-user-availability-slots" title="Link to this heading"></a></h5>
+<p>In order for the user to have a timetable for which to assign them allocations and schedule to be reflected on the user site, their user availability should be generated. Normally, it should be generated on user creation but in case it doesn't, here's how to create a user availability timetable.</p>
+<ol class="arabic">
+<li><p><strong>Navigate to the User section</strong></p></li>
+<li><p><strong>Select the user(s)</strong></p></li>
+<li><p><strong>Create the user availability</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>With the user selected, select the <strong>Create/Update User Availability</strong> in the action dropdown and press go.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="changing-lecturer-department">
+<h5>Changing Lecturer Department<a class="headerlink" href="#changing-lecturer-department" title="Link to this heading"></a></h5>
+<p>To change the department of a lecturer, follow these steps:</p>
+<ol class="arabic simple">
+<li><p><strong>Access the Lecturer's Profile</strong>:
+- Navigate to the <strong>Lecturers</strong> section in the admin panel.</p></li>
+<li><p><strong>Edit the Lecturer's Department</strong>:
+- Select the lecturer whose department you want to change.
+- In the lecturer's profile, locate the <strong>Department</strong> field.
+- Write the name of lecturer's department</p></li>
+<li><p><strong>Save the Changes</strong>:
+- After updating the department, click <strong>Save</strong> to confirm the changes.</p></li>
+</ol>
+</section>
+<section id="changing-user-roles">
+<h5>Changing User Roles<a class="headerlink" href="#changing-user-roles" title="Link to this heading"></a></h5>
+<p>To change the roles assigned to a user:</p>
+<ol class="arabic simple">
+<li><p><strong>Open the User's Profile</strong>:
+- Go to the <strong>Users</strong> section in the admin interface.
+- Click on the username of the user whose role you wish to change.</p></li>
+<li><p><strong>Edit User Roles</strong>:
+- Scroll down to the <strong>Roles</strong> section within the user's profile.
+- Add or remove roles as needed by checking or unchecking the appropriate boxes.</p></li>
+<li><p><strong>Save the Role Changes</strong>:
+- Click the <strong>Save</strong> button to apply the new roles to the user.</p></li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is desired functionality. However, errors in code do not properly propagate the removal of roles.</p>
+</div>
+</section>
+<section id="removing-roles-by-deleting-records-workaround">
+<h5>Removing Roles by Deleting Records (Workaround)<a class="headerlink" href="#removing-roles-by-deleting-records-workaround" title="Link to this heading"></a></h5>
+<p>In some cases, you may need to remove a user's role as a Lecturer or Demonstrator by deleting their records from the respective sections. This method effectively removes the user’s association with those roles.</p>
+<section id="deleting-a-lecturer-record">
+<h6>Deleting a Lecturer Record<a class="headerlink" href="#deleting-a-lecturer-record" title="Link to this heading"></a></h6>
+<p>To remove a user from the Lecturer role:</p>
+<ol class="arabic">
+<li><p><strong>Navigate to the Lecturers Section</strong>:</p>
+<ul class="simple">
+<li><p>In the admin panel, click on the <strong>Lecturers</strong> section to view all lecturer records.</p></li>
+</ul>
+</li>
+<li><p><strong>Select the Lecturer to Delete</strong>:</p>
+<ul class="simple">
+<li><p>Locate the lecturer(s) you wish to remove and click on the checkbox next their name</p></li>
+</ul>
+</li>
+<li><p><strong>Delete the Lecturer Record</strong>:</p>
+<ul class="simple">
+<li><p>With the lecturer(s) selected, select the <strong>Delete the selected lecturer</strong> option and press go.</p></li>
+<li><p>Confirm your choice</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Deleting the lecturer record will not be reflected in the User section. You will have to manually deselect that option for the record to be consistent.</p>
+</div>
+</li>
+</ol>
+</section>
+<section id="deleting-a-demonstrator-record">
+<h6>Deleting a Demonstrator Record<a class="headerlink" href="#deleting-a-demonstrator-record" title="Link to this heading"></a></h6>
+<p>To remove a user from the Demonstrator role:</p>
+<ol class="arabic">
+<li><p><strong>Navigate to the Demonstrators Section</strong>:</p>
+<ul class="simple">
+<li><p>In the admin panel, click on the <strong>Demonstrators</strong> section to view all Demonstrator records.</p></li>
+</ul>
+</li>
+<li><p><strong>Select the Demonstrator to Delete</strong>:</p>
+<ul class="simple">
+<li><p>Locate the demonstrator(s) you wish to remove and click on the checkbox next their name</p></li>
+</ul>
+</li>
+<li><p><strong>Delete the Demonstrator Record</strong>:</p>
+<ul class="simple">
+<li><p>With the demonstrator(s) selected, select the <strong>Delete the selected Demonstrator</strong> option and press go.</p></li>
+<li><p>Confirm your choice</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Deleting the demonstrator record will not be reflected in the User section. You will have to manually deselect that option for the record to be consistent.</p>
+</div>
+</li>
+</ol>
+</section>
+</section>
+</section>
+<section id="deleting-user">
+<h4><a class="toc-backref" href="#id11" role="doc-backlink">Deleting user</a><a class="headerlink" href="#deleting-user" title="Link to this heading"></a></h4>
+<p>To remove a user from the Demonstrator role:</p>
+<ol class="arabic simple">
+<li><p><strong>Navigate to the Users Section</strong>:</p>
+<ul class="simple">
+<li><p>In the admin panel, click on the <strong>Users</strong> section to view all User records.</p></li>
+</ul>
+</li>
+<li><p><strong>Select the User(s) to Delete</strong>:</p>
+<ul class="simple">
+<li><p>Locate the user(s) you wish to remove and click on the checkbox next their name</p></li>
+</ul>
+</li>
+<li><p><strong>Delete the User Record</strong>:</p>
+<ul class="simple">
+<li><p>With the user(s) selected, select the <strong>Delete the selected User</strong> option and press go.</p></li>
+<li><p>Confirm your choice</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="class-management">
+<h3><a class="toc-backref" href="#id12" role="doc-backlink">Class Management</a><a class="headerlink" href="#class-management" title="Link to this heading"></a></h3>
+<section id="differences-between-modules-and-module-sessions">
+<h4><a class="toc-backref" href="#id13" role="doc-backlink">Differences between modules and module sessions</a><a class="headerlink" href="#differences-between-modules-and-module-sessions" title="Link to this heading"></a></h4>
+<p>In the context of this system, module and module sessions refer to different responsibility within the application.
+A <strong>module</strong> represents an academic subject that is taught over the course of a semester. A <strong>module session</strong> represents a group of classes within the module with the same requirements in terms of number of demonstrators and their needed skills. For example, a lab requiring 2 demonstrator with a beginner level in Python.</p>
+</section>
+<section id="creating-modules">
+<h4><a class="toc-backref" href="#id14" role="doc-backlink">Creating modules</a><a class="headerlink" href="#creating-modules" title="Link to this heading"></a></h4>
+<ol class="arabic">
+<li><p><strong>Navigate to the Modules Section</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>After logging in, locate the <strong>Modules</strong> section in the Django admin panel.</p></li>
+<li><p>Click on <strong>Modules</strong> to view the list of existing modules.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Create a New Module</strong></p>
+<blockquote>
+<div><ul>
+<li><p><strong>Click the &quot;Add Module&quot; button</strong> (usually located at the top right of the Modules page) to create a new module.</p></li>
+<li><p>Fill in the following details for the new module:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Class Code</strong>: Enter a unique identifier for the module. This is typically a short code, such as &quot;CS101&quot;.</p></li>
+<li><p><strong>Name</strong>: Enter the full name of the module, such as &quot;Introduction to Computer Science&quot;.</p></li>
+<li><p><strong>Lecturer</strong>: Select the lecturer responsible for the module from the dropdown list. If no lecturer is assigned yet, you can leave this field blank.</p></li>
+<li><p><strong>Semester</strong>: Select the semester during which the module will be taught from the dropdown list.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ensure that the <strong>Class Code</strong> is unique across all modules. The system will not allow duplicate class codes.</p>
+</div>
+</li>
+<li><p><strong>Save the Module</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Once all the required fields are filled in, <strong>click the &quot;Save&quot; button</strong> at the bottom of the form to create the module.</p></li>
+<li><p>If the save is successful, you will be redirected to the list of modules, where the new module should now appear.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Assign Module Sessions (Optional)</strong></p>
+<blockquote>
+<div><ul>
+<li><p>After creating the module, you may want to add specific sessions (e.g., lectures, tutorials, labs) associated with the module.</p></li>
+<li><p>Navigate to the <strong>Module Sessions</strong> section in the admin panel and create sessions linked to your newly created module.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Session Type</strong>: Choose the type of session, such as Lecture, Tutorial, or Lab.</p></li>
+<li><p><strong>Required Demonstrators</strong>: Specify the number of demonstrators required for the session, if applicable.</p></li>
+<li><p><strong>Test Session</strong>: Indicate whether this session is a test session.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Save the session</strong> to link it to the module.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Create a Schedule for the Module Session (Optional)</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Find the object number of your module session (found at the top of the module session's detail page)</p></li>
+<li><p>Navigate to the <strong>Session Schedule</strong> section of the admin panel and create a session schedule linked to your newly created module session at the timeslot you require.</p></li>
+<li><p><strong>Save</strong> to save the record in the database</p></li>
+<li><p>Repeat as needed to fill the schedule as needed</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There cannot be duplicated scheduled slots within a module session. If you have two sessions happening concurrently with the similar requirement, a new module session must be created</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is a temporary solution. A proper method of creating a schedule will be created in the future.</p>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="editing-module-session-skill-requirements">
+<h4><a class="toc-backref" href="#id15" role="doc-backlink">Editing module session skill requirements</a><a class="headerlink" href="#editing-module-session-skill-requirements" title="Link to this heading"></a></h4>
+<p>This section is to change the skill required by a demonstrator for a module session.</p>
+<ol class="arabic">
+<li><p><strong>Navigate to the Requirement skill Section</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>After logging in, locate the <strong>Requirement Skill</strong> section in the Django admin panel.</p></li>
+<li><p>Click on <strong>Requirement Skill</strong> to view the list of existing requirement skill.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Create a New Requirement Skill</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Using the object number of your module session, create a requirement skill choosing the skill (include skill level) required by the demonstrator(s).</p></li>
+<li><p>If the new skill, you are looking is not present, see the instructions to creating a skill below.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><a href="#id2"><span class="problematic" id="id3">**</span></a>Save your changes</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Requirements skills are not reset upon creation of a new requirement. If requirements change, locate the requirements tied to the module session previous and delete by selecting it and delete using action <strong>Delete selected requirement skills</strong> at the top of the table</p>
+</div>
+</section>
+<section id="creating-skills">
+<h4><a class="toc-backref" href="#id16" role="doc-backlink">Creating skills</a><a class="headerlink" href="#creating-skills" title="Link to this heading"></a></h4>
+<ol class="arabic">
+<li><p><strong>Navigate to Skills Section</strong></p>
+<blockquote>
+<div><p>This is seperate from the Requirement Skill section</p>
+</div></blockquote>
+</li>
+<li><p><strong>Create the skill</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Click the button on the top right of the page.</p></li>
+<li><p>Write of the skill you wish to add.</p></li>
+<li><p>Save</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When creating a skill, three versions of the skill is created with one for each of the skill levels (Beginner, Intermediate, Expert)</p>
+</div>
+</section>
+</section>
+<section id="allocation-management">
+<h3><a class="toc-backref" href="#id17" role="doc-backlink">Allocation Management</a><a class="headerlink" href="#allocation-management" title="Link to this heading"></a></h3>
+<section id="constraint-tiers">
+<h4><a class="toc-backref" href="#id18" role="doc-backlink">Constraint Tiers</a><a class="headerlink" href="#constraint-tiers" title="Link to this heading"></a></h4>
+<p>The allocation system uses a system of constraint tiers to improve allocations.</p>
+<section id="hard-constraints">
+<h5>Hard Constraints<a class="headerlink" href="#hard-constraints" title="Link to this heading"></a></h5>
+<p>Hard constraints are the most stringent rules that must be strictly followed during the allocation process. If any hard constraint is violated, the allocation is considered invalid.</p>
+<ul class="simple">
+<li><p><strong>No Double Booking</strong>: Ensures that a demonstrator is not scheduled for more than one session at the same time.</p></li>
+<li><p><strong>Availability</strong>: Verifies that the demonstrator is available during the timeslot of the session.</p></li>
+<li><p><strong>Unapproved Allocations</strong>: Ensures that the allocation has not been previously approved and locked.</p></li>
+</ul>
+<p>These constraints are non-negotiable and are enforced first during the allocation process to eliminate any demonstrators who cannot meet these basic requirements.</p>
+</section>
+<section id="primary-soft-constraints">
+<h5>Primary Soft Constraints<a class="headerlink" href="#primary-soft-constraints" title="Link to this heading"></a></h5>
+<p>Primary soft constraints are less rigid than hard constraints but are still considered highly important. They aim to ensure a minimum acceptable standard for the allocation. If these constraints are not met, the allocation is not ideal but may still be considered depending on the availability of alternatives.</p>
+<ul class="simple">
+<li><p><strong>Minimum Demonstrator Count</strong>: Ensures that a session has at least half of the required number of demonstrators.</p></li>
+<li><p><strong>Beginner Skill Level</strong>: Verifies that the demonstrators have at least a basic (beginner) level of the skills required for the session.</p></li>
+</ul>
+</section>
+<section id="secondary-soft-constraints">
+<h5>Secondary Soft Constraints<a class="headerlink" href="#secondary-soft-constraints" title="Link to this heading"></a></h5>
+<p>Secondary soft constraints are the next level of flexibility, focusing on optimizing the allocation once the primary constraints have been satisfied. These constraints aim for a better fit but are not critical to the success of the session.</p>
+<ul class="simple">
+<li><p><strong>Exact Demonstrator Count</strong>: Ensures that the session has the exact number of demonstrators required.</p></li>
+<li><p><strong>Required Skill Level or Higher</strong>: Ensures that the demonstrators meet or exceed the required skill level for the session.</p></li>
+</ul>
+</section>
+</section>
+<section id="ensuring-correct-allocation-slot-number">
+<h4><a class="toc-backref" href="#id19" role="doc-backlink">Ensuring correct allocation slot number</a><a class="headerlink" href="#ensuring-correct-allocation-slot-number" title="Link to this heading"></a></h4>
+<p>While the system should ensure that correct number of allocation slots are created when change the number of demonstrators is changed in the module session page, here are the steps to ensure this is correct.</p>
+<ol class="arabic">
+<li><p><strong>Navigate to the Module Session admin section</strong></p></li>
+<li><p><strong>Select the module session for which you wish to ensure</strong></p>
+<blockquote>
+<div><p>You may ensure for all module sessions by checking the select all box at the top of the table.</p>
+</div></blockquote>
+</li>
+<li><p><strong>Ensure the allocation slots</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Within the actions selection at the top, select the <strong>Ensure Correct Allocation</strong> options and press go</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the case, where there are most allocation slots than required, the last one will be removed.</p>
+</div>
+</section>
+<section id="manually-allocating-demonstrators">
+<h4><a class="toc-backref" href="#id20" role="doc-backlink">Manually allocating demonstrators</a><a class="headerlink" href="#manually-allocating-demonstrators" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Navigate to the Allocation Section admin section</strong></p></li>
+<li><p><strong>Select the allocation slot you wish change</strong></p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A search functionality is currently missing and will be implemented in the future.</p>
+</div>
+<ol class="arabic simple" start="3">
+<li><p><strong>Select the demonstrator you wish to assign</strong></p></li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>They are correctly not checks ensuring that a demonstrator assign manually will meet the requirements needs in terms of availability and skill.</p>
+</div>
+<ol class="arabic simple" start="4">
+<li><p><strong>Check approved if satisfied and save</strong></p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Selecting the approved check prevents the demonstrator from being changed if it is batch selected for automatic allocation.</p>
+</div>
+</section>
+<section id="algorithmically-batch-allocating-demonstrators">
+<h4><a class="toc-backref" href="#id21" role="doc-backlink">Algorithmically batch allocating demonstrators</a><a class="headerlink" href="#algorithmically-batch-allocating-demonstrators" title="Link to this heading"></a></h4>
+<ol class="arabic">
+<li><p><strong>Select the allocation(s) for which you wish to assign a demonstrator.</strong></p></li>
+<li><p><strong>Allocate the demonstrator automatically</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Within the actions dropdown at top, select the <strong>Automatically assign demonstrators</strong> option and press go</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Depending on the number of demonstrators within the system and the number of allocations you have selected to be allocate, this may take a while. Please do not close the page as the process in ongoing.</p>
+</div>
+<ol class="arabic" start="3">
+<li><p><strong>Try again with a smaller number of slots (Optional)</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If the process fails with all the selected allocations, the system wasn't able to find a fitting match for all allocations slots.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the process fails with only one allocation slot selected, there are no fitting demonstrators in the database meeting the minimum hard requirements</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are currently no indications of the progress of the allocation process expect a small buffer in the tab icon. Furthermore, there are no indications of failures. This will be fixed in a future version.</p>
+</div>
+</section>
+<section id="resetting-allocations">
+<h4><a class="toc-backref" href="#id22" role="doc-backlink">Resetting allocations</a><a class="headerlink" href="#resetting-allocations" title="Link to this heading"></a></h4>
+<ol class="arabic">
+<li><p><strong>Select the allocation(s) for which you wish to remove the demonstrator</strong></p></li>
+<li><p><strong>Reset the allocation</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Within the action dropdown at the top, select the <strong>Unallocate demonstrators</strong> option and press go</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</section>
+</section>
+</section>
+<section id="regular-user-functionality">
+<h2><a class="toc-backref" href="#id23" role="doc-backlink">Regular user functionality</a><a class="headerlink" href="#regular-user-functionality" title="Link to this heading"></a></h2>
+<p>The following functionality refers to functionality found at <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000/</span></code> on the development server.</p>
+<section id="user-registration">
+<h3><a class="toc-backref" href="#id24" role="doc-backlink">User registration</a><a class="headerlink" href="#user-registration" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p><strong>Navigate to the registration page</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>This can be done going to the login page (url: <code class="docutils literal notranslate"><span class="pre">/login</span></code>) and pressing register or by going to the url: <code class="docutils literal notranslate"><span class="pre">/register</span></code></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Fill in the form</strong></p></li>
+<li><p><strong>Press register</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If you are successful, you will be redirected to your dashboard</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are currently no messages when there is an issue with the form (i.e. invalid password, email or username are already existing)</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>There is a major issue in the user creation and authentication process wherein the user will be created in the database despite successfully reaching the dashboard. This means none of the changes they make in their profile are saved and the user is unable to log back in once they log out. Furthermore, users created using the <strong>createsuperuser</strong> are inconsistently able to login using this form. A workaround is to log in using the admin site and then navigate to <code class="docutils literal notranslate"><span class="pre">/dashboard</span></code></p>
+</div>
+</section>
+<section id="user-login">
+<h3><a class="toc-backref" href="#id25" role="doc-backlink">User Login</a><a class="headerlink" href="#user-login" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p><strong>Navigate to the login page</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>You should be directed to the login page if you access the user site if you are logged in.</p></li>
+<li><p>You may access the site directly on <code class="docutils literal notranslate"><span class="pre">/login</span></code></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Enter your credentials</strong></p></li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>There is currently an issue where users not created using the <strong>createsuperuser</strong> method described in the admin section are unable to login.</p>
+</div>
+</section>
+<section id="user-logout">
+<h3><a class="toc-backref" href="#id26" role="doc-backlink">User Logout</a><a class="headerlink" href="#user-logout" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Click the log out button at the top right of the page</strong></p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is currently no confirmation dialog. Be careful when navigating near that button.</p>
+</div>
+</section>
+<section id="explaining-the-dashboard">
+<h3><a class="toc-backref" href="#id27" role="doc-backlink">Explaining the dashboard</a><a class="headerlink" href="#explaining-the-dashboard" title="Link to this heading"></a></h3>
+<p>Depending on your role(s), you will be presented with options on your dashboard.</p>
+<section id="all-users">
+<h4><a class="toc-backref" href="#id28" role="doc-backlink">All users</a><a class="headerlink" href="#all-users" title="Link to this heading"></a></h4>
+<p>All users will have access to their profile (found on <strong>My Profile</strong> on the menu bar) and their timetable <strong>My Timetable</strong>.</p>
+</section>
+<section id="lecturers">
+<h4><a class="toc-backref" href="#id29" role="doc-backlink">Lecturers</a><a class="headerlink" href="#lecturers" title="Link to this heading"></a></h4>
+<p>Lecturers will have access to the list of classes for which they are responsible on <strong>My Classes</strong></p>
+</section>
+<section id="demonstrators">
+<h4><a class="toc-backref" href="#id30" role="doc-backlink">Demonstrators</a><a class="headerlink" href="#demonstrators" title="Link to this heading"></a></h4>
+<p>Demonstrators will have access to the list of module sessions for which they have been allocated on <strong>My Allocations</strong></p>
+</section>
+</section>
+<section id="managing-your-profile">
+<h3><a class="toc-backref" href="#id31" role="doc-backlink">Managing your profile</a><a class="headerlink" href="#managing-your-profile" title="Link to this heading"></a></h3>
+<p>Your profile is seperated into 3 different forms</p>
+<p>1. User information form which include name and email address.
+.. note:: There is an issue where changes to your name and email address are not saved.</p>
+<p>2. Availability form which presents as a timetable with green boxes for available and red for not available.
+.. note:: If the boxes present as white, the system hasn't correctly created a blank timetable for you. Create your availability using the method described in the admin section.</p>
+<p>3. Competencies which presents as list of skills you are competent in.
+.. note:: This is only viewable by demonstrators.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>These are three seperate forms and pressing save in one of the section will not save changes in the other sections.</p>
+</div>
+<section id="updating-your-availability">
+<h4><a class="toc-backref" href="#id32" role="doc-backlink">Updating your availability</a><a class="headerlink" href="#updating-your-availability" title="Link to this heading"></a></h4>
+<ol class="arabic">
+<li><p><strong>Arrange your availability as desired</strong></p>
+<blockquote>
+<div><p>You can toggle your availability from available to not available and vice versa but clicking on the cell. May require double clicking.</p>
+</div></blockquote>
+</li>
+<li><p><strong>Save</strong></p>
+<blockquote>
+<div><p>Your changes are only saved if you press the save availability button.</p>
+</div></blockquote>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The system does not verify whether a change from not available to available is valid. You may still be assigned as a lecturer or demonstrator during that timeslot.</p>
+</div>
+</section>
+<section id="updating-your-demonstrator-competencies">
+<h4><a class="toc-backref" href="#id33" role="doc-backlink">Updating your demonstrator competencies</a><a class="headerlink" href="#updating-your-demonstrator-competencies" title="Link to this heading"></a></h4>
+<ol class="arabic">
+<li><p><strong>Click on the Edit Competencies button</strong></p>
+<blockquote>
+<div><p>This will show a list of all skills registered in the database.</p>
+</div></blockquote>
+</li>
+<li><p><strong>Select all skills you are competent at</strong></p>
+<blockquote>
+<div><p>Select the skill at the highest level of competency you are at. You may select lower levels but this is unnecessary.</p>
+</div></blockquote>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You must selected all skills including the skills which have been previously saved. Failure to do so will remove these skills from your competency list.</p>
+</div>
+<ol class="arabic" start="3">
+<li><p><strong>Save</strong></p>
+<blockquote>
+<div><p>Your changes are only saved if you press the save competencies button.</p>
+</div></blockquote>
+</li>
+</ol>
+</section>
+</section>
+<section id="viewing-your-timetable">
+<h3><a class="toc-backref" href="#id34" role="doc-backlink">Viewing your timetable</a><a class="headerlink" href="#viewing-your-timetable" title="Link to this heading"></a></h3>
+<p>Your timetable with be displayed from <strong>My Timetable</strong> on the dashboard or on <code class="docutils literal notranslate"><span class="pre">/timetable</span></code>.
+This will show all classes you are responsible for as a lecturer and demonstrator.
+If there are any scheduling conflict, the timeslot will display as red with the message &quot;Scheduling conflict. Contact admin&quot;.
+Your availability will not be reflected here.</p>
+</section>
+<section id="lecturer-functionality">
+<h3><a class="toc-backref" href="#id35" role="doc-backlink">Lecturer functionality</a><a class="headerlink" href="#lecturer-functionality" title="Link to this heading"></a></h3>
+<section id="viewing-your-classes">
+<h4><a class="toc-backref" href="#id36" role="doc-backlink">Viewing your classes</a><a class="headerlink" href="#viewing-your-classes" title="Link to this heading"></a></h4>
+<p>Your modules will be displayed as a list from <strong>My Classes</strong> on the dashboard or on <code class="docutils literal notranslate"><span class="pre">/my_classes</span></code>
+You may click on <strong>See class details</strong> to view more infomation on that module.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is an issue where the session type is not properly displayed on the class detail page. It will be display if you click the edit button.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is currently not possible for the lecturer to alter the schedule of the module.</p>
+</div>
+</section>
+<section id="editing-class-requirements">
+<h4><a class="toc-backref" href="#id37" role="doc-backlink">Editing class requirements</a><a class="headerlink" href="#editing-class-requirements" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Navigate to the module you wish to alter</strong></p></li>
+<li><p><strong>Navigate to the edit page by clicking on the button corresponding to the module session for which you wish change requirements</strong></p></li>
+<li><p><strong>Select the number of demonstrators you require</strong></p></li>
+</ol>
+<p>4. <strong>Select the skills you wish your demonstrators to have from the list</strong>
+.. note:: This page is currently missing a search functionality.</p>
+<ol class="arabic" start="5">
+<li><p><strong>Add a new skill (Optional)</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If the skill you require is not present, click the add skill button, fill the form with the name of the skill you require and press save.</p></li>
+<li><p>The new skill will now be found on the list. You must select it to add it to your requirements.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><dl class="simple">
+<dt><strong>Save your changes</strong></dt><dd><ul class="simple">
+<li><p>You will now be redirected to the module page.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</section>
+</section>
+<section id="demonstrator-functionality">
+<h3><a class="toc-backref" href="#id38" role="doc-backlink">Demonstrator functionality</a><a class="headerlink" href="#demonstrator-functionality" title="Link to this heading"></a></h3>
+<section id="viewing-your-allocations">
+<h4><a class="toc-backref" href="#id39" role="doc-backlink">Viewing your allocations</a><a class="headerlink" href="#viewing-your-allocations" title="Link to this heading"></a></h4>
+<p>Your allocations will be displayed on <strong>My Allocations</strong> from the dashboard or by navigating to <code class="docutils literal notranslate"><span class="pre">/my_allocations</span></code>
+This will display all module sessions for which you have been assigned along with the skills required by that session.</p>
+<p>Further details can be found by clicking the details button.</p>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="url_endpoint.html" class="btn btn-neutral float-left" title="URL Endpoints" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="known_issues.html" class="btn btn-neutral float-right" title="Known Issues" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

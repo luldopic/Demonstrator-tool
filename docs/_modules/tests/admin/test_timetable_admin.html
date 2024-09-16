@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.admin.test_timetable_admin &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tests.admin.test_timetable_admin</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tests.admin.test_timetable_admin</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span><span class="p">,</span> <span class="n">RequestFactory</span>
+<span class="kn">from</span> <span class="nn">django.contrib.admin.sites</span> <span class="kn">import</span> <span class="n">AdminSite</span>
+<span class="kn">from</span> <span class="nn">timetable.models</span> <span class="kn">import</span> <span class="n">Timeslot</span><span class="p">,</span> <span class="n">Semester</span>
+<span class="kn">from</span> <span class="nn">classes.models</span> <span class="kn">import</span> <span class="n">UserAvailability</span>
+<span class="kn">from</span> <span class="nn">users.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">django.contrib.messages.storage.fallback</span> <span class="kn">import</span> <span class="n">FallbackStorage</span>
+<span class="kn">from</span> <span class="nn">django.contrib.sessions.middleware</span> <span class="kn">import</span> <span class="n">SessionMiddleware</span>
+<span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">Mock</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">timetable.admin</span> <span class="kn">import</span> <span class="n">SemesterAdmin</span><span class="p">,</span> <span class="n">TimeslotAdmin</span><span class="p">,</span> <span class="n">UserAvailabilityAdmin</span>
+
+<div class="viewcode-block" id="SemesterAdminTest">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_timetable_admin.SemesterAdminTest">[docs]</a>
+<span class="k">class</span> <span class="nc">SemesterAdminTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `SemesterAdminTest` class contains test cases for the `SemesterAdmin` class in the Django admin interface.</span>
+
+<span class="sd">    :param setUp: Initializes the test environment, including creating instances of `SemesterAdmin` and `Semester`.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_search_fields: Tests that the search fields for the `SemesterAdmin` class are correctly configured.</span>
+<span class="sd">    :type test_search_fields: Method</span>
+<span class="sd">    :param test_list_display: Tests that the list display fields for the `SemesterAdmin` class are correctly configured.</span>
+<span class="sd">    :type test_list_display: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SemesterAdminTest.setUp">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_timetable_admin.SemesterAdminTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">AdminSite</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">semester_admin</span> <span class="o">=</span> <span class="n">SemesterAdmin</span><span class="p">(</span><span class="n">Semester</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">semester</span> <span class="o">=</span> <span class="n">Semester</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="s2">&quot;2023/2024&quot;</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SemesterAdminTest.test_search_fields">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_timetable_admin.SemesterAdminTest.test_search_fields">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_search_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">semester_admin</span><span class="o">.</span><span class="n">search_fields</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;semester&quot;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="SemesterAdminTest.test_list_display">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_timetable_admin.SemesterAdminTest.test_list_display">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_list_display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">semester_admin</span><span class="o">.</span><span class="n">list_display</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;semester&quot;</span><span class="p">])</span></div>
+</div>
+
+
+<div class="viewcode-block" id="TimeslotAdminTest">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_timetable_admin.TimeslotAdminTest">[docs]</a>
+<span class="k">class</span> <span class="nc">TimeslotAdminTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `TimeslotAdminTest` class contains test cases for the `TimeslotAdmin` class in the Django admin interface.</span>
+
+<span class="sd">    :param setUp: Initializes the test environment, including creating instances of `TimeslotAdmin` and `Timeslot`.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_list_display: Tests that the list display fields for the `TimeslotAdmin` class are correctly configured.</span>
+<span class="sd">    :type test_list_display: Method</span>
+<span class="sd">    :param test_ordering: Tests that the ordering fields for the `TimeslotAdmin` class are correctly configured.</span>
+<span class="sd">    :type test_ordering: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="TimeslotAdminTest.setUp">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_timetable_admin.TimeslotAdminTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">AdminSite</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeslot_admin</span> <span class="o">=</span> <span class="n">TimeslotAdmin</span><span class="p">(</span><span class="n">Timeslot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span> <span class="o">=</span> <span class="n">Timeslot</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="s2">&quot;08:00:00&quot;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s2">&quot;09:00:00&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TimeslotAdminTest.test_list_display">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_timetable_admin.TimeslotAdminTest.test_list_display">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_list_display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot_admin</span><span class="o">.</span><span class="n">list_display</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;start_time&quot;</span><span class="p">,</span> <span class="s2">&quot;end_time&quot;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="TimeslotAdminTest.test_ordering">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_timetable_admin.TimeslotAdminTest.test_ordering">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_ordering</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot_admin</span><span class="o">.</span><span class="n">ordering</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;start_time&quot;</span><span class="p">])</span></div>
+</div>
+
+
+<div class="viewcode-block" id="UserAvailabilityAdminTest">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_timetable_admin.UserAvailabilityAdminTest">[docs]</a>
+<span class="k">class</span> <span class="nc">UserAvailabilityAdminTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `UserAvailabilityAdminTest` class contains test cases for the `UserAvailabilityAdmin` class in the Django admin interface.</span>
+
+<span class="sd">    :param setUp: Initializes the test environment, including creating instances of `UserAvailabilityAdmin`, `User`, `Timeslot`, and `UserAvailability`.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param _mock_request: Mocks a request for testing purposes, including session and message middleware.</span>
+<span class="sd">    :type _mock_request: Method</span>
+<span class="sd">    :param test_list_display: Tests that the list display fields for the `UserAvailabilityAdmin` class are correctly configured.</span>
+<span class="sd">    :type test_list_display: Method</span>
+<span class="sd">    :param test_search_fields: Tests that the search fields for the `UserAvailabilityAdmin` class are correctly configured.</span>
+<span class="sd">    :type test_search_fields: Method</span>
+<span class="sd">    :param test_get_search_results: Tests the custom search results method to ensure it returns the correct results based on the search term.</span>
+<span class="sd">    :type test_get_search_results: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="UserAvailabilityAdminTest.setUp">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_timetable_admin.UserAvailabilityAdminTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">AdminSite</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_availability_admin</span> <span class="o">=</span> <span class="n">UserAvailabilityAdmin</span><span class="p">(</span><span class="n">UserAvailability</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">factory</span> <span class="o">=</span> <span class="n">RequestFactory</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span> <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;Test&quot;</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;User&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span> <span class="o">=</span> <span class="n">Timeslot</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="s2">&quot;08:00:00&quot;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s2">&quot;09:00:00&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_availability</span> <span class="o">=</span> <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="p">,</span> <span class="n">is_available</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_mock_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">factory</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/admin/&#39;</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span>
+
+        <span class="n">middleware</span> <span class="o">=</span> <span class="n">SessionMiddleware</span><span class="p">(</span><span class="n">Mock</span><span class="p">())</span>
+        <span class="n">middleware</span><span class="o">.</span><span class="n">process_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="n">messages</span> <span class="o">=</span> <span class="n">FallbackStorage</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;_messages&#39;</span><span class="p">,</span> <span class="n">messages</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">request</span>
+
+<div class="viewcode-block" id="UserAvailabilityAdminTest.test_list_display">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_timetable_admin.UserAvailabilityAdminTest.test_list_display">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_list_display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_availability_admin</span><span class="o">.</span><span class="n">list_display</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;get_user_name&quot;</span><span class="p">,</span> <span class="s2">&quot;get_timeslot&quot;</span><span class="p">,</span> <span class="s2">&quot;is_available&quot;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="UserAvailabilityAdminTest.test_search_fields">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_timetable_admin.UserAvailabilityAdminTest.test_search_fields">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_search_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_availability_admin</span><span class="o">.</span><span class="n">search_fields</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;user__first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;user__last_name&quot;</span><span class="p">,</span> <span class="s2">&quot;user__username&quot;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="UserAvailabilityAdminTest.test_get_search_results">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_timetable_admin.UserAvailabilityAdminTest.test_get_search_results">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_get_search_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">queryset</span> <span class="o">=</span> <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mock_request</span><span class="p">()</span>
+        <span class="n">search_term</span> <span class="o">=</span> <span class="s2">&quot;Test User&quot;</span>
+        <span class="n">results</span><span class="p">,</span> <span class="n">use_distinct</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_availability_admin</span><span class="o">.</span><span class="n">get_search_results</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">,</span> <span class="n">search_term</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_availability</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+
+        <span class="n">search_term</span> <span class="o">=</span> <span class="s2">&quot;Test User&quot;</span>
+        <span class="n">results</span><span class="p">,</span> <span class="n">use_distinct</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_availability_admin</span><span class="o">.</span><span class="n">get_search_results</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">,</span> <span class="n">search_term</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_availability</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

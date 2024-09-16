@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.utils package &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="tests.views package" href="tests.views.html" />
+    <link rel="prev" title="tests.models package" href="tests.models.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_issues.html">Known Issues</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API References</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="admin.html">admin package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.html">allocations package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html">classes package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demonstrator_timetabling_tool.html">demonstrator_timetabling_tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="tests.html">tests package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="tests.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html">tests.admin package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html">tests.allocation_eval package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html">tests.models package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">tests.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.views.html">tests.views package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#module-tests">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="timetable.html">timetable package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="users.html">users package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API References</a></li>
+          <li class="breadcrumb-item"><a href="tests.html">tests package</a></li>
+      <li class="breadcrumb-item active">tests.utils package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tests.utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tests-utils-package">
+<h1>tests.utils package<a class="headerlink" href="#tests-utils-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-tests.utils.test_allocation_manager">
+<span id="tests-utils-test-allocation-manager-module"></span><h2>tests.utils.test_allocation_manager module<a class="headerlink" href="#module-tests.utils.test_allocation_manager" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.utils.test_allocation_manager.AllocationManagerTests">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.utils.test_allocation_manager.</span></span><span class="sig-name descname"><span class="pre">AllocationManagerTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_allocation_manager.html#AllocationManagerTests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_allocation_manager.AllocationManagerTests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_allocation_manager.AllocationManagerTests.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_allocation_manager.html#AllocationManagerTests.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_allocation_manager.AllocationManagerTests.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_allocation_manager.AllocationManagerTests.tearDown">
+<span class="sig-name descname"><span class="pre">tearDown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_allocation_manager.html#AllocationManagerTests.tearDown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_allocation_manager.AllocationManagerTests.tearDown" title="Link to this definition"></a></dt>
+<dd><p>Hook method for deconstructing the test fixture after testing it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_allocation_manager.AllocationManagerTests.test_allocate_with_constraints">
+<span class="sig-name descname"><span class="pre">test_allocate_with_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_allocate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_allocation_manager.html#AllocationManagerTests.test_allocate_with_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_allocation_manager.AllocationManagerTests.test_allocate_with_constraints" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_allocation_manager.AllocationManagerTests.test_assign_demonstrators">
+<span class="sig-name descname"><span class="pre">test_assign_demonstrators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_backtracking</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_allocation_manager.html#AllocationManagerTests.test_assign_demonstrators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_allocation_manager.AllocationManagerTests.test_assign_demonstrators" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_allocation_manager.AllocationManagerTests.test_get_demonstrators_by_hard_constraints">
+<span class="sig-name descname"><span class="pre">test_get_demonstrators_by_hard_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mock2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mock3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_allocation_manager.html#AllocationManagerTests.test_get_demonstrators_by_hard_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_allocation_manager.AllocationManagerTests.test_get_demonstrators_by_hard_constraints" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_allocation_manager.AllocationManagerTests.test_get_demonstrators_by_primary_soft_constraints">
+<span class="sig-name descname"><span class="pre">test_get_demonstrators_by_primary_soft_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_primary_skill</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_allocation_manager.html#AllocationManagerTests.test_get_demonstrators_by_primary_soft_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_allocation_manager.AllocationManagerTests.test_get_demonstrators_by_primary_soft_constraints" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_allocation_manager.AllocationManagerTests.test_get_demonstrators_by_secondary_soft_constraints">
+<span class="sig-name descname"><span class="pre">test_get_demonstrators_by_secondary_soft_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_secondary_skill</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_allocation_manager.html#AllocationManagerTests.test_get_demonstrators_by_secondary_soft_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_allocation_manager.AllocationManagerTests.test_get_demonstrators_by_secondary_soft_constraints" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_allocation_manager.AllocationManagerTests.test_get_solution_domain">
+<span class="sig-name descname"><span class="pre">test_get_solution_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_hard</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mock_primary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mock_secondary</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_allocation_manager.html#AllocationManagerTests.test_get_solution_domain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_allocation_manager.AllocationManagerTests.test_get_solution_domain" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_allocation_manager.AllocationManagerTests.test_get_unallocated">
+<span class="sig-name descname"><span class="pre">test_get_unallocated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_allocation_manager.html#AllocationManagerTests.test_get_unallocated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_allocation_manager.AllocationManagerTests.test_get_unallocated" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-tests.utils.test_constraint_filter">
+<span id="tests-utils-test-constraint-filter-module"></span><h2>tests.utils.test_constraint_filter module<a class="headerlink" href="#module-tests.utils.test_constraint_filter" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_filter.ConstrantFilterQueryTests">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.utils.test_constraint_filter.</span></span><span class="sig-name descname"><span class="pre">ConstrantFilterQueryTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_filter.html#ConstrantFilterQueryTests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_filter.ConstrantFilterQueryTests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>ConstrantFilterQueryTests</cite> class contains test cases for the <cite>ConstrantFilterQuery</cite> utility class used in the Django application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment, including creating instances of <cite>User</cite>, <cite>Demonstrator</cite>, <cite>Timeslot</cite>, <cite>UserAvailability</cite>, <cite>Module</cite>, <cite>ModuleSession</cite>, <cite>Skill</cite>, <cite>RequirementSkill</cite>, <cite>Competency</cite>, and <cite>Allocation</cite>.</p></li>
+<li><p><strong>test_filter_allocations_by_hard_constraints</strong> (<em>Method</em>) -- Tests the <cite>filter_allocations_by_hard_constraints</cite> method to ensure it correctly filters allocations based on hard constraints.</p></li>
+<li><p><strong>test_filter_allocation_by_primary_soft_constraints</strong> (<em>Method</em>) -- Tests the <cite>filter_allocation_by_primary_soft_constraints</cite> method to ensure it correctly filters allocations based on primary soft constraints.</p></li>
+<li><p><strong>test_filter_allocation_by_secondary_soft_constraints</strong> (<em>Method</em>) -- Tests the <cite>filter_allocation_by_secondary_soft_constraints</cite> method to ensure it correctly filters allocations based on secondary soft constraints.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_filter.ConstrantFilterQueryTests.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_filter.html#ConstrantFilterQueryTests.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_filter.ConstrantFilterQueryTests.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_filter.ConstrantFilterQueryTests.test_filter_allocation_by_primary_soft_constraints">
+<span class="sig-name descname"><span class="pre">test_filter_allocation_by_primary_soft_constraints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_filter.html#ConstrantFilterQueryTests.test_filter_allocation_by_primary_soft_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_filter.ConstrantFilterQueryTests.test_filter_allocation_by_primary_soft_constraints" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_filter.ConstrantFilterQueryTests.test_filter_allocation_by_secondary_soft_constraints">
+<span class="sig-name descname"><span class="pre">test_filter_allocation_by_secondary_soft_constraints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_filter.html#ConstrantFilterQueryTests.test_filter_allocation_by_secondary_soft_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_filter.ConstrantFilterQueryTests.test_filter_allocation_by_secondary_soft_constraints" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_filter.ConstrantFilterQueryTests.test_filter_allocations_by_hard_constraints">
+<span class="sig-name descname"><span class="pre">test_filter_allocations_by_hard_constraints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_filter.html#ConstrantFilterQueryTests.test_filter_allocations_by_hard_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_filter.ConstrantFilterQueryTests.test_filter_allocations_by_hard_constraints" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-tests.utils.test_constraint_manager">
+<span id="tests-utils-test-constraint-manager-module"></span><h2>tests.utils.test_constraint_manager module<a class="headerlink" href="#module-tests.utils.test_constraint_manager" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.BaseConstraintManagerTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.utils.test_constraint_manager.</span></span><span class="sig-name descname"><span class="pre">BaseConstraintManagerTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#BaseConstraintManagerTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.BaseConstraintManagerTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>BaseConstraintManagerTest</cite> class provides the foundational setup for all constraint manager-related tests, including the creation of test users, demonstrators, timeslots, skills, competencies, and module sessions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment with mock data for users, demonstrators, skills, competencies, timeslots, user availability, and module sessions.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.BaseConstraintManagerTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#BaseConstraintManagerTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.BaseConstraintManagerTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.ConstraintManagerTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.utils.test_constraint_manager.</span></span><span class="sig-name descname"><span class="pre">ConstraintManagerTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#ConstraintManagerTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.ConstraintManagerTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.utils.test_constraint_manager.BaseConstraintManagerTest" title="tests.utils.test_constraint_manager.BaseConstraintManagerTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseConstraintManagerTest</span></code></a></p>
+<p>The <cite>ConstraintManagerTest</cite> class inherits from <cite>BaseConstraintManagerTest</cite> and serves as a placeholder for future tests related to constraint management.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.HardConstraintManagerTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.utils.test_constraint_manager.</span></span><span class="sig-name descname"><span class="pre">HardConstraintManagerTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#HardConstraintManagerTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.HardConstraintManagerTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.utils.test_constraint_manager.BaseConstraintManagerTest" title="tests.utils.test_constraint_manager.BaseConstraintManagerTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseConstraintManagerTest</span></code></a></p>
+<p>The <cite>HardConstraintManagerTest</cite> class contains test cases for the <cite>HardConstraintManager</cite> in the <cite>constraint_manager</cite> module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Re-initializes the test environment with mock data.</p></li>
+<li><p><strong>test_is_demonstrator_not_booked_normal</strong> (<em>Method</em>) -- Tests if a demonstrator is not double-booked under normal circumstances.</p></li>
+<li><p><strong>test_is_demonstrator_not_booked_same_module_session</strong> (<em>Method</em>) -- Tests if a demonstrator is double-booked when assigned to multiple allocations within the same module session.</p></li>
+<li><p><strong>test_is_demonstrator_not_booked_different_session_same_time</strong> (<em>Method</em>) -- Tests if a demonstrator is double-booked when assigned to different module sessions at the same time.</p></li>
+<li><p><strong>test_is_demonstrator_available_for_all_normal</strong> (<em>Method</em>) -- Tests if a demonstrator is available for all timeslots in a normal scenario.</p></li>
+<li><p><strong>test_is_demonstrator_available_for_all_partial</strong> (<em>Method</em>) -- Tests if a demonstrator is partially available for the timeslots.</p></li>
+<li><p><strong>test_is_demonstrator_available_for_all_not_available</strong> (<em>Method</em>) -- Tests if a demonstrator is not available for the required timeslots.</p></li>
+<li><p><strong>test_is_allocation_not_previously_approved_Normal</strong> (<em>Method</em>) -- Tests if an allocation has not been previously approved under normal circumstances.</p></li>
+<li><p><strong>test_is_allocation_not_previously_approved_already_approved</strong> (<em>Method</em>) -- Tests if an allocation has already been approved and correctly identified.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.HardConstraintManagerTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#HardConstraintManagerTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.HardConstraintManagerTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_allocation_not_previously_approved_Normal">
+<span class="sig-name descname"><span class="pre">test_is_allocation_not_previously_approved_Normal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#HardConstraintManagerTest.test_is_allocation_not_previously_approved_Normal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_allocation_not_previously_approved_Normal" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_allocation_not_previously_approved_already_approved">
+<span class="sig-name descname"><span class="pre">test_is_allocation_not_previously_approved_already_approved</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#HardConstraintManagerTest.test_is_allocation_not_previously_approved_already_approved"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_allocation_not_previously_approved_already_approved" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_available_for_all_normal">
+<span class="sig-name descname"><span class="pre">test_is_demonstrator_available_for_all_normal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#HardConstraintManagerTest.test_is_demonstrator_available_for_all_normal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_available_for_all_normal" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_available_for_all_not_available">
+<span class="sig-name descname"><span class="pre">test_is_demonstrator_available_for_all_not_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#HardConstraintManagerTest.test_is_demonstrator_available_for_all_not_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_available_for_all_not_available" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_available_for_all_partial">
+<span class="sig-name descname"><span class="pre">test_is_demonstrator_available_for_all_partial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#HardConstraintManagerTest.test_is_demonstrator_available_for_all_partial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_available_for_all_partial" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_not_booked_different_session_same_time">
+<span class="sig-name descname"><span class="pre">test_is_demonstrator_not_booked_different_session_same_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#HardConstraintManagerTest.test_is_demonstrator_not_booked_different_session_same_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_not_booked_different_session_same_time" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_not_booked_normal">
+<span class="sig-name descname"><span class="pre">test_is_demonstrator_not_booked_normal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#HardConstraintManagerTest.test_is_demonstrator_not_booked_normal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_not_booked_normal" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_not_booked_same_module_session">
+<span class="sig-name descname"><span class="pre">test_is_demonstrator_not_booked_same_module_session</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#HardConstraintManagerTest.test_is_demonstrator_not_booked_same_module_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_not_booked_same_module_session" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.PrimaryConstraintManagerTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.utils.test_constraint_manager.</span></span><span class="sig-name descname"><span class="pre">PrimaryConstraintManagerTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#PrimaryConstraintManagerTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.utils.test_constraint_manager.BaseConstraintManagerTest" title="tests.utils.test_constraint_manager.BaseConstraintManagerTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseConstraintManagerTest</span></code></a></p>
+<p>The <cite>PrimaryConstraintManagerTest</cite> class contains test cases for the <cite>PrimaryConstraintManager</cite> in the <cite>constraint_manager</cite> module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Re-initializes the test environment with mock data.</p></li>
+<li><p><strong>test_session_has_half_demonstrator_normal</strong> (<em>Method</em>) -- Tests if a session has at least half of the required demonstrators under normal circumstances.</p></li>
+<li><p><strong>test_session_has_half_demonstrator_edge</strong> (<em>Method</em>) -- Tests the edge case where no demonstrators are assigned, but required demonstrators are more than zero.</p></li>
+<li><p><strong>test_demonstrator_has_beginner_skill_normal</strong> (<em>Method</em>) -- Tests if a demonstrator has the beginner skill under normal circumstances.</p></li>
+<li><p><strong>test_demonstrator_has_beginner_skill_edge</strong> (<em>Method</em>) -- Tests the edge case where a demonstrator does not possess the required skill.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#PrimaryConstraintManagerTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.test_demonstrator_has_beginner_skill_edge">
+<span class="sig-name descname"><span class="pre">test_demonstrator_has_beginner_skill_edge</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#PrimaryConstraintManagerTest.test_demonstrator_has_beginner_skill_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.test_demonstrator_has_beginner_skill_edge" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.test_demonstrator_has_beginner_skill_normal">
+<span class="sig-name descname"><span class="pre">test_demonstrator_has_beginner_skill_normal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#PrimaryConstraintManagerTest.test_demonstrator_has_beginner_skill_normal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.test_demonstrator_has_beginner_skill_normal" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.test_session_has_half_demonstrator_edge">
+<span class="sig-name descname"><span class="pre">test_session_has_half_demonstrator_edge</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#PrimaryConstraintManagerTest.test_session_has_half_demonstrator_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.test_session_has_half_demonstrator_edge" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.test_session_has_half_demonstrator_normal">
+<span class="sig-name descname"><span class="pre">test_session_has_half_demonstrator_normal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#PrimaryConstraintManagerTest.test_session_has_half_demonstrator_normal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.test_session_has_half_demonstrator_normal" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.SecondaryConstraintManagerTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.utils.test_constraint_manager.</span></span><span class="sig-name descname"><span class="pre">SecondaryConstraintManagerTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#SecondaryConstraintManagerTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.SecondaryConstraintManagerTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.utils.test_constraint_manager.BaseConstraintManagerTest" title="tests.utils.test_constraint_manager.BaseConstraintManagerTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseConstraintManagerTest</span></code></a></p>
+<p>The <cite>SecondaryConstraintManagerTest</cite> class contains test cases for the <cite>SecondaryConstraintManager</cite> in the <cite>constraint_manager</cite> module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Re-initializes the test environment with mock data.</p></li>
+<li><p><strong>test_has_all_demonstrator</strong> (<em>Method</em>) -- Tests if a session has all required demonstrators.</p></li>
+<li><p><strong>test_demonstrator_has_skill_or_higher</strong> (<em>Method</em>) -- Tests if a demonstrator has the required skill level or higher.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.SecondaryConstraintManagerTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#SecondaryConstraintManagerTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.SecondaryConstraintManagerTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.SecondaryConstraintManagerTest.test_demonstrator_has_skill_or_higher">
+<span class="sig-name descname"><span class="pre">test_demonstrator_has_skill_or_higher</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#SecondaryConstraintManagerTest.test_demonstrator_has_skill_or_higher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.SecondaryConstraintManagerTest.test_demonstrator_has_skill_or_higher" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.SecondaryConstraintManagerTest.test_has_all_demonstrator">
+<span class="sig-name descname"><span class="pre">test_has_all_demonstrator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#SecondaryConstraintManagerTest.test_has_all_demonstrator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.SecondaryConstraintManagerTest.test_has_all_demonstrator" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.SoftConstraintManageTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.utils.test_constraint_manager.</span></span><span class="sig-name descname"><span class="pre">SoftConstraintManageTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#SoftConstraintManageTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.SoftConstraintManageTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.utils.test_constraint_manager.BaseConstraintManagerTest" title="tests.utils.test_constraint_manager.BaseConstraintManagerTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseConstraintManagerTest</span></code></a></p>
+<p>The <cite>SoftConstraintManagerTest</cite> class contains test cases for the <cite>SoftConstraintManager</cite> in the <cite>constraint_manager</cite> module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>test_is_subset</strong> (<em>Method</em>) -- Tests the <cite>is_subset</cite> method to ensure it correctly identifies if one list is a subset of another.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.SoftConstraintManageTest.test_is_subset">
+<span class="sig-name descname"><span class="pre">test_is_subset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#SoftConstraintManageTest.test_is_subset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.SoftConstraintManageTest.test_is_subset" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.TertiaryConstraintManagerTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.utils.test_constraint_manager.</span></span><span class="sig-name descname"><span class="pre">TertiaryConstraintManagerTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#TertiaryConstraintManagerTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.TertiaryConstraintManagerTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.utils.test_constraint_manager.BaseConstraintManagerTest" title="tests.utils.test_constraint_manager.BaseConstraintManagerTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseConstraintManagerTest</span></code></a></p>
+<p>The <cite>TertiaryConstraintManagerTest</cite> class serves as a placeholder for future tests related to the <cite>TertiaryConstraintManager</cite> in the <cite>constraint_manager</cite> module.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_constraint_manager.TertiaryConstraintManagerTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/tests/utils/test_constraint_manager.html#TertiaryConstraintManagerTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_constraint_manager.TertiaryConstraintManagerTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-tests.utils.test_timetable_utils">
+<span id="tests-utils-test-timetable-utils-module"></span><h2>tests.utils.test_timetable_utils module<a class="headerlink" href="#module-tests.utils.test_timetable_utils" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.utils.test_timetable_utils.TimetableUtilTests">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.utils.test_timetable_utils.</span></span><span class="sig-name descname"><span class="pre">TimetableUtilTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_timetable_utils.html#TimetableUtilTests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_timetable_utils.TimetableUtilTests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>TimetableUtilTests</cite> class contains test cases for the <cite>Timetable</cite> utility class in the Django application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment, including creating an instance of <cite>Timetable</cite>.</p></li>
+<li><p><strong>test_initialisation</strong> (<em>Method</em>) -- Tests the initialization of the <cite>Timetable</cite> class to ensure it creates the correct number of timeslots.</p></li>
+<li><p><strong>test_generate_timeslots</strong> (<em>Method</em>) -- Tests the <cite>generate_time_slots</cite> method to ensure it generates a valid set of timeslots.</p></li>
+<li><p><strong>test_populate_timetable</strong> (<em>Method</em>) -- Tests the <cite>populate_timeslot</cite> method to ensure it populates the timetable with valid data.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_timetable_utils.TimetableUtilTests.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_timetable_utils.html#TimetableUtilTests.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_timetable_utils.TimetableUtilTests.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_timetable_utils.TimetableUtilTests.test_generate_timeslots">
+<span class="sig-name descname"><span class="pre">test_generate_timeslots</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_timetable_utils.html#TimetableUtilTests.test_generate_timeslots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_timetable_utils.TimetableUtilTests.test_generate_timeslots" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_timetable_utils.TimetableUtilTests.test_initialisation">
+<span class="sig-name descname"><span class="pre">test_initialisation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_timetable_utils.html#TimetableUtilTests.test_initialisation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_timetable_utils.TimetableUtilTests.test_initialisation" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.utils.test_timetable_utils.TimetableUtilTests.test_populate_timetable">
+<span class="sig-name descname"><span class="pre">test_populate_timetable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/utils/test_timetable_utils.html#TimetableUtilTests.test_populate_timetable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.utils.test_timetable_utils.TimetableUtilTests.test_populate_timetable" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-tests.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tests.utils" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tests.models.html" class="btn btn-neutral float-left" title="tests.models package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests.views.html" class="btn btn-neutral float-right" title="tests.views package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

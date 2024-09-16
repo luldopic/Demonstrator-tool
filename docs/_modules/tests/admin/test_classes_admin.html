@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.admin.test_classes_admin &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tests.admin.test_classes_admin</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tests.admin.test_classes_admin</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span><span class="p">,</span> <span class="n">RequestFactory</span>
+<span class="kn">from</span> <span class="nn">django.contrib.admin.sites</span> <span class="kn">import</span> <span class="n">AdminSite</span>
+<span class="kn">from</span> <span class="nn">classes.models</span> <span class="kn">import</span> <span class="n">Module</span><span class="p">,</span> <span class="n">ModuleSession</span><span class="p">,</span> <span class="n">Skill</span><span class="p">,</span> <span class="n">RequirementSkill</span><span class="p">,</span> <span class="n">SessionSchedule</span><span class="p">,</span> <span class="n">Competency</span>
+<span class="kn">from</span> <span class="nn">timetable.models</span> <span class="kn">import</span> <span class="n">Timeslot</span><span class="p">,</span> <span class="n">Semester</span>
+<span class="kn">from</span> <span class="nn">users.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">Lecturer</span><span class="p">,</span> <span class="n">Demonstrator</span>
+<span class="kn">from</span> <span class="nn">django.contrib.sessions.middleware</span> <span class="kn">import</span> <span class="n">SessionMiddleware</span>
+<span class="kn">from</span> <span class="nn">django.contrib.messages.middleware</span> <span class="kn">import</span> <span class="n">MessageMiddleware</span>
+<span class="kn">from</span> <span class="nn">django.contrib.messages.storage.fallback</span> <span class="kn">import</span> <span class="n">FallbackStorage</span>
+<span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">Mock</span>
+<span class="kn">from</span> <span class="nn">classes.admin</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SkillAdmin</span><span class="p">,</span> <span class="n">ModuleAdmin</span><span class="p">,</span> <span class="n">ModuleSessionAdmin</span><span class="p">,</span> <span class="n">RequirementsAdmin</span><span class="p">,</span>
+    <span class="n">CompetencyAdmin</span><span class="p">,</span> <span class="n">SessionScheduleAdmin</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+
+<div class="viewcode-block" id="SkillAdminTest">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.SkillAdminTest">[docs]</a>
+<span class="k">class</span> <span class="nc">SkillAdminTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `SkillAdminTest` class contains test cases for the `SkillAdmin` class in the Django admin interface.</span>
+
+<span class="sd">    :param setUp: Initializes the test environment, including creating instances of `SkillAdmin` and `Skill`.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_search_fields: Tests that the search fields for the `SkillAdmin` class are correctly configured.</span>
+<span class="sd">    :type test_search_fields: Method</span>
+<span class="sd">    :param test_save_model: Tests the `save_model` method to ensure that saving a new skill correctly creates entries for all skill levels.</span>
+<span class="sd">    :type test_save_model: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SkillAdminTest.setUp">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.SkillAdminTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">AdminSite</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">skill_admin</span> <span class="o">=</span> <span class="n">SkillAdmin</span><span class="p">(</span><span class="n">Skill</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">skill</span> <span class="o">=</span> <span class="n">Skill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Programming&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SkillAdminTest.test_search_fields">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.SkillAdminTest.test_search_fields">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_search_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">skill_admin</span><span class="o">.</span><span class="n">search_fields</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="SkillAdminTest.test_save_model">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.SkillAdminTest.test_save_model">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_save_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mock_request</span><span class="p">()</span>
+        <span class="n">new_skill</span> <span class="o">=</span> <span class="n">Skill</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Python&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">skill_admin</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">new_skill</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">change</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        
+        <span class="n">skills</span> <span class="o">=</span> <span class="n">Skill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Python&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">skills</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span> <span class="nb">len</span><span class="p">(</span><span class="n">Skill</span><span class="o">.</span><span class="n">LEVEL_CHOICES</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">skills</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">skills</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">skills</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">())</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_mock_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">RequestFactory</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/admin/&#39;</span><span class="p">)</span>
+
+        <span class="n">middleware</span> <span class="o">=</span> <span class="n">SessionMiddleware</span><span class="p">(</span><span class="n">Mock</span><span class="p">())</span>
+        <span class="n">middleware</span><span class="o">.</span><span class="n">process_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="n">messages_middleware</span> <span class="o">=</span> <span class="n">MessageMiddleware</span><span class="p">(</span><span class="n">Mock</span><span class="p">())</span>
+        <span class="n">messages_middleware</span><span class="o">.</span><span class="n">process_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;_messages&#39;</span><span class="p">,</span> <span class="n">FallbackStorage</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">request</span></div>
+
+
+
+<div class="viewcode-block" id="ModuleAdminTest">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.ModuleAdminTest">[docs]</a>
+<span class="k">class</span> <span class="nc">ModuleAdminTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `ModuleAdminTest` class contains test cases for the `ModuleAdmin` class in the Django admin interface.</span>
+
+<span class="sd">    :param setUp: Initializes the test environment, including creating instances of `ModuleAdmin`, `Lecturer`, `Semester`, and `Module`.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_list_display: Tests that the list display fields for the `ModuleAdmin` class are correctly configured.</span>
+<span class="sd">    :type test_list_display: Method</span>
+<span class="sd">    :param test_view_module_sessions: Tests the `view_module_sessions` method to ensure it returns the correct URL for viewing module sessions.</span>
+<span class="sd">    :type test_view_module_sessions: Method</span>
+<span class="sd">    :param test_num_sessions: Tests the `num_sessions` method to ensure it returns the correct number of session types.</span>
+<span class="sd">    :type test_num_sessions: Method</span>
+<span class="sd">    :param test_num_schedules: Tests the `num_schedules` method to ensure it returns the correct number of timeslots.</span>
+<span class="sd">    :type test_num_schedules: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ModuleAdminTest.setUp">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.ModuleAdminTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">AdminSite</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module_admin</span> <span class="o">=</span> <span class="n">ModuleAdmin</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lecturer_user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;lecturer&quot;</span><span class="p">,</span> <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Doe&quot;</span><span class="p">,</span> <span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;test@test.com&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span> <span class="o">=</span> <span class="n">Lecturer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lecturer_user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">semester</span> <span class="o">=</span> <span class="n">Semester</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="s2">&quot;2023/2024&quot;</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_code</span><span class="o">=</span><span class="s2">&quot;CS101&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Intro to CS&quot;</span><span class="p">,</span> <span class="n">lecturer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">semester</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ModuleAdminTest.test_list_display">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.ModuleAdminTest.test_list_display">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_list_display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">module_admin</span><span class="o">.</span><span class="n">list_display</span><span class="p">,</span>
+            <span class="p">[</span><span class="s2">&quot;class_code&quot;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s2">&quot;formatted_lecturer_name&quot;</span><span class="p">,</span> <span class="s2">&quot;formatted_semester&quot;</span><span class="p">,</span> <span class="s2">&quot;num_sessions&quot;</span><span class="p">,</span> <span class="s2">&quot;num_schedules&quot;</span><span class="p">,</span> <span class="s2">&quot;view_module_sessions&quot;</span><span class="p">]</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ModuleAdminTest.test_view_module_sessions">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.ModuleAdminTest.test_view_module_sessions">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_view_module_sessions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_admin</span><span class="o">.</span><span class="n">view_module_sessions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;admin:classes_modulesession_changelist&quot;</span><span class="p">),</span> <span class="n">url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s2">&quot;CS101&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ModuleAdminTest.test_num_sessions">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.ModuleAdminTest.test_num_sessions">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_num_sessions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">count_sessions</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module_admin</span><span class="o">.</span><span class="n">num_sessions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ModuleAdminTest.test_num_schedules">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.ModuleAdminTest.test_num_schedules">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_num_schedules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">count_sessions</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module_admin</span><span class="o">.</span><span class="n">num_schedules</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_mock_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">RequestFactory</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/admin/&#39;</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lecturer_user</span>
+
+        <span class="n">middleware</span> <span class="o">=</span> <span class="n">SessionMiddleware</span><span class="p">(</span><span class="n">Mock</span><span class="p">())</span>
+        <span class="n">middleware</span><span class="o">.</span><span class="n">process_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="n">messages_middleware</span> <span class="o">=</span> <span class="n">MessageMiddleware</span><span class="p">(</span><span class="n">Mock</span><span class="p">())</span>
+        <span class="n">messages_middleware</span><span class="o">.</span><span class="n">process_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;_messages&#39;</span><span class="p">,</span> <span class="n">FallbackStorage</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">request</span></div>
+
+
+
+<div class="viewcode-block" id="ModuleSessionAdminTest">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.ModuleSessionAdminTest">[docs]</a>
+<span class="k">class</span> <span class="nc">ModuleSessionAdminTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `ModuleSessionAdminTest` class contains test cases for the `ModuleSessionAdmin` class in the Django admin interface.</span>
+
+<span class="sd">    :param setUp: Initializes the test environment, including creating instances of `ModuleSessionAdmin`, `Module`, `ModuleSession`, and `Timeslot`.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_list_display: Tests that the list display fields for the `ModuleSessionAdmin` class are correctly configured.</span>
+<span class="sd">    :type test_list_display: Method</span>
+<span class="sd">    :param test_total_required_demonstrators: Tests the `total_required_demonstrators` method to ensure it correctly calculates the total required demonstrators.</span>
+<span class="sd">    :type test_total_required_demonstrators: Method</span>
+<span class="sd">    :param test_ensure_correct_allocation: Tests the `ensure_correct_allocation` method to ensure it correctly adjusts the allocation for the selected module sessions.</span>
+<span class="sd">    :type test_ensure_correct_allocation: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ModuleSessionAdminTest.setUp">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.ModuleSessionAdminTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">AdminSite</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module_session_admin</span> <span class="o">=</span> <span class="n">ModuleSessionAdmin</span><span class="p">(</span><span class="n">ModuleSession</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lecturer_user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;lecturer&quot;</span><span class="p">,</span> <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Doe&quot;</span><span class="p">,</span> <span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;test@test.com&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span> <span class="o">=</span> <span class="n">Lecturer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lecturer_user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">semester</span> <span class="o">=</span> <span class="n">Semester</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="s2">&quot;2023/2024&quot;</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_code</span><span class="o">=</span><span class="s2">&quot;CS101&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Intro to CS&quot;</span><span class="p">,</span> <span class="n">lecturer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">semester</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module_session</span> <span class="o">=</span> <span class="n">ModuleSession</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_code</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">session_type</span><span class="o">=</span><span class="s2">&quot;Lab&quot;</span><span class="p">,</span> <span class="n">required_demonstrator</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span> <span class="o">=</span> <span class="n">Timeslot</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="s2">&quot;08:00:00&quot;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s2">&quot;09:00:00&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ModuleSessionAdminTest.test_list_display">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.ModuleSessionAdminTest.test_list_display">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_list_display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">module_session_admin</span><span class="o">.</span><span class="n">list_display</span><span class="p">,</span>
+            <span class="p">[</span><span class="s2">&quot;get_class_code&quot;</span><span class="p">,</span> <span class="s2">&quot;session_type&quot;</span><span class="p">,</span> <span class="s2">&quot;required_demonstrator&quot;</span><span class="p">,</span> <span class="s2">&quot;view_module&quot;</span><span class="p">]</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ModuleSessionAdminTest.test_total_required_demonstrators">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.ModuleSessionAdminTest.test_total_required_demonstrators">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_total_required_demonstrators</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mock_request</span><span class="p">()</span>
+        <span class="n">queryset</span> <span class="o">=</span> <span class="n">ModuleSession</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module_session</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module_session_admin</span><span class="o">.</span><span class="n">total_required_demonstrators</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">)</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">_messages</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s2">&quot;Total required demonstrator: 2&quot;</span><span class="p">,</span> <span class="n">messages</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ModuleSessionAdminTest.test_ensure_correct_allocation">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.ModuleSessionAdminTest.test_ensure_correct_allocation">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_ensure_correct_allocation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mock_request</span><span class="p">()</span>
+        <span class="n">queryset</span> <span class="o">=</span> <span class="n">ModuleSession</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module_session</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module_session_admin</span><span class="o">.</span><span class="n">ensure_correct_allocation</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_mock_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">RequestFactory</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/admin/&#39;</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lecturer_user</span>
+
+        <span class="n">middleware</span> <span class="o">=</span> <span class="n">SessionMiddleware</span><span class="p">(</span><span class="n">Mock</span><span class="p">())</span>
+        <span class="n">middleware</span><span class="o">.</span><span class="n">process_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="n">messages_middleware</span> <span class="o">=</span> <span class="n">MessageMiddleware</span><span class="p">(</span><span class="n">Mock</span><span class="p">())</span>
+        <span class="n">messages_middleware</span><span class="o">.</span><span class="n">process_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;_messages&#39;</span><span class="p">,</span> <span class="n">FallbackStorage</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">request</span></div>
+
+
+
+<div class="viewcode-block" id="RequirementsAdminTest">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.RequirementsAdminTest">[docs]</a>
+<span class="k">class</span> <span class="nc">RequirementsAdminTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `RequirementsAdminTest` class contains test cases for the `RequirementsAdmin` class in the Django admin interface.</span>
+
+<span class="sd">    :param setUp: Initializes the test environment, including creating instances of `RequirementsAdmin`, `Module`, `ModuleSession`, `Skill`, and `RequirementSkill`.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_list_display: Tests that the list display fields for the `RequirementsAdmin` class are correctly configured.</span>
+<span class="sd">    :type test_list_display: Method</span>
+<span class="sd">    :param test_search_fields: Tests that the search fields for the `RequirementsAdmin` class are correctly configured.</span>
+<span class="sd">    :type test_search_fields: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="RequirementsAdminTest.setUp">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.RequirementsAdminTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">AdminSite</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">requirements_admin</span> <span class="o">=</span> <span class="n">RequirementsAdmin</span><span class="p">(</span><span class="n">RequirementSkill</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lecturer_user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;lecturer&quot;</span><span class="p">,</span> <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Doe&quot;</span><span class="p">,</span> <span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;test@test.com&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span> <span class="o">=</span> <span class="n">Lecturer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lecturer_user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">semester</span> <span class="o">=</span> <span class="n">Semester</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="s2">&quot;2023/2024&quot;</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_code</span><span class="o">=</span><span class="s2">&quot;CS101&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Intro to CS&quot;</span><span class="p">,</span> <span class="n">lecturer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">semester</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module_session</span> <span class="o">=</span> <span class="n">ModuleSession</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_code</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">session_type</span><span class="o">=</span><span class="s2">&quot;Lab&quot;</span><span class="p">,</span> <span class="n">required_demonstrator</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">Skill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Programming&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">skill</span> <span class="o">=</span> <span class="n">Skill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Programming&quot;</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">requirement</span> <span class="o">=</span> <span class="n">RequirementSkill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module_session</span><span class="p">,</span> <span class="n">skill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">skill</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RequirementsAdminTest.test_list_display">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.RequirementsAdminTest.test_list_display">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_list_display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">requirements_admin</span><span class="o">.</span><span class="n">list_display</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;get_class_code&quot;</span><span class="p">,</span> <span class="s2">&quot;get_skill_display&quot;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="RequirementsAdminTest.test_search_fields">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.RequirementsAdminTest.test_search_fields">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_search_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">requirements_admin</span><span class="o">.</span><span class="n">search_fields</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;class_session__class_code__class_code&quot;</span><span class="p">,</span> <span class="s2">&quot;skill__name&quot;</span><span class="p">])</span></div>
+</div>
+
+
+<div class="viewcode-block" id="CompetencyAdminTest">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.CompetencyAdminTest">[docs]</a>
+<span class="k">class</span> <span class="nc">CompetencyAdminTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `CompetencyAdminTest` class contains test cases for the `CompetencyAdmin` class in the Django admin interface.</span>
+
+<span class="sd">    :param setUp: Initializes the test environment, including creating instances of `CompetencyAdmin`, `User`, `Demonstrator`, `Skill`, and `Competency`.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_list_display: Tests that the list display fields for the `CompetencyAdmin` class are correctly configured.</span>
+<span class="sd">    :type test_list_display: Method</span>
+<span class="sd">    :param test_search_fields: Tests that the search fields for the `CompetencyAdmin` class are correctly configured.</span>
+<span class="sd">    :type test_search_fields: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CompetencyAdminTest.setUp">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.CompetencyAdminTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">AdminSite</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">competency_admin</span> <span class="o">=</span> <span class="n">CompetencyAdmin</span><span class="p">(</span><span class="n">Competency</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;demonstrator&quot;</span><span class="p">,</span> <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;Demo&quot;</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;User&quot;</span><span class="p">,</span> <span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;test@test.com&quot;</span><span class="p">,</span> <span class="n">is_demonstrator</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">Skill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Programming&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">skill</span> <span class="o">=</span> <span class="n">Skill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Programming&quot;</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">competency</span> <span class="o">=</span> <span class="n">Competency</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">demonstrator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="p">,</span> <span class="n">skill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">skill</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CompetencyAdminTest.test_list_display">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.CompetencyAdminTest.test_list_display">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_list_display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">competency_admin</span><span class="o">.</span><span class="n">list_display</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;get_demonstrator_name&quot;</span><span class="p">,</span> <span class="s2">&quot;get_skill_display&quot;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="CompetencyAdminTest.test_search_fields">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.CompetencyAdminTest.test_search_fields">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_search_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">competency_admin</span><span class="o">.</span><span class="n">search_fields</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;skill__name&quot;</span><span class="p">])</span></div>
+</div>
+
+
+<div class="viewcode-block" id="SessionScheduleAdminTest">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.SessionScheduleAdminTest">[docs]</a>
+<span class="k">class</span> <span class="nc">SessionScheduleAdminTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `SessionScheduleAdminTest` class contains test cases for the `SessionScheduleAdmin` class in the Django admin interface.</span>
+
+<span class="sd">    :param setUp: Initializes the test environment, including creating instances of `SessionScheduleAdmin`, `Module`, `ModuleSession`, `Timeslot`, and `SessionSchedule`.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_list_display: Tests that the list display fields for the `SessionScheduleAdmin` class are correctly configured.</span>
+<span class="sd">    :type test_list_display: Method</span>
+<span class="sd">    :param test_search_fields: Tests that the search fields for the `SessionScheduleAdmin` class are correctly configured.</span>
+<span class="sd">    :type test_search_fields: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SessionScheduleAdminTest.setUp">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.SessionScheduleAdminTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">site</span> <span class="o">=</span> <span class="n">AdminSite</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_schedule_admin</span> <span class="o">=</span> <span class="n">SessionScheduleAdmin</span><span class="p">(</span><span class="n">SessionSchedule</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">site</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lecturer_user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;lecturer&quot;</span><span class="p">,</span> <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Doe&quot;</span><span class="p">,</span> <span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;test@test.com&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span> <span class="o">=</span> <span class="n">Lecturer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lecturer_user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">semester</span> <span class="o">=</span> <span class="n">Semester</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="s2">&quot;2023/2024&quot;</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_code</span><span class="o">=</span><span class="s2">&quot;CS101&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Intro to CS&quot;</span><span class="p">,</span> <span class="n">lecturer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">semester</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module_session</span> <span class="o">=</span> <span class="n">ModuleSession</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_code</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">session_type</span><span class="o">=</span><span class="s2">&quot;Lab&quot;</span><span class="p">,</span> <span class="n">required_demonstrator</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span> <span class="o">=</span> <span class="n">Timeslot</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="s2">&quot;08:00:00&quot;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s2">&quot;09:00:00&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_schedule</span> <span class="o">=</span> <span class="n">SessionSchedule</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module_session</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SessionScheduleAdminTest.test_list_display">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.SessionScheduleAdminTest.test_list_display">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_list_display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session_schedule_admin</span><span class="o">.</span><span class="n">list_display</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;get_class_code&quot;</span><span class="p">,</span> <span class="s2">&quot;get_class_type&quot;</span><span class="p">,</span> <span class="s2">&quot;timeslot&quot;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="SessionScheduleAdminTest.test_search_fields">
+<a class="viewcode-back" href="../../../tests.admin.html#tests.admin.test_classes_admin.SessionScheduleAdminTest.test_search_fields">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_search_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session_schedule_admin</span><span class="o">.</span><span class="n">search_fields</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;class_session__class_code__class_code&quot;</span><span class="p">])</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

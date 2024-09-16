@@ -1,0 +1,10 @@
+{% extends "master.html" %}
+
+{% block content %}
+  <h1>Edit Competencies</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save changes</button>
+  </form>
+{% endblock %}

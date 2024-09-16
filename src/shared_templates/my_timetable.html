@@ -1,0 +1,32 @@
+{% extends "master.html" %}
+{% load custom_tags %}
+
+{% block title %}
+My Timetable
+{% endblock %}
+
+{% block content %}
+<h2>My Timetable</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Day / Time</th>
+            {% for hour in hours %}
+            <th>{{ hour }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for day, day_name in days %}
+        <tr>
+            <td>{{ day_name }}</td>
+            {% for hour in hours %}
+            <td class="timetable-cell {% if timetable_data|get_item:day|get_item:hour == 'Scheduling Conflict. Contact admin' %}bg-danger text-white{% endif %}">
+                {{ timetable_data|get_item:day|get_item:hour }}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

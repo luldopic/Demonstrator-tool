@@ -1,0 +1,18 @@
+{% extends "master.html" %}
+
+{% block content %}
+<h1>Welcome, {{ first_name }} {{ last_name }}</h1>
+
+<div style="display: flex; flex-direction: column; gap: 10px;">
+    {% if lecturer %}
+        <a href="{{ my_classes_url }}" class="btn btn-primary">My Classes</a>
+    {% endif %}
+
+    {% if demonstrator %}
+        <a href="{{ my_allocations_url }}" class="btn btn-primary">My Allocations</a>
+    {% endif %}
+
+    <a href="{{ my_timetable_url }}" class="btn btn-primary">My Timetable</a>
+</div>
+
+{% endblock content %}

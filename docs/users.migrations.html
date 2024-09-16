@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>users.migrations package &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">users.migrations package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/users.migrations.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="users-migrations-package">
+<h1>users.migrations package<a class="headerlink" href="#users-migrations-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-users.migrations.0001_initial">
+<span id="users-migrations-0001-initial-module"></span><h2>users.migrations.0001_initial module<a class="headerlink" href="#module-users.migrations.0001_initial" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.migrations.0001_initial.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.migrations.0001_initial.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/migrations/0001_initial.html#Migration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.migrations.0001_initial.Migration" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0001_initial.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('timetable',</span> <span class="pre">'0001_initial'),</span> <span class="pre">('auth',</span> <span class="pre">'0012_alter_user_first_name_max_length')]</span></em><a class="headerlink" href="#users.migrations.0001_initial.Migration.dependencies" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0001_initial.Migration.initial">
+<span class="sig-name descname"><span class="pre">initial</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#users.migrations.0001_initial.Migration.initial" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0001_initial.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;CreateModel</span>&#160; <span class="pre">name='User',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.BigAutoField&gt;),</span> <span class="pre">('password',</span> <span class="pre">&lt;django.db.models.CharField&gt;),</span> <span class="pre">('last_login',</span> <span class="pre">&lt;django.db.models.DateTimeField&gt;),</span> <span class="pre">('is_superuser',</span> <span class="pre">&lt;django.db.models.BooleanField&gt;),</span> <span class="pre">('username',</span> <span class="pre">&lt;django.db.models.CharField&gt;),</span> <span class="pre">('is_staff',</span> <span class="pre">&lt;django.db.models.BooleanField&gt;),</span> <span class="pre">('is_active',</span> <span class="pre">&lt;django.db.models.BooleanField&gt;),</span> <span class="pre">('date_joined',</span> <span class="pre">&lt;django.db.models.DateTimeField&gt;),</span> <span class="pre">('is_admin',</span> <span class="pre">&lt;django.db.models.BooleanField&gt;),</span> <span class="pre">('is_demonstrator',</span> <span class="pre">&lt;django.db.models.BooleanField&gt;),</span> <span class="pre">('is_lecturer',</span> <span class="pre">&lt;django.db.models.BooleanField&gt;),</span> <span class="pre">('first_name',</span> <span class="pre">&lt;django.db.models.CharField&gt;),</span> <span class="pre">('last_name',</span> <span class="pre">&lt;django.db.models.CharField&gt;),</span> <span class="pre">('email',</span> <span class="pre">&lt;django.db.models.EmailField&gt;),</span> <span class="pre">('groups',</span> <span class="pre">&lt;django.db.models.ManyToManyField&gt;),</span> <span class="pre">('user_permissions',</span> <span class="pre">&lt;django.db.models.ManyToManyField&gt;)],</span> <span class="pre">options={'verbose_name':</span> <span class="pre">'user',</span> <span class="pre">'verbose_name_plural':</span> <span class="pre">'users',</span> <span class="pre">'abstract':</span> <span class="pre">False},</span> <span class="pre">managers=[('objects',</span> <span class="pre">&lt;django.contrib.auth.models.UserManager</span> <span class="pre">object&gt;)]&gt;,</span> <span class="pre">&lt;CreateModel</span>&#160; <span class="pre">name='Admin',</span> <span class="pre">fields=[('user',</span> <span class="pre">&lt;django.db.models.OneToOneField&gt;)]&gt;,</span> <span class="pre">&lt;CreateModel</span>&#160; <span class="pre">name='Demonstrator',</span> <span class="pre">fields=[('user',</span> <span class="pre">&lt;django.db.models.OneToOneField&gt;)]&gt;,</span> <span class="pre">&lt;CreateModel</span>&#160; <span class="pre">name='Lecturer',</span> <span class="pre">fields=[('user',</span> <span class="pre">&lt;django.db.models.OneToOneField&gt;),</span> <span class="pre">('department',</span> <span class="pre">&lt;django.db.models.CharField&gt;)]&gt;,</span> <span class="pre">&lt;CreateModel</span>&#160; <span class="pre">name='UserAvailability',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.BigAutoField&gt;),</span> <span class="pre">('is_available',</span> <span class="pre">&lt;django.db.models.BooleanField&gt;),</span> <span class="pre">('slot',</span> <span class="pre">&lt;django.db.models.ForeignKey&gt;),</span> <span class="pre">('user',</span> <span class="pre">&lt;django.db.models.ForeignKey&gt;)]&gt;]</span></em><a class="headerlink" href="#users.migrations.0001_initial.Migration.operations" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users.migrations.0002_delete_admin">
+<span id="users-migrations-0002-delete-admin-module"></span><h2>users.migrations.0002_delete_admin module<a class="headerlink" href="#module-users.migrations.0002_delete_admin" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.migrations.0002_delete_admin.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.migrations.0002_delete_admin.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/migrations/0002_delete_admin.html#Migration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.migrations.0002_delete_admin.Migration" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0002_delete_admin.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('users',</span> <span class="pre">'0001_initial')]</span></em><a class="headerlink" href="#users.migrations.0002_delete_admin.Migration.dependencies" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0002_delete_admin.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;DeleteModel</span>&#160; <span class="pre">name='Admin'&gt;]</span></em><a class="headerlink" href="#users.migrations.0002_delete_admin.Migration.operations" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users.migrations.0003_auto_20240614_1856">
+<span id="users-migrations-0003-auto-20240614-1856-module"></span><h2>users.migrations.0003_auto_20240614_1856 module<a class="headerlink" href="#module-users.migrations.0003_auto_20240614_1856" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.migrations.0003_auto_20240614_1856.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.migrations.0003_auto_20240614_1856.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/migrations/0003_auto_20240614_1856.html#Migration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.migrations.0003_auto_20240614_1856.Migration" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0003_auto_20240614_1856.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('users',</span> <span class="pre">'0002_delete_admin')]</span></em><a class="headerlink" href="#users.migrations.0003_auto_20240614_1856.Migration.dependencies" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0003_auto_20240614_1856.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;RemoveField</span>&#160; <span class="pre">model_name='user',</span> <span class="pre">name='is_admin'&gt;,</span> <span class="pre">&lt;DeleteModel</span>&#160; <span class="pre">name='UserAvailability'&gt;]</span></em><a class="headerlink" href="#users.migrations.0003_auto_20240614_1856.Migration.operations" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users.migrations.0004_competency_useravailability">
+<span id="users-migrations-0004-competency-useravailability-module"></span><h2>users.migrations.0004_competency_useravailability module<a class="headerlink" href="#module-users.migrations.0004_competency_useravailability" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.migrations.0004_competency_useravailability.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.migrations.0004_competency_useravailability.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/migrations/0004_competency_useravailability.html#Migration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.migrations.0004_competency_useravailability.Migration" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0004_competency_useravailability.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('users',</span> <span class="pre">'0003_auto_20240614_1856')]</span></em><a class="headerlink" href="#users.migrations.0004_competency_useravailability.Migration.dependencies" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0004_competency_useravailability.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;CreateModel</span>&#160; <span class="pre">name='Competency',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.BigAutoField&gt;)]&gt;,</span> <span class="pre">&lt;CreateModel</span>&#160; <span class="pre">name='UserAvailability',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.BigAutoField&gt;)]&gt;]</span></em><a class="headerlink" href="#users.migrations.0004_competency_useravailability.Migration.operations" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users.migrations.0005_delete_competency">
+<span id="users-migrations-0005-delete-competency-module"></span><h2>users.migrations.0005_delete_competency module<a class="headerlink" href="#module-users.migrations.0005_delete_competency" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.migrations.0005_delete_competency.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.migrations.0005_delete_competency.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/migrations/0005_delete_competency.html#Migration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.migrations.0005_delete_competency.Migration" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0005_delete_competency.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('users',</span> <span class="pre">'0004_competency_useravailability')]</span></em><a class="headerlink" href="#users.migrations.0005_delete_competency.Migration.dependencies" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0005_delete_competency.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;DeleteModel</span>&#160; <span class="pre">name='Competency'&gt;]</span></em><a class="headerlink" href="#users.migrations.0005_delete_competency.Migration.operations" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users.migrations.0006_user_is_fake">
+<span id="users-migrations-0006-user-is-fake-module"></span><h2>users.migrations.0006_user_is_fake module<a class="headerlink" href="#module-users.migrations.0006_user_is_fake" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.migrations.0006_user_is_fake.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.migrations.0006_user_is_fake.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/migrations/0006_user_is_fake.html#Migration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.migrations.0006_user_is_fake.Migration" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0006_user_is_fake.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('users',</span> <span class="pre">'0005_delete_competency')]</span></em><a class="headerlink" href="#users.migrations.0006_user_is_fake.Migration.dependencies" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0006_user_is_fake.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AddField</span>&#160; <span class="pre">model_name='user',</span> <span class="pre">name='is_fake',</span> <span class="pre">field=&lt;django.db.models.BooleanField&gt;&gt;]</span></em><a class="headerlink" href="#users.migrations.0006_user_is_fake.Migration.operations" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users.migrations.0007_auto_20240624_1511">
+<span id="users-migrations-0007-auto-20240624-1511-module"></span><h2>users.migrations.0007_auto_20240624_1511 module<a class="headerlink" href="#module-users.migrations.0007_auto_20240624_1511" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.migrations.0007_auto_20240624_1511.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.migrations.0007_auto_20240624_1511.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/migrations/0007_auto_20240624_1511.html#Migration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.migrations.0007_auto_20240624_1511.Migration" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0007_auto_20240624_1511.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('timetable',</span> <span class="pre">'0004_auto_20240617_1430'),</span> <span class="pre">('users',</span> <span class="pre">'0006_user_is_fake')]</span></em><a class="headerlink" href="#users.migrations.0007_auto_20240624_1511.Migration.dependencies" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0007_auto_20240624_1511.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AddField</span>&#160; <span class="pre">model_name='useravailability',</span> <span class="pre">name='is_available',</span> <span class="pre">field=&lt;django.db.models.BooleanField&gt;&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='useravailability',</span> <span class="pre">name='timeslot',</span> <span class="pre">field=&lt;django.db.models.ForeignKey&gt;&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='useravailability',</span> <span class="pre">name='user',</span> <span class="pre">field=&lt;django.db.models.ForeignKey&gt;&gt;]</span></em><a class="headerlink" href="#users.migrations.0007_auto_20240624_1511.Migration.operations" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users.migrations.0008_auto_20240624_1618">
+<span id="users-migrations-0008-auto-20240624-1618-module"></span><h2>users.migrations.0008_auto_20240624_1618 module<a class="headerlink" href="#module-users.migrations.0008_auto_20240624_1618" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.migrations.0008_auto_20240624_1618.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.migrations.0008_auto_20240624_1618.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/migrations/0008_auto_20240624_1618.html#Migration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.migrations.0008_auto_20240624_1618.Migration" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0008_auto_20240624_1618.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('timetable',</span> <span class="pre">'0004_auto_20240617_1430'),</span> <span class="pre">('users',</span> <span class="pre">'0007_auto_20240624_1511')]</span></em><a class="headerlink" href="#users.migrations.0008_auto_20240624_1618.Migration.dependencies" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0008_auto_20240624_1618.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterModelOptions</span>&#160; <span class="pre">name='useravailability',</span> <span class="pre">options={'verbose_name_plural':</span> <span class="pre">'User</span> <span class="pre">Availability'}&gt;,</span> <span class="pre">&lt;AlterField</span>&#160; <span class="pre">model_name='useravailability',</span> <span class="pre">name='timeslot',</span> <span class="pre">field=&lt;django.db.models.ForeignKey&gt;&gt;,</span> <span class="pre">&lt;AlterField</span>&#160; <span class="pre">model_name='useravailability',</span> <span class="pre">name='user',</span> <span class="pre">field=&lt;django.db.models.ForeignKey&gt;&gt;]</span></em><a class="headerlink" href="#users.migrations.0008_auto_20240624_1618.Migration.operations" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users.migrations.0009_alter_useravailability_unique_together">
+<span id="users-migrations-0009-alter-useravailability-unique-together-module"></span><h2>users.migrations.0009_alter_useravailability_unique_together module<a class="headerlink" href="#module-users.migrations.0009_alter_useravailability_unique_together" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.migrations.0009_alter_useravailability_unique_together.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.migrations.0009_alter_useravailability_unique_together.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/migrations/0009_alter_useravailability_unique_together.html#Migration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.migrations.0009_alter_useravailability_unique_together.Migration" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0009_alter_useravailability_unique_together.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('timetable',</span> <span class="pre">'0006_alter_semester_unique_together'),</span> <span class="pre">('users',</span> <span class="pre">'0008_auto_20240624_1618')]</span></em><a class="headerlink" href="#users.migrations.0009_alter_useravailability_unique_together.Migration.dependencies" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0009_alter_useravailability_unique_together.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterUniqueTogether</span>&#160; <span class="pre">name='useravailability',</span> <span class="pre">unique_together={('user',</span> <span class="pre">'timeslot')}&gt;]</span></em><a class="headerlink" href="#users.migrations.0009_alter_useravailability_unique_together.Migration.operations" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users.migrations.0010_alter_useravailability_unique_together">
+<span id="users-migrations-0010-alter-useravailability-unique-together-module"></span><h2>users.migrations.0010_alter_useravailability_unique_together module<a class="headerlink" href="#module-users.migrations.0010_alter_useravailability_unique_together" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.migrations.0010_alter_useravailability_unique_together.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.migrations.0010_alter_useravailability_unique_together.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/migrations/0010_alter_useravailability_unique_together.html#Migration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.migrations.0010_alter_useravailability_unique_together.Migration" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0010_alter_useravailability_unique_together.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('users',</span> <span class="pre">'0009_alter_useravailability_unique_together')]</span></em><a class="headerlink" href="#users.migrations.0010_alter_useravailability_unique_together.Migration.dependencies" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0010_alter_useravailability_unique_together.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterUniqueTogether</span>&#160; <span class="pre">name='useravailability',</span> <span class="pre">unique_together=set()&gt;]</span></em><a class="headerlink" href="#users.migrations.0010_alter_useravailability_unique_together.Migration.operations" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users.migrations.0011_alter_useravailability_unique_together">
+<span id="users-migrations-0011-alter-useravailability-unique-together-module"></span><h2>users.migrations.0011_alter_useravailability_unique_together module<a class="headerlink" href="#module-users.migrations.0011_alter_useravailability_unique_together" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="users.migrations.0011_alter_useravailability_unique_together.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">users.migrations.0011_alter_useravailability_unique_together.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/users/migrations/0011_alter_useravailability_unique_together.html#Migration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#users.migrations.0011_alter_useravailability_unique_together.Migration" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0011_alter_useravailability_unique_together.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('timetable',</span> <span class="pre">'0006_alter_semester_unique_together'),</span> <span class="pre">('users',</span> <span class="pre">'0010_alter_useravailability_unique_together')]</span></em><a class="headerlink" href="#users.migrations.0011_alter_useravailability_unique_together.Migration.dependencies" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="users.migrations.0011_alter_useravailability_unique_together.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterUniqueTogether</span>&#160; <span class="pre">name='useravailability',</span> <span class="pre">unique_together={('user',</span> <span class="pre">'timeslot')}&gt;]</span></em><a class="headerlink" href="#users.migrations.0011_alter_useravailability_unique_together.Migration.operations" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-users.migrations">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-users.migrations" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

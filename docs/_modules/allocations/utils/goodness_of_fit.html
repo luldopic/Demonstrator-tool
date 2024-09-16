@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>allocations.utils.goodness_of_fit &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">allocations.utils.goodness_of_fit</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for allocations.utils.goodness_of_fit</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Count</span>
+<span class="kn">from</span> <span class="nn">classes.models</span> <span class="kn">import</span> <span class="n">RequirementSkill</span><span class="p">,</span> <span class="n">Competency</span>
+<span class="kn">from</span> <span class="nn">users.models</span> <span class="kn">import</span> <span class="n">Demonstrator</span><span class="p">,</span> <span class="n">UserAvailability</span>
+<span class="kn">from</span> <span class="nn">allocations.models</span> <span class="kn">import</span> <span class="n">Allocation</span>
+<span class="kn">from</span> <span class="nn">allocations.utils.constraint_manager</span> <span class="kn">import</span> <span class="n">HardConstraintManager</span><span class="p">,</span> <span class="n">PrimaryConstraintManager</span><span class="p">,</span> <span class="n">SecondaryConstraintManager</span>
+<span class="kn">from</span> <span class="nn">allocations.utils.constraint_filter</span> <span class="kn">import</span> <span class="n">ConstrantFilterQuery</span> <span class="k">as</span> <span class="n">cf</span>
+
+<div class="viewcode-block" id="GoodnessOfFit">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit">[docs]</a>
+<span class="k">class</span> <span class="nc">GoodnessOfFit</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `GoodnessOfFit` class provides various static methods to evaluate and generate reports on the goodness of fit </span>
+<span class="sd">    for the allocation system. This includes calculating ratios, compliance with constraints, skill match scores, </span>
+<span class="sd">    utilization rates, and statistical measures like chi-square for load balancing.</span>
+
+<span class="sd">    This class interacts with several models including `Allocation`, `RequirementSkill`, `Competency`, `Demonstrator`, </span>
+<span class="sd">    and `UserAvailability` to gather and analyze data for generating metrics and reports.</span>
+
+<span class="sd">    :param allocation: An instance of the `Allocation` model representing the current allocation being processed.</span>
+<span class="sd">    :type allocation: `Allocation`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="GoodnessOfFit.get_total_allocation">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_total_allocation">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_total_allocation</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the total number of allocations.</span>
+
+<span class="sd">        :return: The total number of allocations.</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.get_total_allocation_notnull">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_total_allocation_notnull">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_total_allocation_notnull</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the total number of allocations that have a demonstrator assigned.</span>
+
+<span class="sd">        :return: The total number of allocations with a non-null demonstrator.</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">demonstrator__isnull</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span></div>
+
+        
+<div class="viewcode-block" id="GoodnessOfFit.get_distribution_required_skills">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_distribution_required_skills">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_distribution_required_skills</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the distribution of required skills across all sessions.</span>
+
+<span class="sd">        :return: A dictionary where the keys are skill names and the values are their respective counts.</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">skill_distribution</span> <span class="o">=</span> <span class="n">RequirementSkill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s1">&#39;skill__name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="n">Count</span><span class="p">(</span><span class="s1">&#39;skill&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-count&#39;</span><span class="p">)</span>
+        <span class="n">skill_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">skill</span> <span class="ow">in</span> <span class="n">skill_distribution</span><span class="p">:</span>
+            <span class="n">skill_dict</span><span class="p">[</span><span class="n">skill</span><span class="p">[</span><span class="s1">&#39;skill__name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">skill</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span>
+        
+        <span class="k">return</span> <span class="n">skill_dict</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.get_distribution_competencies">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_distribution_competencies">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_distribution_competencies</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the distribution of competencies across all demonstrators.</span>
+
+<span class="sd">        :return: A dictionary where the keys are skill names and the values are their respective counts.</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">skill_distribution</span> <span class="o">=</span> <span class="n">Competency</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s1">&#39;skill__name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="n">Count</span><span class="p">(</span><span class="s1">&#39;skill&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-count&#39;</span><span class="p">)</span>
+        <span class="n">skill_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">skill</span> <span class="ow">in</span> <span class="n">skill_distribution</span><span class="p">:</span>
+            <span class="n">skill_dict</span><span class="p">[</span><span class="n">skill</span><span class="p">[</span><span class="s1">&#39;skill__name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">skill</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">skill_dict</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.get_ratio_hard_constraint">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_ratio_hard_constraint">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_ratio_hard_constraint</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the ratio of valid demonstrators for allocations based on hard constraints.</span>
+
+<span class="sd">        :return: The ratio of valid demonstrators to total allocations.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">all_demonstrators</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+        <span class="n">all_allocation</span><span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">demonstrator__isnull</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">all_allocation</span><span class="p">:</span>
+            <span class="n">valid_demonstrator</span> <span class="o">=</span> <span class="p">[</span><span class="n">dem</span> <span class="k">for</span> <span class="n">dem</span> <span class="ow">in</span> <span class="n">all_demonstrators</span> <span class="k">if</span>
+                                  <span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstrator_not_double_booked</span><span class="p">(</span><span class="n">allocation</span><span class="p">,</span> <span class="n">dem</span><span class="p">)</span> <span class="ow">and</span>
+                                  <span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstator_available_for_all</span><span class="p">(</span><span class="n">allocation</span><span class="p">,</span> <span class="n">dem</span><span class="p">)</span>
+                                  <span class="p">]</span>
+            <span class="n">valid_count</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_demonstrator</span><span class="p">)</span>
+        <span class="n">total_allocations</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_allocation</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">valid_count</span><span class="o">/</span><span class="n">total_allocations</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.get_ratio_primary_constraint">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_ratio_primary_constraint">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_ratio_primary_constraint</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the ratio of valid demonstrators for allocations based on primary constraints.</span>
+
+<span class="sd">        :return: The ratio of valid demonstrators to total allocations.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">all_demonstrators</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+        <span class="n">all_allocation</span><span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">demonstrator__isnull</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">all_allocation</span><span class="p">:</span>
+            <span class="n">valid_demonstrator</span> <span class="o">=</span> <span class="p">[</span><span class="n">dem</span> <span class="k">for</span> <span class="n">dem</span> <span class="ow">in</span> <span class="n">all_demonstrators</span> <span class="k">if</span>
+                                  <span class="n">PrimaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_beginner_skill</span><span class="p">(</span><span class="n">allocation</span><span class="p">,</span> <span class="n">dem</span><span class="p">)</span>
+                                  <span class="p">]</span>
+            <span class="n">valid_count</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_demonstrator</span><span class="p">)</span>
+        <span class="n">total_allocations</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_allocation</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">valid_count</span><span class="o">/</span><span class="n">total_allocations</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.get_ratio_secondary_constraint">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_ratio_secondary_constraint">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_ratio_secondary_constraint</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the ratio of valid demonstrators for allocations based on secondary constraints.</span>
+
+<span class="sd">        :return: The ratio of valid demonstrators to total allocations.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">all_demonstrators</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+        <span class="n">all_allocation</span><span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">demonstrator__isnull</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">all_allocation</span><span class="p">:</span>
+            <span class="n">valid_demonstrator</span> <span class="o">=</span> <span class="p">[</span><span class="n">dem</span> <span class="k">for</span> <span class="n">dem</span> <span class="ow">in</span> <span class="n">all_demonstrators</span> <span class="k">if</span>
+                                  <span class="n">SecondaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_skill_or_higher</span><span class="p">(</span><span class="n">allocation</span><span class="p">,</span> <span class="n">dem</span><span class="p">)</span>
+                                  <span class="p">]</span>
+            <span class="n">valid_count</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_demonstrator</span><span class="p">)</span>
+        <span class="n">total_allocations</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_allocation</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">valid_count</span><span class="o">/</span><span class="n">total_allocations</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.get_distribution_tertiary_constraint">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_distribution_tertiary_constraint">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_distribution_tertiary_constraint</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;(Placeholder) Calculate the distribution based on tertiary constraints.</span>
+
+<span class="sd">        :return: Not implemented.</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.get_percentage_allocated">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_percentage_allocated">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_percentage_allocated</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the percentage of allocations that have been approved.</span>
+
+<span class="sd">        :return: The percentage of approved allocations.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">total_approved</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">approved</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        
+        <span class="k">return</span> <span class="n">total_approved</span><span class="o">/</span><span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">get_total_allocation</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.get_hard_constraint_compliance">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_hard_constraint_compliance">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_hard_constraint_compliance</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the compliance percentage for hard constraints across all allocations.</span>
+
+<span class="sd">        :return: The percentage of allocations that pass hard constraints.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">total_pass</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">filter_allocations_by_hard_constraints_post_approve</span><span class="p">(</span><span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">total_pass</span><span class="o">/</span><span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">get_total_allocation_notnull</span><span class="p">()</span></div>
+
+        
+    
+<div class="viewcode-block" id="GoodnessOfFit.get_primary_constraint_compliance">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_primary_constraint_compliance">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_primary_constraint_compliance</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the compliance percentage for primary constraints across all allocations.</span>
+
+<span class="sd">        :return: The percentage of allocations that pass primary constraints.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">total_pass</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">filter_allocation_by_primary_soft_constraints</span><span class="p">(</span><span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">total_pass</span><span class="o">/</span><span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">get_total_allocation_notnull</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.get_secondary_constraint_compliance">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_secondary_constraint_compliance">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_secondary_constraint_compliance</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the compliance percentage for secondary constraints across all allocations.</span>
+
+<span class="sd">        :return: The percentage of allocations that pass secondary constraints.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">total_pass</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">filter_allocation_by_secondary_soft_constraints</span><span class="p">(</span><span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">total_pass</span><span class="o">/</span><span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">get_total_allocation_notnull</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.get_tertiary_constraint_compliance">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_tertiary_constraint_compliance">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_tertiary_constraint_compliance</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;(Placeholder) Calculate the compliance percentage for tertiary constraints.</span>
+
+<span class="sd">        :return: Not implemented.</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.get_skill_match_score_single">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_skill_match_score_single">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_skill_match_score_single</span><span class="p">(</span><span class="n">allocation</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the skill match score for a single allocation.</span>
+
+<span class="sd">        :param allocation: The allocation to calculate the skill match score for.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        :return: The skill match score for the allocation.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">required_skills</span> <span class="o">=</span> <span class="n">RequirementSkill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span><span class="o">=</span><span class="n">allocation</span><span class="o">.</span><span class="n">class_session</span><span class="p">)</span>
+        <span class="n">demonstrator_competencies</span> <span class="o">=</span> <span class="n">Competency</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">demonstrator</span><span class="o">=</span><span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span><span class="p">)</span>
+        <span class="n">competency_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">comp</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">comp</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">level</span> <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">demonstrator_competencies</span><span class="p">}</span>
+        
+        <span class="n">total_score</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">max_score</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">required_skill</span> <span class="ow">in</span> <span class="n">required_skills</span><span class="p">:</span>
+            <span class="n">skill_name</span> <span class="o">=</span> <span class="n">required_skill</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">skill_level</span> <span class="o">=</span> <span class="n">required_skill</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">level</span>
+            <span class="n">max_score</span> <span class="o">+=</span> <span class="mi">1</span>
+            
+            <span class="k">if</span> <span class="n">skill_name</span> <span class="ow">in</span> <span class="n">competency_dict</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">competency_dict</span><span class="p">[</span><span class="n">skill_name</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">skill_level</span><span class="p">:</span>
+                    <span class="n">total_score</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">total_score</span> <span class="o">+=</span> <span class="p">(</span><span class="n">competency_dict</span><span class="p">[</span><span class="n">skill_name</span><span class="p">]</span> <span class="o">/</span> <span class="n">skill_level</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">total_score</span> <span class="o">/</span> <span class="n">max_score</span> <span class="k">if</span> <span class="n">max_score</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.get_skill_match_score_distribution">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_skill_match_score_distribution">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_skill_match_score_distribution</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the average skill match score across all allocations.</span>
+
+<span class="sd">        :return: The average skill match score.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">demonstrator__isnull</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">total_skill_match_score</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">total_skill_match_score</span> <span class="o">+=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">get_skill_match_score_single</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+        
+        <span class="n">average_skill_match_score</span> <span class="o">=</span> <span class="n">total_skill_match_score</span> <span class="o">/</span> <span class="n">allocations</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="k">if</span> <span class="n">allocations</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+        
+        <span class="k">return</span> <span class="n">average_skill_match_score</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.get_utilisation_rate">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_utilisation_rate">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_utilisation_rate</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the utilisation rate of demonstrators.</span>
+
+<span class="sd">        :return: The utilisation rate of demonstrators.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">total_used</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">demonstrator__isnull</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s1">&#39;demonstrator&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="n">total_demonstrator</span>  <span class="o">=</span> <span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">total_used</span><span class="o">/</span><span class="n">total_demonstrator</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.get_preference_fulfillment">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_preference_fulfillment">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_preference_fulfillment</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;(Placeholder) Calculate the fulfillment of demonstrator preferences.</span>
+
+<span class="sd">        :return: Not implemented.</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.get_demonstrator_time_load_balance_chi_square">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.get_demonstrator_time_load_balance_chi_square">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_demonstrator_time_load_balance_chi_square</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the chi-square statistic for demonstrator time load balance.</span>
+
+<span class="sd">        :return: The chi-square statistic for time load balance.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">demonstrators</span> <span class="o">=</span> <span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">total_allocations</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">get_total_allocation_notnull</span><span class="p">()</span>
+        <span class="n">total_availability</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">demonstrator_availabilities</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">dem</span> <span class="ow">in</span> <span class="n">demonstrators</span><span class="p">:</span>
+            <span class="n">available_timeslots</span> <span class="o">=</span> <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">dem</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">is_available</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+            <span class="n">demonstrator_availabilities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">available_timeslots</span><span class="p">)</span>
+            <span class="n">total_availability</span> <span class="o">+=</span> <span class="n">available_timeslots</span>
+        
+        <span class="n">expected_allocations</span> <span class="o">=</span> <span class="p">[</span><span class="n">total_allocations</span> <span class="o">*</span> <span class="p">(</span><span class="n">availability</span> <span class="o">/</span> <span class="n">total_availability</span><span class="p">)</span> <span class="k">for</span> <span class="n">availability</span> <span class="ow">in</span> <span class="n">demonstrator_availabilities</span><span class="p">]</span>
+        
+        <span class="n">observed_allocations</span> <span class="o">=</span> <span class="p">[</span><span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">demonstrator</span><span class="o">=</span><span class="n">dem</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="k">for</span> <span class="n">dem</span> <span class="ow">in</span> <span class="n">demonstrators</span><span class="p">]</span>
+        
+        <span class="n">chi_square_stat</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">((</span><span class="n">observed</span> <span class="o">-</span> <span class="n">expected</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">expected</span> <span class="k">if</span> <span class="n">expected</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span> 
+                              <span class="k">for</span> <span class="n">observed</span><span class="p">,</span> <span class="n">expected</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">observed_allocations</span><span class="p">,</span> <span class="n">expected_allocations</span><span class="p">))</span>
+    
+        <span class="k">return</span> <span class="n">chi_square_stat</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.normalise_chi_square_stat">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.normalise_chi_square_stat">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">normalise_chi_square_stat</span><span class="p">(</span><span class="n">chi_square_stat</span><span class="p">,</span> <span class="n">max_chi_square</span> <span class="o">=</span> <span class="mi">2700</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Normalize the chi-square statistic to a score between 0 and 1.</span>
+
+<span class="sd">        :param chi_square_stat: The chi-square statistic to normalize.</span>
+<span class="sd">        :type chi_square_stat: float</span>
+<span class="sd">        :param max_chi_square: The maximum chi-square value used for normalization, defaults to 1000.</span>
+<span class="sd">        :type max_chi_square: int, optional</span>
+<span class="sd">        :return: The normalized chi-square score.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">normalized_score</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">chi_square_stat</span> <span class="o">/</span> <span class="n">max_chi_square</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">normalized_score</span></div>
+
+        
+<div class="viewcode-block" id="GoodnessOfFit.normalise_weights">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.normalise_weights">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">normalise_weights</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Normalize a list of weights to sum to 1.</span>
+
+<span class="sd">        :param weights: The list of weights to normalize.</span>
+<span class="sd">        :type weights: list</span>
+<span class="sd">        :return: The normalized list of weights.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+        <span class="n">normalised_weights</span> <span class="o">=</span> <span class="p">[</span><span class="n">weight</span><span class="o">/</span><span class="n">total</span> <span class="k">for</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">normalised_weights</span></div>
+
+    
+    
+<div class="viewcode-block" id="GoodnessOfFit.calculate_overall_fit">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.calculate_overall_fit">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">calculate_overall_fit</span><span class="p">(</span><span class="n">scores</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the overall fit score based on a set of individual scores.</span>
+
+<span class="sd">        :param scores: A list of individual scores.</span>
+<span class="sd">        :type scores: list</span>
+<span class="sd">        :return: A tuple containing the unweighted score and the weighted score.</span>
+<span class="sd">        :rtype: tuple (float, float)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hard_compliance_weight</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">primary_compliance_weight</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="n">secondary_compliance_weight</span> <span class="o">=</span> <span class="mi">7</span>
+        <span class="n">skill_distribution_weight</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="n">utilisation_rate_weight</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="n">time_distribution_weight</span> <span class="o">=</span> <span class="mi">2</span>
+        
+        <span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="n">hard_compliance_weight</span><span class="p">,</span>
+                   <span class="n">primary_compliance_weight</span><span class="p">,</span> 
+                   <span class="n">secondary_compliance_weight</span><span class="p">,</span>
+                   <span class="n">skill_distribution_weight</span><span class="p">,</span>
+                   <span class="n">utilisation_rate_weight</span><span class="p">,</span>
+                   <span class="n">time_distribution_weight</span><span class="p">]</span>
+        
+        <span class="n">normalised_weights</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">normalise_weights</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+        
+        <span class="n">unweighted_score</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+        <span class="n">weighted_score</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">score</span> <span class="k">for</span> <span class="n">weight</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">normalised_weights</span><span class="p">,</span> <span class="n">scores</span><span class="p">))</span>
+        
+        <span class="k">return</span> <span class="n">unweighted_score</span><span class="p">,</span> <span class="n">weighted_score</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.convert_seconds_to_hms">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.convert_seconds_to_hms">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">convert_seconds_to_hms</span><span class="p">(</span><span class="n">seconds</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a time duration from seconds to hours, minutes, and seconds.</span>
+
+<span class="sd">        :param seconds: The time duration in seconds.</span>
+<span class="sd">        :type seconds: int</span>
+<span class="sd">        :return: A tuple containing hours, minutes, and seconds.</span>
+<span class="sd">        :rtype: tuple (int, int, int)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hours</span> <span class="o">=</span> <span class="n">seconds</span> <span class="o">//</span> <span class="mi">3600</span>
+        <span class="n">remaining_seconds</span> <span class="o">=</span> <span class="n">seconds</span> <span class="o">%</span> <span class="mi">3600</span>
+        <span class="n">minutes</span> <span class="o">=</span> <span class="n">remaining_seconds</span> <span class="o">//</span> <span class="mi">60</span>
+        <span class="n">seconds</span> <span class="o">=</span> <span class="n">remaining_seconds</span> <span class="o">%</span> <span class="mi">60</span>
+        <span class="k">return</span> <span class="n">hours</span><span class="p">,</span> <span class="n">minutes</span><span class="p">,</span> <span class="n">seconds</span></div>
+
+    
+<div class="viewcode-block" id="GoodnessOfFit.generate_report">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.goodness_of_fit.GoodnessOfFit.generate_report">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a comprehensive report on the goodness of fit, including various metrics and their compliance scores.</span>
+
+<span class="sd">        :param elapsed_time: The time taken for the allocation process, in seconds. Defaults to 0 if time isn&#39;t provided</span>
+<span class="sd">        :type elapsed_time: int</span>
+<span class="sd">        :return: A tuple containing the report string and a dictionary of results.</span>
+<span class="sd">        :rtype: tuple (str, dict)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c1">#Collect data</span>
+        <span class="n">no_error_message</span> <span class="o">=</span> <span class="s2">&quot;No Error Encountered&quot;</span>
+        <span class="n">e1</span> <span class="o">=</span> <span class="n">no_error_message</span>
+        <span class="n">e2</span> <span class="o">=</span> <span class="n">no_error_message</span>
+        <span class="n">e3</span> <span class="o">=</span> <span class="n">no_error_message</span>
+        <span class="n">e4</span> <span class="o">=</span> <span class="n">no_error_message</span>
+        <span class="n">e5</span> <span class="o">=</span> <span class="n">no_error_message</span>
+        <span class="n">e6</span> <span class="o">=</span> <span class="n">no_error_message</span>
+        <span class="n">e7</span> <span class="o">=</span> <span class="n">no_error_message</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">total_allocations</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">get_total_allocation</span><span class="p">()</span>
+            <span class="n">total_allocations_not_null</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">get_total_allocation_notnull</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total allocations </span><span class="si">{</span><span class="n">total_allocations</span><span class="si">}</span><span class="s2">. Not Null </span><span class="si">{</span><span class="n">total_allocations_not_null</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">e1</span> <span class="o">=</span> <span class="n">e</span>
+            <span class="n">total_allocations</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+            <span class="n">total_allocations_not_null</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">hard_compliance_score</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">get_hard_constraint_compliance</span><span class="p">()</span>
+            <span class="n">primary_compliance_score</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">get_primary_constraint_compliance</span><span class="p">()</span>
+            <span class="n">secondary_compliance_score</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">get_secondary_constraint_compliance</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Compliance Scores. Hard </span><span class="si">{</span><span class="n">hard_compliance_score</span><span class="si">}</span><span class="s2">, Primary </span><span class="si">{</span><span class="n">primary_compliance_score</span><span class="si">}</span><span class="s2">, Secondary </span><span class="si">{</span><span class="n">secondary_compliance_score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">e2</span> <span class="o">=</span> <span class="n">e</span>
+            <span class="n">hard_compliance_score</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+            <span class="n">primary_compliance_score</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+            <span class="n">secondary_compliance_score</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+        <span class="k">try</span><span class="p">:</span>    
+            <span class="n">skill_match_score</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">get_skill_match_score_distribution</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Skill Match: </span><span class="si">{</span><span class="n">skill_match_score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">e3</span> <span class="o">=</span> <span class="n">e</span>
+            <span class="n">skill_match_score</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">utilization_rate</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">get_utilisation_rate</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Utilisation rate </span><span class="si">{</span><span class="n">utilization_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">e4</span> <span class="o">=</span> <span class="n">e</span>
+            <span class="n">utilization_rate</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">chi_square_stat</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">get_demonstrator_time_load_balance_chi_square</span><span class="p">()</span>
+            <span class="n">normalized_chi_square</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">normalise_chi_square_stat</span><span class="p">(</span><span class="n">chi_square_stat</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chi Square Statistic </span><span class="si">{</span><span class="n">chi_square_stat</span><span class="si">}</span><span class="s2">. Normalised </span><span class="si">{</span><span class="n">normalized_chi_square</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">e5</span> <span class="o">=</span> <span class="n">e</span>
+            <span class="n">chi_square_stat</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+            <span class="n">normalized_chi_square</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">hard_compliance_score</span><span class="p">,</span>
+                      <span class="n">primary_compliance_score</span><span class="p">,</span>
+                      <span class="n">secondary_compliance_score</span><span class="p">,</span>
+                      <span class="n">skill_match_score</span><span class="p">,</span>
+                      <span class="n">utilization_rate</span><span class="p">,</span>
+                      <span class="n">normalized_chi_square</span><span class="p">]</span>
+            <span class="n">unweighted_score</span><span class="p">,</span> <span class="n">weighted_score</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">calculate_overall_fit</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Overall Scores - Weighted</span><span class="si">{</span><span class="n">weighted_score</span><span class="si">}</span><span class="s2">, Unweighted </span><span class="si">{</span><span class="n">unweighted_score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">e6</span> <span class="o">=</span> <span class="n">e</span>
+            <span class="n">unweighted_score</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+            <span class="n">weighted_score</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1">#Fix Later</span>
+            <span class="c1">#hard_ratio = GoodnessOfFit.get_ratio_hard_constraint()</span>
+            <span class="c1">#primary_ratio = GoodnessOfFit.get_ratio_primary_constraint()</span>
+            <span class="c1">#secondary_ratio = GoodnessOfFit.get_ratio_secondary_constraint()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Constraint Ratio - Hard </span><span class="si">{</span><span class="n">hard_ratio</span><span class="si">}</span><span class="s2">, Primary </span><span class="si">{</span><span class="n">primary_ratio</span><span class="si">}</span><span class="s2">, Secondary </span><span class="si">{</span><span class="n">secondary_ratio</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">e7</span> <span class="o">=</span> <span class="n">e</span>
+            <span class="n">hard_ratio</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+            <span class="n">primary_ratio</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+            <span class="n">secondary_ratio</span> <span class="o">=</span> <span class="s2">&quot;Error&quot;</span>
+        
+        
+        <span class="n">results_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;total_allocations&quot;</span><span class="p">:</span> <span class="n">total_allocations</span><span class="p">,</span>
+            <span class="s2">&quot;total_allocations_not_null&quot;</span><span class="p">:</span> <span class="n">total_allocations_not_null</span><span class="p">,</span>
+            <span class="s2">&quot;hard_ratio&quot;</span><span class="p">:</span> <span class="n">hard_ratio</span><span class="p">,</span>
+            <span class="s2">&quot;primary_ratio&quot;</span><span class="p">:</span> <span class="n">primary_ratio</span><span class="p">,</span>
+            <span class="s2">&quot;secondary_ratio&quot;</span><span class="p">:</span> <span class="n">secondary_ratio</span><span class="p">,</span> 
+            <span class="s2">&quot;hard_compliance_score&quot;</span><span class="p">:</span> <span class="n">hard_compliance_score</span><span class="p">,</span>
+            <span class="s2">&quot;primary_compliance_score&quot;</span><span class="p">:</span> <span class="n">primary_compliance_score</span><span class="p">,</span>
+            <span class="s2">&quot;secondary_compliance_score&quot;</span><span class="p">:</span>  <span class="n">secondary_compliance_score</span><span class="p">,</span>
+            <span class="s2">&quot;skill_match_score&quot;</span> <span class="p">:</span> <span class="n">skill_match_score</span><span class="p">,</span>
+            <span class="s2">&quot;utilization_rate&quot;</span> <span class="p">:</span> <span class="n">utilization_rate</span><span class="p">,</span>
+            <span class="s2">&quot;chi_square_stat&quot;</span> <span class="p">:</span> <span class="n">chi_square_stat</span><span class="p">,</span>
+            <span class="s2">&quot;normalized_chi_square&quot;</span> <span class="p">:</span> <span class="n">normalized_chi_square</span><span class="p">,</span>
+            <span class="s2">&quot;unweighted_score&quot;</span> <span class="p">:</span> <span class="n">unweighted_score</span><span class="p">,</span> 
+            <span class="s2">&quot;weighted_score&quot;</span> <span class="p">:</span> <span class="n">weighted_score</span>
+        <span class="p">}</span>
+        
+        <span class="n">hour</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="n">sec</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">convert_seconds_to_hms</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span> 
+        <span class="c1">#Report</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        # Allocation System Goodness of Fit Report</span>
+<span class="s2">    **Key Findings:**</span>
+<span class="s2">    - **Total Allocations:** </span><span class="si">{</span><span class="n">total_allocations</span><span class="si">}</span>
+<span class="s2">    - **Total Approved Allocations:** </span><span class="si">{</span><span class="n">total_allocations_not_null</span><span class="si">}</span>
+<span class="s2">    - **Overall Weighted Score:** </span><span class="si">{</span><span class="n">weighted_score</span><span class="si">}</span>
+<span class="s2">    - **Hard Constraint Compliance:** </span><span class="si">{</span><span class="n">hard_compliance_score</span><span class="si">}</span>
+<span class="s2">    - **Total Time Taken for Allocation:** </span><span class="si">{</span><span class="n">hour</span><span class="si">}</span><span class="s2">hr:</span><span class="si">{</span><span class="nb">min</span><span class="si">}</span><span class="s2">min:</span><span class="si">{</span><span class="n">sec</span><span class="si">}</span><span class="s2">sec</span>
+<span class="s2">    </span>
+<span class="s2">    **Detailed Findings**</span>
+<span class="s2">    ## Detailed Results</span>
+<span class="s2">    ### Overall Fit Scores</span>
+<span class="s2">    - **Unweighted Score:** </span><span class="si">{</span><span class="n">unweighted_score</span><span class="si">}</span>
+<span class="s2">    - **Weighted Score:** </span><span class="si">{</span><span class="n">weighted_score</span><span class="si">}</span>
+<span class="s2">    </span>
+<span class="s2">    ### Valid Demonstrators : Allocation Ratio</span>
+<span class="s2">    - **Hard Constraints** </span><span class="si">{</span><span class="n">hard_ratio</span><span class="si">}</span>
+<span class="s2">    - **Primary Constraints** </span><span class="si">{</span><span class="n">primary_ratio</span><span class="si">}</span>
+<span class="s2">    - **Secondary Constraints** </span><span class="si">{</span><span class="n">secondary_ratio</span><span class="si">}</span>
+
+<span class="s2">    ### Constraint Compliance</span>
+<span class="s2">    - **Hard Constraints:** </span><span class="si">{</span><span class="n">hard_compliance_score</span><span class="si">}</span>
+<span class="s2">    - **Primary Soft Constraints:** </span><span class="si">{</span><span class="n">primary_compliance_score</span><span class="si">}</span>
+<span class="s2">    - **Secondary Soft Constraints:** </span><span class="si">{</span><span class="n">secondary_compliance_score</span><span class="si">}</span>
+
+<span class="s2">    ### Skill Match Quality</span>
+<span class="s2">    - **Average Skill Match Score:** </span><span class="si">{</span><span class="n">skill_match_score</span><span class="si">}</span>
+
+<span class="s2">    ### Demonstrator Utilization Rate</span>
+<span class="s2">    - **Utilization Rate:** </span><span class="si">{</span><span class="n">utilization_rate</span><span class="si">}</span>
+
+<span class="s2">    ### Time Load Balance (Chi-Square Test)</span>
+<span class="s2">    - **Chi-Square Statistic:** </span><span class="si">{</span><span class="n">chi_square_stat</span><span class="si">}</span>
+<span class="s2">    - **Normalized Score:** </span><span class="si">{</span><span class="n">normalized_chi_square</span><span class="si">}</span>
+<span class="s2">        </span>
+<span class="s2">        ### Error Messages</span>
+<span class="s2">        - Total allocation </span><span class="si">{</span><span class="n">e1</span><span class="si">}</span>
+<span class="s2">        - Compliance score </span><span class="si">{</span><span class="n">e2</span><span class="si">}</span>
+<span class="s2">        - Skill Match score </span><span class="si">{</span><span class="n">e3</span><span class="si">}</span>
+<span class="s2">        - Utilisation rate </span><span class="si">{</span><span class="n">e4</span><span class="si">}</span>
+<span class="s2">        - Chi square Test </span><span class="si">{</span><span class="n">e5</span><span class="si">}</span>
+<span class="s2">        - Overall Fit </span><span class="si">{</span><span class="n">e6</span><span class="si">}</span>
+<span class="s2">        - Constraint Ratio </span><span class="si">{</span><span class="n">e7</span><span class="si">}</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+        
+        <span class="k">return</span> <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

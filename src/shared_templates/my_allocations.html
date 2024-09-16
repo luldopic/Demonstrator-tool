@@ -1,0 +1,31 @@
+{% extends 'master.html' %}
+
+{% block title %}
+    My Allocations
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>My Allocations</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Class Code</th>
+                <th>Session Type</th>
+                <th>Required Skills</th>
+                <th>See Class Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for allocation in allocation_data %}
+                <tr>
+                    <td>{{ allocation.class_code }}</td>
+                    <td>{{ allocation.session_type }}</td>
+                    <td>{{ allocation.required_skills }}</td>
+                    <td><a href="{% url 'module_detail' allocation.class_code %}" class="btn btn-info">Details</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

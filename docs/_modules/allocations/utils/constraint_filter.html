@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>allocations.utils.constraint_filter &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">allocations.utils.constraint_filter</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for allocations.utils.constraint_filter</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">gettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">allocations.utils</span> <span class="kn">import</span> <span class="n">constraint_manager</span> <span class="k">as</span> <span class="n">cm</span>
+
+<div class="viewcode-block" id="ConstrantFilterQuery">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_filter.ConstrantFilterQuery">[docs]</a>
+<span class="k">class</span> <span class="nc">ConstrantFilterQuery</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `ConstrantFilterQuery` class provides a set of static methods for filtering allocations based on various </span>
+<span class="sd">    hard and soft constraints. These methods are used to narrow down the list of allocations to those that meet </span>
+<span class="sd">    specific criteria as defined by the constraint managers.</span>
+
+<span class="sd">    The filtering process includes applying hard constraints, primary soft constraints, and secondary soft constraints </span>
+<span class="sd">    to ensure that only allocations meeting the necessary conditions are selected.</span>
+
+<span class="sd">    :param queryset: A Django QuerySet containing the allocations to be filtered.</span>
+<span class="sd">    :type queryset: QuerySet</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ConstrantFilterQuery.filter_allocations_by_hard_constraints">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_filter.ConstrantFilterQuery.filter_allocations_by_hard_constraints">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">filter_allocations_by_hard_constraints</span><span class="p">(</span><span class="n">queryset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter allocations by applying hard constraints. Only allocations where the demonstrator is not </span>
+<span class="sd">        double booked, fully available, and the allocation has not been previously approved are considered valid.</span>
+
+<span class="sd">        :param queryset: The queryset of allocations to filter.</span>
+<span class="sd">        :type queryset: QuerySet</span>
+<span class="sd">        :return: A queryset of allocations that satisfy all hard constraints.</span>
+<span class="sd">        :rtype: QuerySet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid_allocations</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">queryset</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">cm</span><span class="o">.</span><span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstrator_not_double_booked</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="n">cm</span><span class="o">.</span><span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstator_available_for_all</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="n">cm</span><span class="o">.</span><span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_allocation_not_previously_approved</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">!=</span> <span class="kc">None</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">valid_allocations</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="ConstrantFilterQuery.filter_allocations_by_hard_constraints_post_approve">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_filter.ConstrantFilterQuery.filter_allocations_by_hard_constraints_post_approve">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">filter_allocations_by_hard_constraints_post_approve</span><span class="p">(</span><span class="n">queryset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter allocations by applying hard constraints, excluding the check for previous approval. </span>
+<span class="sd">        This is typically used post-approval to ensure all remaining constraints are met.</span>
+
+<span class="sd">        :param queryset: The queryset of allocations to filter.</span>
+<span class="sd">        :type queryset: QuerySet</span>
+<span class="sd">        :return: A queryset of allocations that satisfy the remaining hard constraints.</span>
+<span class="sd">        :rtype: QuerySet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid_allocations</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">queryset</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">cm</span><span class="o">.</span><span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstrator_not_double_booked</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="n">cm</span><span class="o">.</span><span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstator_available_for_all</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">!=</span> <span class="kc">None</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">valid_allocations</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="ConstrantFilterQuery.filter_allocation_by_primary_soft_constraints">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_filter.ConstrantFilterQuery.filter_allocation_by_primary_soft_constraints">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">filter_allocation_by_primary_soft_constraints</span><span class="p">(</span><span class="n">queryset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter allocations by applying primary soft constraints. Valid allocations must have half of the </span>
+<span class="sd">        required demonstrators and must have demonstrators with beginner skill level.</span>
+
+<span class="sd">        :param queryset: The queryset of allocations to filter.</span>
+<span class="sd">        :type queryset: QuerySet</span>
+<span class="sd">        :return: A queryset of allocations that satisfy the primary soft constraints.</span>
+<span class="sd">        :rtype: QuerySet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid_allocations</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">queryset</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">cm</span><span class="o">.</span><span class="n">PrimaryConstraintManager</span><span class="o">.</span><span class="n">session_has_half_demonstrators</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="n">cm</span><span class="o">.</span><span class="n">PrimaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_beginner_skill</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">!=</span> <span class="kc">None</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">valid_allocations</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="ConstrantFilterQuery.filter_allocation_by_secondary_soft_constraints">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_filter.ConstrantFilterQuery.filter_allocation_by_secondary_soft_constraints">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">filter_allocation_by_secondary_soft_constraints</span><span class="p">(</span><span class="n">queryset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter allocations by applying secondary soft constraints. Valid allocations must have all required </span>
+<span class="sd">        demonstrators and demonstrators with the necessary skill level or higher.</span>
+
+<span class="sd">        :param queryset: The queryset of allocations to filter.</span>
+<span class="sd">        :type queryset: QuerySet</span>
+<span class="sd">        :return: A queryset of allocations that satisfy the secondary soft constraints.</span>
+<span class="sd">        :rtype: QuerySet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid_allocations</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">queryset</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">cm</span><span class="o">.</span><span class="n">SecondaryConstraintManager</span><span class="o">.</span><span class="n">session_has_all_demonstrators</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="n">cm</span><span class="o">.</span><span class="n">SecondaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_skill_or_higher</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">!=</span> <span class="kc">None</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">valid_allocations</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="HardConstraintFilter">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_filter.HardConstraintFilter">[docs]</a>
+<span class="k">class</span> <span class="nc">HardConstraintFilter</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">SimpleListFilter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `HardConstraintFilter` class is a Django admin filter used to filter allocations in the admin interface </span>
+<span class="sd">    based on hard constraints. The filter provides options to display allocations that pass all hard constraints </span>
+<span class="sd">    or fail specific checks.</span>
+
+<span class="sd">    :param title: The title of the filter as displayed in the admin interface.</span>
+<span class="sd">    :type title: str</span>
+<span class="sd">    :param parameter_name: The query parameter used in the admin interface to select the filter option.</span>
+<span class="sd">    :type parameter_name: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">title</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;hard constraints&#39;</span><span class="p">)</span>
+    <span class="n">parameter_name</span> <span class="o">=</span> <span class="s1">&#39;hard_constraints&#39;</span>
+
+<div class="viewcode-block" id="HardConstraintFilter.lookups">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_filter.HardConstraintFilter.lookups">[docs]</a>
+    <span class="k">def</span> <span class="nf">lookups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">model_admin</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the filter options for the hard constraints.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :param model_admin: The model admin class where this filter is applied.</span>
+<span class="sd">        :type model_admin: ModelAdmin</span>
+<span class="sd">        :return: A tuple of filter options.</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">(</span><span class="s1">&#39;all_pass&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;All Pass&#39;</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s1">&#39;fail_double_book&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Fail - Demonstrator Double Booked&#39;</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s1">&#39;fail_demonstrator_available&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Fail - Demonstrator not Fully Available&#39;</span><span class="p">)),</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HardConstraintFilter.queryset">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_filter.HardConstraintFilter.queryset">[docs]</a>
+    <span class="k">def</span> <span class="nf">queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter the queryset of allocations based on the selected hard constraint option.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :param queryset: The queryset of allocations to filter.</span>
+<span class="sd">        :type queryset: QuerySet</span>
+<span class="sd">        :return: A filtered queryset based on the selected hard constraint option.</span>
+<span class="sd">        :rtype: QuerySet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;all_pass&#39;</span><span class="p">:</span>
+            <span class="n">valid_allocations</span> <span class="o">=</span> <span class="n">ConstrantFilterQuery</span><span class="o">.</span><span class="n">filter_allocations_by_hard_constraints</span><span class="p">(</span><span class="n">queryset</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">valid_allocations</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;fail_double_book&#39;</span><span class="p">:</span>
+            <span class="n">valid_allocations</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">allocation</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">queryset</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">cm</span><span class="o">.</span><span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstrator_not_double_booked</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">valid_allocations</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;fail_demonstrator_available&#39;</span><span class="p">:</span>
+            <span class="n">valid_allocations</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">allocation</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">queryset</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">cm</span><span class="o">.</span><span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstator_available_for_all</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">valid_allocations</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">queryset</span></div>
+</div>
+
+    
+<div class="viewcode-block" id="SoftPrimaryConstraintFilter">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_filter.SoftPrimaryConstraintFilter">[docs]</a>
+<span class="k">class</span> <span class="nc">SoftPrimaryConstraintFilter</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">SimpleListFilter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `SoftPrimaryConstraintFilter` class is a Django admin filter used to filter allocations in the admin interface </span>
+<span class="sd">    based on primary soft constraints. The filter provides options to display allocations that pass all primary </span>
+<span class="sd">    soft constraints or fail specific checks.</span>
+
+<span class="sd">    :param title: The title of the filter as displayed in the admin interface.</span>
+<span class="sd">    :type title: str</span>
+<span class="sd">    :param parameter_name: The query parameter used in the admin interface to select the filter option.</span>
+<span class="sd">    :type parameter_name: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;primary soft constraints&quot;</span><span class="p">)</span>
+    <span class="n">parameter_name</span> <span class="o">=</span> <span class="s2">&quot;soft_primary_constraints&quot;</span>
+
+<div class="viewcode-block" id="SoftPrimaryConstraintFilter.lookups">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_filter.SoftPrimaryConstraintFilter.lookups">[docs]</a>
+    <span class="k">def</span> <span class="nf">lookups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">model_admin</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the filter options for the primary soft constraints.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :param model_admin: The model admin class where this filter is applied.</span>
+<span class="sd">        :type model_admin: ModelAdmin</span>
+<span class="sd">        :return: A tuple of filter options.</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">(</span><span class="s1">&#39;all_pass&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;All Pass&#39;</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s1">&#39;fail_half_demonstrator&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Fail - Missing Demonstrators (need half)&#39;</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s1">&#39;fail_beginner_skill&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Fail - Demonstrator missing competence&#39;</span><span class="p">)),</span>
+        <span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="SoftPrimaryConstraintFilter.queryset">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_filter.SoftPrimaryConstraintFilter.queryset">[docs]</a>
+    <span class="k">def</span> <span class="nf">queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter the queryset of allocations based on the selected primary soft constraint option.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :param queryset: The queryset of allocations to filter.</span>
+<span class="sd">        :type queryset: QuerySet</span>
+<span class="sd">        :return: A filtered queryset based on the selected primary soft constraint option.</span>
+<span class="sd">        :rtype: QuerySet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;all_pass&#39;</span><span class="p">:</span>
+            <span class="n">valid_allocations</span> <span class="o">=</span> <span class="n">ConstrantFilterQuery</span><span class="o">.</span><span class="n">filter_allocation_by_primary_soft_constraints</span><span class="p">(</span><span class="n">queryset</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">valid_allocations</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;fail_half_demonstrator&#39;</span><span class="p">:</span>
+            <span class="n">valid_allocations</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">allocation</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">queryset</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">cm</span><span class="o">.</span><span class="n">PrimaryConstraintManager</span><span class="o">.</span><span class="n">session_has_half_demonstrators</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">valid_allocations</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;fail_beginner_skill&#39;</span><span class="p">:</span>
+            <span class="n">valid_allocations</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">allocation</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">queryset</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">cm</span><span class="o">.</span><span class="n">PrimaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_beginner_skill</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">valid_allocations</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">queryset</span></div>
+</div>
+
+        
+<div class="viewcode-block" id="SoftSecondaryConstraintFilter">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_filter.SoftSecondaryConstraintFilter">[docs]</a>
+<span class="k">class</span> <span class="nc">SoftSecondaryConstraintFilter</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">SimpleListFilter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `SoftSecondaryConstraintFilter` class is a Django admin filter used to filter allocations in the admin interface </span>
+<span class="sd">    based on secondary soft constraints. The filter provides options to display allocations that pass all secondary </span>
+<span class="sd">    soft constraints or fail specific checks.</span>
+
+<span class="sd">    :param title: The title of the filter as displayed in the admin interface.</span>
+<span class="sd">    :type title: str</span>
+<span class="sd">    :param parameter_name: The query parameter used in the admin interface to select the filter option.</span>
+<span class="sd">    :type parameter_name: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;secondary soft constraints&quot;</span><span class="p">)</span>
+    <span class="n">parameter_name</span> <span class="o">=</span> <span class="s2">&quot;soft_secondary_constraints&quot;</span>
+
+<div class="viewcode-block" id="SoftSecondaryConstraintFilter.lookups">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_filter.SoftSecondaryConstraintFilter.lookups">[docs]</a>
+    <span class="k">def</span> <span class="nf">lookups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">model_admin</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the filter options for the secondary soft constraints.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :param model_admin: The model admin class where this filter is applied.</span>
+<span class="sd">        :type model_admin: ModelAdmin</span>
+<span class="sd">        :return: A tuple of filter options.</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">(</span><span class="s1">&#39;all_pass&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;All Pass&#39;</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s1">&#39;fail_all_demonstrator&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Fail - Missing Demonstrators&#39;</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s1">&#39;fail_required_skill&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Fail - Demonstrator missing competence at required level&#39;</span><span class="p">)),</span>
+        <span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="SoftSecondaryConstraintFilter.queryset">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_filter.SoftSecondaryConstraintFilter.queryset">[docs]</a>
+    <span class="k">def</span> <span class="nf">queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter the queryset of allocations based on the selected secondary soft constraint option.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :param queryset: The queryset of allocations to filter.</span>
+<span class="sd">        :type queryset: QuerySet</span>
+<span class="sd">        :return: A filtered queryset based on the selected secondary soft constraint option.</span>
+<span class="sd">        :rtype: QuerySet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;all_pass&#39;</span><span class="p">:</span>
+            <span class="n">valid_allocations</span> <span class="o">=</span> <span class="n">ConstrantFilterQuery</span><span class="o">.</span><span class="n">filter_allocation_by_secondary_soft_constraints</span><span class="p">(</span><span class="n">queryset</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">valid_allocations</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;fail_all_demonstrator&#39;</span><span class="p">:</span>
+            <span class="n">valid_allocations</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">allocation</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">queryset</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">cm</span><span class="o">.</span><span class="n">SecondaryConstraintManager</span><span class="o">.</span><span class="n">session_has_all_demonstrators</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">valid_allocations</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;fail_required_skill&#39;</span><span class="p">:</span>
+            <span class="n">valid_allocations</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">allocation</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">queryset</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">cm</span><span class="o">.</span><span class="n">SecondaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_skill_or_higher</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">valid_allocations</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">queryset</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

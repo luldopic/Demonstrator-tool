@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests package &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="tests.admin package" href="tests.admin.html" />
+    <link rel="prev" title="manage module" href="manage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_issues.html">Known Issues</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API References</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="admin.html">admin package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.html">allocations package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html">classes package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demonstrator_timetabling_tool.html">demonstrator_timetabling_tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">tests package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html">tests.admin package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html">tests.allocation_eval package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html">tests.models package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html">tests.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.views.html">tests.views package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-tests">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="timetable.html">timetable package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="users.html">users package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API References</a></li>
+      <li class="breadcrumb-item active">tests package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tests.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tests-package">
+<h1>tests package<a class="headerlink" href="#tests-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tests.admin.html">tests.admin package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tests.admin.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.admin.html#module-tests.admin.test_allocation_admin">tests.admin.test_allocation_admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.admin.html#module-tests.admin.test_classes_admin">tests.admin.test_classes_admin module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.CompetencyAdminTest"><code class="docutils literal notranslate"><span class="pre">CompetencyAdminTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.CompetencyAdminTest.setUp"><code class="docutils literal notranslate"><span class="pre">CompetencyAdminTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.CompetencyAdminTest.test_list_display"><code class="docutils literal notranslate"><span class="pre">CompetencyAdminTest.test_list_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.CompetencyAdminTest.test_search_fields"><code class="docutils literal notranslate"><span class="pre">CompetencyAdminTest.test_search_fields()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.ModuleAdminTest"><code class="docutils literal notranslate"><span class="pre">ModuleAdminTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.ModuleAdminTest.setUp"><code class="docutils literal notranslate"><span class="pre">ModuleAdminTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.ModuleAdminTest.test_list_display"><code class="docutils literal notranslate"><span class="pre">ModuleAdminTest.test_list_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.ModuleAdminTest.test_num_schedules"><code class="docutils literal notranslate"><span class="pre">ModuleAdminTest.test_num_schedules()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.ModuleAdminTest.test_num_sessions"><code class="docutils literal notranslate"><span class="pre">ModuleAdminTest.test_num_sessions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.ModuleAdminTest.test_view_module_sessions"><code class="docutils literal notranslate"><span class="pre">ModuleAdminTest.test_view_module_sessions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.ModuleSessionAdminTest"><code class="docutils literal notranslate"><span class="pre">ModuleSessionAdminTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.ModuleSessionAdminTest.setUp"><code class="docutils literal notranslate"><span class="pre">ModuleSessionAdminTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.ModuleSessionAdminTest.test_ensure_correct_allocation"><code class="docutils literal notranslate"><span class="pre">ModuleSessionAdminTest.test_ensure_correct_allocation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.ModuleSessionAdminTest.test_list_display"><code class="docutils literal notranslate"><span class="pre">ModuleSessionAdminTest.test_list_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.ModuleSessionAdminTest.test_total_required_demonstrators"><code class="docutils literal notranslate"><span class="pre">ModuleSessionAdminTest.test_total_required_demonstrators()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.RequirementsAdminTest"><code class="docutils literal notranslate"><span class="pre">RequirementsAdminTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.RequirementsAdminTest.setUp"><code class="docutils literal notranslate"><span class="pre">RequirementsAdminTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.RequirementsAdminTest.test_list_display"><code class="docutils literal notranslate"><span class="pre">RequirementsAdminTest.test_list_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.RequirementsAdminTest.test_search_fields"><code class="docutils literal notranslate"><span class="pre">RequirementsAdminTest.test_search_fields()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.SessionScheduleAdminTest"><code class="docutils literal notranslate"><span class="pre">SessionScheduleAdminTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.SessionScheduleAdminTest.setUp"><code class="docutils literal notranslate"><span class="pre">SessionScheduleAdminTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.SessionScheduleAdminTest.test_list_display"><code class="docutils literal notranslate"><span class="pre">SessionScheduleAdminTest.test_list_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.SessionScheduleAdminTest.test_search_fields"><code class="docutils literal notranslate"><span class="pre">SessionScheduleAdminTest.test_search_fields()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.SkillAdminTest"><code class="docutils literal notranslate"><span class="pre">SkillAdminTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.SkillAdminTest.setUp"><code class="docutils literal notranslate"><span class="pre">SkillAdminTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.SkillAdminTest.test_save_model"><code class="docutils literal notranslate"><span class="pre">SkillAdminTest.test_save_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_classes_admin.SkillAdminTest.test_search_fields"><code class="docutils literal notranslate"><span class="pre">SkillAdminTest.test_search_fields()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.admin.html#module-tests.admin.test_timetable_admin">tests.admin.test_timetable_admin module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.admin.html#tests.admin.test_timetable_admin.SemesterAdminTest"><code class="docutils literal notranslate"><span class="pre">SemesterAdminTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_timetable_admin.SemesterAdminTest.setUp"><code class="docutils literal notranslate"><span class="pre">SemesterAdminTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_timetable_admin.SemesterAdminTest.test_list_display"><code class="docutils literal notranslate"><span class="pre">SemesterAdminTest.test_list_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_timetable_admin.SemesterAdminTest.test_search_fields"><code class="docutils literal notranslate"><span class="pre">SemesterAdminTest.test_search_fields()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.admin.html#tests.admin.test_timetable_admin.TimeslotAdminTest"><code class="docutils literal notranslate"><span class="pre">TimeslotAdminTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_timetable_admin.TimeslotAdminTest.setUp"><code class="docutils literal notranslate"><span class="pre">TimeslotAdminTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_timetable_admin.TimeslotAdminTest.test_list_display"><code class="docutils literal notranslate"><span class="pre">TimeslotAdminTest.test_list_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_timetable_admin.TimeslotAdminTest.test_ordering"><code class="docutils literal notranslate"><span class="pre">TimeslotAdminTest.test_ordering()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.admin.html#tests.admin.test_timetable_admin.UserAvailabilityAdminTest"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityAdminTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_timetable_admin.UserAvailabilityAdminTest.setUp"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityAdminTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_timetable_admin.UserAvailabilityAdminTest.test_get_search_results"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityAdminTest.test_get_search_results()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_timetable_admin.UserAvailabilityAdminTest.test_list_display"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityAdminTest.test_list_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_timetable_admin.UserAvailabilityAdminTest.test_search_fields"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityAdminTest.test_search_fields()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.admin.html#module-tests.admin.test_users_admin">tests.admin.test_users_admin module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.admin.html#tests.admin.test_users_admin.DemonstratorAdminTest"><code class="docutils literal notranslate"><span class="pre">DemonstratorAdminTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_users_admin.DemonstratorAdminTest.setUp"><code class="docutils literal notranslate"><span class="pre">DemonstratorAdminTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_users_admin.DemonstratorAdminTest.test_inlines"><code class="docutils literal notranslate"><span class="pre">DemonstratorAdminTest.test_inlines()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_users_admin.DemonstratorAdminTest.test_list_display"><code class="docutils literal notranslate"><span class="pre">DemonstratorAdminTest.test_list_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_users_admin.DemonstratorAdminTest.test_search_fields"><code class="docutils literal notranslate"><span class="pre">DemonstratorAdminTest.test_search_fields()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.admin.html#tests.admin.test_users_admin.LecturerAdminTest"><code class="docutils literal notranslate"><span class="pre">LecturerAdminTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_users_admin.LecturerAdminTest.setUp"><code class="docutils literal notranslate"><span class="pre">LecturerAdminTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_users_admin.LecturerAdminTest.test_inlines"><code class="docutils literal notranslate"><span class="pre">LecturerAdminTest.test_inlines()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_users_admin.LecturerAdminTest.test_list_display"><code class="docutils literal notranslate"><span class="pre">LecturerAdminTest.test_list_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_users_admin.LecturerAdminTest.test_search_fields"><code class="docutils literal notranslate"><span class="pre">LecturerAdminTest.test_search_fields()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.admin.html#tests.admin.test_users_admin.UserAdminTest"><code class="docutils literal notranslate"><span class="pre">UserAdminTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_users_admin.UserAdminTest.setUp"><code class="docutils literal notranslate"><span class="pre">UserAdminTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_users_admin.UserAdminTest.test_create_user_availability"><code class="docutils literal notranslate"><span class="pre">UserAdminTest.test_create_user_availability()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_users_admin.UserAdminTest.test_list_display"><code class="docutils literal notranslate"><span class="pre">UserAdminTest.test_list_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#tests.admin.test_users_admin.UserAdminTest.test_search_fields"><code class="docutils literal notranslate"><span class="pre">UserAdminTest.test_search_fields()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.admin.html#module-tests.admin">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.allocation_eval.html">tests.allocation_eval package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tests.allocation_eval.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.allocation_eval.html#module-tests.allocation_eval.test_strategy_analysis">tests.allocation_eval.test_strategy_analysis module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests"><code class="docutils literal notranslate"><span class="pre">StrategyTests</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.generate_demonstrators"><code class="docutils literal notranslate"><span class="pre">StrategyTests.generate_demonstrators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.setUp"><code class="docutils literal notranslate"><span class="pre">StrategyTests.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.setUpTestData"><code class="docutils literal notranslate"><span class="pre">StrategyTests.setUpTestData()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_double_ratio_five_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_double_ratio_five_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_double_ratio_one_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_double_ratio_one_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_double_ratio_single_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_double_ratio_single_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_double_ratio_ten_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_double_ratio_ten_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_double_ratio_twenty_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_double_ratio_twenty_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_equal_ratio_five_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_equal_ratio_five_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_equal_ratio_one_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_equal_ratio_one_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_equal_ratio_single_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_equal_ratio_single_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_equal_ratio_ten_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_equal_ratio_ten_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_equal_ratio_twenty_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_equal_ratio_twenty_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_half_ratio_five_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_half_ratio_five_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_half_ratio_one_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_half_ratio_one_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_half_ratio_single_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_half_ratio_single_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_half_ratio_ten_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_half_ratio_ten_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_half_ratio_twenty_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_half_ratio_twenty_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_quarter_ratio_five_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_quarter_ratio_five_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_quarter_ratio_one_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_quarter_ratio_one_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_quarter_ratio_single_size"><code class="docutils literal notranslate"><span class="pre">StrategyTests.test_quarter_ratio_single_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.time_for_allocation"><code class="docutils literal notranslate"><span class="pre">StrategyTests.time_for_allocation()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.allocation_eval.html#module-tests.allocation_eval">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.models.html">tests.models package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tests.models.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.models.html#module-tests.models.test_allocation_models">tests.models.test_allocation_models module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html#tests.models.test_allocation_models.AllocationDomainModelTest"><code class="docutils literal notranslate"><span class="pre">AllocationDomainModelTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_allocation_models.AllocationDomainModelTest.setUp"><code class="docutils literal notranslate"><span class="pre">AllocationDomainModelTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_allocation_models.AllocationDomainModelTest.test_add_hard_constraint_demonstrator"><code class="docutils literal notranslate"><span class="pre">AllocationDomainModelTest.test_add_hard_constraint_demonstrator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_allocation_models.AllocationDomainModelTest.test_add_primary_soft_constraint_demonstrator"><code class="docutils literal notranslate"><span class="pre">AllocationDomainModelTest.test_add_primary_soft_constraint_demonstrator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_allocation_models.AllocationDomainModelTest.test_add_secondary_soft_constraint_demonstrator"><code class="docutils literal notranslate"><span class="pre">AllocationDomainModelTest.test_add_secondary_soft_constraint_demonstrator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_allocation_models.AllocationDomainModelTest.test_add_tertiary_soft_constraint_demonstrator"><code class="docutils literal notranslate"><span class="pre">AllocationDomainModelTest.test_add_tertiary_soft_constraint_demonstrator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_allocation_models.AllocationDomainModelTest.test_create_allocation_domain"><code class="docutils literal notranslate"><span class="pre">AllocationDomainModelTest.test_create_allocation_domain()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html#tests.models.test_allocation_models.AllocationModelTest"><code class="docutils literal notranslate"><span class="pre">AllocationModelTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_allocation_models.AllocationModelTest.setUp"><code class="docutils literal notranslate"><span class="pre">AllocationModelTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_allocation_models.AllocationModelTest.test_allocate_demonstrator_to_null"><code class="docutils literal notranslate"><span class="pre">AllocationModelTest.test_allocate_demonstrator_to_null()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_allocation_models.AllocationModelTest.test_class_session_deletion"><code class="docutils literal notranslate"><span class="pre">AllocationModelTest.test_class_session_deletion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_allocation_models.AllocationModelTest.test_create_allocation"><code class="docutils literal notranslate"><span class="pre">AllocationModelTest.test_create_allocation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_allocation_models.AllocationModelTest.test_demonstrator_deletion"><code class="docutils literal notranslate"><span class="pre">AllocationModelTest.test_demonstrator_deletion()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html#tests.models.test_allocation_models.AllocationSignalTest"><code class="docutils literal notranslate"><span class="pre">AllocationSignalTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_allocation_models.AllocationSignalTest.setUp"><code class="docutils literal notranslate"><span class="pre">AllocationSignalTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_allocation_models.AllocationSignalTest.test_demonstrator_deletion_signal"><code class="docutils literal notranslate"><span class="pre">AllocationSignalTest.test_demonstrator_deletion_signal()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.models.html#module-tests.models.test_classes_models">tests.models.test_classes_models module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.CompetencyModelTest"><code class="docutils literal notranslate"><span class="pre">CompetencyModelTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.CompetencyModelTest.setUp"><code class="docutils literal notranslate"><span class="pre">CompetencyModelTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.CompetencyModelTest.test_create_competency"><code class="docutils literal notranslate"><span class="pre">CompetencyModelTest.test_create_competency()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.CompetencyModelTest.test_demonstrator_deletion"><code class="docutils literal notranslate"><span class="pre">CompetencyModelTest.test_demonstrator_deletion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.CompetencyModelTest.test_skill_deletion"><code class="docutils literal notranslate"><span class="pre">CompetencyModelTest.test_skill_deletion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.CompetencyModelTest.test_unique_together"><code class="docutils literal notranslate"><span class="pre">CompetencyModelTest.test_unique_together()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.CompetencyModelTest.test_verbose_name"><code class="docutils literal notranslate"><span class="pre">CompetencyModelTest.test_verbose_name()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleModelTest"><code class="docutils literal notranslate"><span class="pre">ModuleModelTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleModelTest.setUp"><code class="docutils literal notranslate"><span class="pre">ModuleModelTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleModelTest.test_count_sessions"><code class="docutils literal notranslate"><span class="pre">ModuleModelTest.test_count_sessions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleModelTest.test_create_module"><code class="docutils literal notranslate"><span class="pre">ModuleModelTest.test_create_module()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleModelTest.test_formatted_lecturer_name"><code class="docutils literal notranslate"><span class="pre">ModuleModelTest.test_formatted_lecturer_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleModelTest.test_formatted_semester"><code class="docutils literal notranslate"><span class="pre">ModuleModelTest.test_formatted_semester()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleModelTest.test_get_schedule"><code class="docutils literal notranslate"><span class="pre">ModuleModelTest.test_get_schedule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleModelTest.test_get_session_types"><code class="docutils literal notranslate"><span class="pre">ModuleModelTest.test_get_session_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleModelTest.test_has_conflict"><code class="docutils literal notranslate"><span class="pre">ModuleModelTest.test_has_conflict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleModelTest.test_lecturer_deletion"><code class="docutils literal notranslate"><span class="pre">ModuleModelTest.test_lecturer_deletion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleModelTest.test_semester_deletion"><code class="docutils literal notranslate"><span class="pre">ModuleModelTest.test_semester_deletion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleModelTest.test_update_lecturer_availability"><code class="docutils literal notranslate"><span class="pre">ModuleModelTest.test_update_lecturer_availability()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleSessionModelTest"><code class="docutils literal notranslate"><span class="pre">ModuleSessionModelTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleSessionModelTest.setUp"><code class="docutils literal notranslate"><span class="pre">ModuleSessionModelTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleSessionModelTest.test_create_module_session"><code class="docutils literal notranslate"><span class="pre">ModuleSessionModelTest.test_create_module_session()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleSessionModelTest.test_custom_save"><code class="docutils literal notranslate"><span class="pre">ModuleSessionModelTest.test_custom_save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleSessionModelTest.test_ensure_correct_allocation"><code class="docutils literal notranslate"><span class="pre">ModuleSessionModelTest.test_ensure_correct_allocation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleSessionModelTest.test_get_class_code"><code class="docutils literal notranslate"><span class="pre">ModuleSessionModelTest.test_get_class_code()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleSessionModelTest.test_get_timeslots"><code class="docutils literal notranslate"><span class="pre">ModuleSessionModelTest.test_get_timeslots()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.ModuleSessionModelTest.test_module_deletion"><code class="docutils literal notranslate"><span class="pre">ModuleSessionModelTest.test_module_deletion()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.RequirementSkillModelTest"><code class="docutils literal notranslate"><span class="pre">RequirementSkillModelTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.RequirementSkillModelTest.setUp"><code class="docutils literal notranslate"><span class="pre">RequirementSkillModelTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.RequirementSkillModelTest.test_class_session_deletion"><code class="docutils literal notranslate"><span class="pre">RequirementSkillModelTest.test_class_session_deletion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.RequirementSkillModelTest.test_create_requirement"><code class="docutils literal notranslate"><span class="pre">RequirementSkillModelTest.test_create_requirement()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.RequirementSkillModelTest.test_skill_deletion"><code class="docutils literal notranslate"><span class="pre">RequirementSkillModelTest.test_skill_deletion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.RequirementSkillModelTest.test_unique_together"><code class="docutils literal notranslate"><span class="pre">RequirementSkillModelTest.test_unique_together()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.SessionScheduleModelTest"><code class="docutils literal notranslate"><span class="pre">SessionScheduleModelTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.SessionScheduleModelTest.setUp"><code class="docutils literal notranslate"><span class="pre">SessionScheduleModelTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.SessionScheduleModelTest.test_class_session_deletion"><code class="docutils literal notranslate"><span class="pre">SessionScheduleModelTest.test_class_session_deletion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.SessionScheduleModelTest.test_create_session_schedule"><code class="docutils literal notranslate"><span class="pre">SessionScheduleModelTest.test_create_session_schedule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.SessionScheduleModelTest.test_timeslot_deletion"><code class="docutils literal notranslate"><span class="pre">SessionScheduleModelTest.test_timeslot_deletion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.SessionScheduleModelTest.test_unique_together"><code class="docutils literal notranslate"><span class="pre">SessionScheduleModelTest.test_unique_together()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.SkillManagerTest"><code class="docutils literal notranslate"><span class="pre">SkillManagerTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.SkillManagerTest.test_custom_create"><code class="docutils literal notranslate"><span class="pre">SkillManagerTest.test_custom_create()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.SkillManagerTest.test_value_error"><code class="docutils literal notranslate"><span class="pre">SkillManagerTest.test_value_error()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.SkillModelTest"><code class="docutils literal notranslate"><span class="pre">SkillModelTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.SkillModelTest.setUp"><code class="docutils literal notranslate"><span class="pre">SkillModelTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.SkillModelTest.test_create_skill"><code class="docutils literal notranslate"><span class="pre">SkillModelTest.test_create_skill()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_classes_models.SkillModelTest.test_unique_together"><code class="docutils literal notranslate"><span class="pre">SkillModelTest.test_unique_together()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.models.html#module-tests.models.test_timetable_models">tests.models.test_timetable_models module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html#tests.models.test_timetable_models.SemesterModelTest"><code class="docutils literal notranslate"><span class="pre">SemesterModelTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_timetable_models.SemesterModelTest.setUp"><code class="docutils literal notranslate"><span class="pre">SemesterModelTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_timetable_models.SemesterModelTest.test_semester_creation"><code class="docutils literal notranslate"><span class="pre">SemesterModelTest.test_semester_creation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_timetable_models.SemesterModelTest.test_semester_date_validation"><code class="docutils literal notranslate"><span class="pre">SemesterModelTest.test_semester_date_validation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_timetable_models.SemesterModelTest.test_unique_together"><code class="docutils literal notranslate"><span class="pre">SemesterModelTest.test_unique_together()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html#tests.models.test_timetable_models.TimeslotModelTest"><code class="docutils literal notranslate"><span class="pre">TimeslotModelTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_timetable_models.TimeslotModelTest.setUp"><code class="docutils literal notranslate"><span class="pre">TimeslotModelTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_timetable_models.TimeslotModelTest.test_are_same_day"><code class="docutils literal notranslate"><span class="pre">TimeslotModelTest.test_are_same_day()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_timetable_models.TimeslotModelTest.test_get_next"><code class="docutils literal notranslate"><span class="pre">TimeslotModelTest.test_get_next()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_timetable_models.TimeslotModelTest.test_get_random_slot"><code class="docutils literal notranslate"><span class="pre">TimeslotModelTest.test_get_random_slot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_timetable_models.TimeslotModelTest.test_timeslot_creation"><code class="docutils literal notranslate"><span class="pre">TimeslotModelTest.test_timeslot_creation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_timetable_models.TimeslotModelTest.test_timeslot_day_choices"><code class="docutils literal notranslate"><span class="pre">TimeslotModelTest.test_timeslot_day_choices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_timetable_models.TimeslotModelTest.test_unique_together"><code class="docutils literal notranslate"><span class="pre">TimeslotModelTest.test_unique_together()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.models.html#module-tests.models.test_users_models">tests.models.test_users_models module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.DemonstratorModelTest"><code class="docutils literal notranslate"><span class="pre">DemonstratorModelTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.DemonstratorModelTest.setUp"><code class="docutils literal notranslate"><span class="pre">DemonstratorModelTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.DemonstratorModelTest.test_assign_user_demonstrator_role"><code class="docutils literal notranslate"><span class="pre">DemonstratorModelTest.test_assign_user_demonstrator_role()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.DemonstratorModelTest.test_create_demonstrator_from_user"><code class="docutils literal notranslate"><span class="pre">DemonstratorModelTest.test_create_demonstrator_from_user()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.DemonstratorModelTest.test_delete_demonstrator"><code class="docutils literal notranslate"><span class="pre">DemonstratorModelTest.test_delete_demonstrator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.DemonstratorModelTest.test_get_first_name"><code class="docutils literal notranslate"><span class="pre">DemonstratorModelTest.test_get_first_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.DemonstratorModelTest.test_get_last_name"><code class="docutils literal notranslate"><span class="pre">DemonstratorModelTest.test_get_last_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.DemonstratorModelTest.test_is_available"><code class="docutils literal notranslate"><span class="pre">DemonstratorModelTest.test_is_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.DemonstratorModelTest.test_remove_demonstrator_role_from_user"><code class="docutils literal notranslate"><span class="pre">DemonstratorModelTest.test_remove_demonstrator_role_from_user()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.LecturerModelTest"><code class="docutils literal notranslate"><span class="pre">LecturerModelTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.LecturerModelTest.setUp"><code class="docutils literal notranslate"><span class="pre">LecturerModelTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.LecturerModelTest.test_assign_user_lecturer_role"><code class="docutils literal notranslate"><span class="pre">LecturerModelTest.test_assign_user_lecturer_role()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.LecturerModelTest.test_create_lecturer_from_user"><code class="docutils literal notranslate"><span class="pre">LecturerModelTest.test_create_lecturer_from_user()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.LecturerModelTest.test_delete_lecturer"><code class="docutils literal notranslate"><span class="pre">LecturerModelTest.test_delete_lecturer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.LecturerModelTest.test_get_first_name"><code class="docutils literal notranslate"><span class="pre">LecturerModelTest.test_get_first_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.LecturerModelTest.test_get_last_name"><code class="docutils literal notranslate"><span class="pre">LecturerModelTest.test_get_last_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.LecturerModelTest.test_is_available"><code class="docutils literal notranslate"><span class="pre">LecturerModelTest.test_is_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.LecturerModelTest.test_remove_lecturer_role_from_user"><code class="docutils literal notranslate"><span class="pre">LecturerModelTest.test_remove_lecturer_role_from_user()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.UserAvailabilityModelTest"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityModelTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.UserAvailabilityModelTest.setUp"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityModelTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.UserAvailabilityModelTest.test_availability_status"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityModelTest.test_availability_status()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.UserAvailabilityModelTest.test_create_user_availability"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityModelTest.test_create_user_availability()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.UserAvailabilityModelTest.test_timeslot_deletion"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityModelTest.test_timeslot_deletion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.UserAvailabilityModelTest.test_unique_together"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityModelTest.test_unique_together()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.UserAvailabilityModelTest.test_user_deletion"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityModelTest.test_user_deletion()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.UserModelTest"><code class="docutils literal notranslate"><span class="pre">UserModelTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.UserModelTest.setUp"><code class="docutils literal notranslate"><span class="pre">UserModelTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.UserModelTest.test_create_user"><code class="docutils literal notranslate"><span class="pre">UserModelTest.test_create_user()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.UserModelTest.test_fake_user"><code class="docutils literal notranslate"><span class="pre">UserModelTest.test_fake_user()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.UserModelTest.test_is_available"><code class="docutils literal notranslate"><span class="pre">UserModelTest.test_is_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.UserModelTest.test_str"><code class="docutils literal notranslate"><span class="pre">UserModelTest.test_str()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.UserModelTest.test_unique_email"><code class="docutils literal notranslate"><span class="pre">UserModelTest.test_unique_email()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.UserSignalsTest"><code class="docutils literal notranslate"><span class="pre">UserSignalsTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.UserSignalsTest.test_add_demonstrator_role_on_user_save"><code class="docutils literal notranslate"><span class="pre">UserSignalsTest.test_add_demonstrator_role_on_user_save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#tests.models.test_users_models.UserSignalsTest.test_add_lecturer_role_on_user_create"><code class="docutils literal notranslate"><span class="pre">UserSignalsTest.test_add_lecturer_role_on_user_create()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.models.html#module-tests.models">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.utils.html">tests.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tests.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.utils.html#module-tests.utils.test_allocation_manager">tests.utils.test_allocation_manager module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.utils.html#tests.utils.test_allocation_manager.AllocationManagerTests"><code class="docutils literal notranslate"><span class="pre">AllocationManagerTests</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_allocation_manager.AllocationManagerTests.setUp"><code class="docutils literal notranslate"><span class="pre">AllocationManagerTests.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_allocation_manager.AllocationManagerTests.tearDown"><code class="docutils literal notranslate"><span class="pre">AllocationManagerTests.tearDown()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_allocation_manager.AllocationManagerTests.test_allocate_with_constraints"><code class="docutils literal notranslate"><span class="pre">AllocationManagerTests.test_allocate_with_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_allocation_manager.AllocationManagerTests.test_assign_demonstrators"><code class="docutils literal notranslate"><span class="pre">AllocationManagerTests.test_assign_demonstrators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_allocation_manager.AllocationManagerTests.test_get_demonstrators_by_hard_constraints"><code class="docutils literal notranslate"><span class="pre">AllocationManagerTests.test_get_demonstrators_by_hard_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_allocation_manager.AllocationManagerTests.test_get_demonstrators_by_primary_soft_constraints"><code class="docutils literal notranslate"><span class="pre">AllocationManagerTests.test_get_demonstrators_by_primary_soft_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_allocation_manager.AllocationManagerTests.test_get_demonstrators_by_secondary_soft_constraints"><code class="docutils literal notranslate"><span class="pre">AllocationManagerTests.test_get_demonstrators_by_secondary_soft_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_allocation_manager.AllocationManagerTests.test_get_solution_domain"><code class="docutils literal notranslate"><span class="pre">AllocationManagerTests.test_get_solution_domain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_allocation_manager.AllocationManagerTests.test_get_unallocated"><code class="docutils literal notranslate"><span class="pre">AllocationManagerTests.test_get_unallocated()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.utils.html#module-tests.utils.test_constraint_filter">tests.utils.test_constraint_filter module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_filter.ConstrantFilterQueryTests"><code class="docutils literal notranslate"><span class="pre">ConstrantFilterQueryTests</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_filter.ConstrantFilterQueryTests.setUp"><code class="docutils literal notranslate"><span class="pre">ConstrantFilterQueryTests.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_filter.ConstrantFilterQueryTests.test_filter_allocation_by_primary_soft_constraints"><code class="docutils literal notranslate"><span class="pre">ConstrantFilterQueryTests.test_filter_allocation_by_primary_soft_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_filter.ConstrantFilterQueryTests.test_filter_allocation_by_secondary_soft_constraints"><code class="docutils literal notranslate"><span class="pre">ConstrantFilterQueryTests.test_filter_allocation_by_secondary_soft_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_filter.ConstrantFilterQueryTests.test_filter_allocations_by_hard_constraints"><code class="docutils literal notranslate"><span class="pre">ConstrantFilterQueryTests.test_filter_allocations_by_hard_constraints()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.utils.html#module-tests.utils.test_constraint_manager">tests.utils.test_constraint_manager module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.BaseConstraintManagerTest"><code class="docutils literal notranslate"><span class="pre">BaseConstraintManagerTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.BaseConstraintManagerTest.setUp"><code class="docutils literal notranslate"><span class="pre">BaseConstraintManagerTest.setUp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.ConstraintManagerTest"><code class="docutils literal notranslate"><span class="pre">ConstraintManagerTest</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest"><code class="docutils literal notranslate"><span class="pre">HardConstraintManagerTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.setUp"><code class="docutils literal notranslate"><span class="pre">HardConstraintManagerTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_allocation_not_previously_approved_Normal"><code class="docutils literal notranslate"><span class="pre">HardConstraintManagerTest.test_is_allocation_not_previously_approved_Normal()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_allocation_not_previously_approved_already_approved"><code class="docutils literal notranslate"><span class="pre">HardConstraintManagerTest.test_is_allocation_not_previously_approved_already_approved()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_available_for_all_normal"><code class="docutils literal notranslate"><span class="pre">HardConstraintManagerTest.test_is_demonstrator_available_for_all_normal()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_available_for_all_not_available"><code class="docutils literal notranslate"><span class="pre">HardConstraintManagerTest.test_is_demonstrator_available_for_all_not_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_available_for_all_partial"><code class="docutils literal notranslate"><span class="pre">HardConstraintManagerTest.test_is_demonstrator_available_for_all_partial()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_not_booked_different_session_same_time"><code class="docutils literal notranslate"><span class="pre">HardConstraintManagerTest.test_is_demonstrator_not_booked_different_session_same_time()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_not_booked_normal"><code class="docutils literal notranslate"><span class="pre">HardConstraintManagerTest.test_is_demonstrator_not_booked_normal()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_not_booked_same_module_session"><code class="docutils literal notranslate"><span class="pre">HardConstraintManagerTest.test_is_demonstrator_not_booked_same_module_session()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest"><code class="docutils literal notranslate"><span class="pre">PrimaryConstraintManagerTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.setUp"><code class="docutils literal notranslate"><span class="pre">PrimaryConstraintManagerTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.test_demonstrator_has_beginner_skill_edge"><code class="docutils literal notranslate"><span class="pre">PrimaryConstraintManagerTest.test_demonstrator_has_beginner_skill_edge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.test_demonstrator_has_beginner_skill_normal"><code class="docutils literal notranslate"><span class="pre">PrimaryConstraintManagerTest.test_demonstrator_has_beginner_skill_normal()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.test_session_has_half_demonstrator_edge"><code class="docutils literal notranslate"><span class="pre">PrimaryConstraintManagerTest.test_session_has_half_demonstrator_edge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.test_session_has_half_demonstrator_normal"><code class="docutils literal notranslate"><span class="pre">PrimaryConstraintManagerTest.test_session_has_half_demonstrator_normal()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.SecondaryConstraintManagerTest"><code class="docutils literal notranslate"><span class="pre">SecondaryConstraintManagerTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.SecondaryConstraintManagerTest.setUp"><code class="docutils literal notranslate"><span class="pre">SecondaryConstraintManagerTest.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.SecondaryConstraintManagerTest.test_demonstrator_has_skill_or_higher"><code class="docutils literal notranslate"><span class="pre">SecondaryConstraintManagerTest.test_demonstrator_has_skill_or_higher()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.SecondaryConstraintManagerTest.test_has_all_demonstrator"><code class="docutils literal notranslate"><span class="pre">SecondaryConstraintManagerTest.test_has_all_demonstrator()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.SoftConstraintManageTest"><code class="docutils literal notranslate"><span class="pre">SoftConstraintManageTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.SoftConstraintManageTest.test_is_subset"><code class="docutils literal notranslate"><span class="pre">SoftConstraintManageTest.test_is_subset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.TertiaryConstraintManagerTest"><code class="docutils literal notranslate"><span class="pre">TertiaryConstraintManagerTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_constraint_manager.TertiaryConstraintManagerTest.setUp"><code class="docutils literal notranslate"><span class="pre">TertiaryConstraintManagerTest.setUp()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.utils.html#module-tests.utils.test_timetable_utils">tests.utils.test_timetable_utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.utils.html#tests.utils.test_timetable_utils.TimetableUtilTests"><code class="docutils literal notranslate"><span class="pre">TimetableUtilTests</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_timetable_utils.TimetableUtilTests.setUp"><code class="docutils literal notranslate"><span class="pre">TimetableUtilTests.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_timetable_utils.TimetableUtilTests.test_generate_timeslots"><code class="docutils literal notranslate"><span class="pre">TimetableUtilTests.test_generate_timeslots()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_timetable_utils.TimetableUtilTests.test_initialisation"><code class="docutils literal notranslate"><span class="pre">TimetableUtilTests.test_initialisation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#tests.utils.test_timetable_utils.TimetableUtilTests.test_populate_timetable"><code class="docutils literal notranslate"><span class="pre">TimetableUtilTests.test_populate_timetable()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.utils.html#module-tests.utils">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.views.html">tests.views package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tests.views.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.views.html#module-tests.views.test_user_views">tests.views.test_user_views module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.views.html#tests.views.test_user_views.UserViewsTests"><code class="docutils literal notranslate"><span class="pre">UserViewsTests</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.views.html#tests.views.test_user_views.UserViewsTests.setUp"><code class="docutils literal notranslate"><span class="pre">UserViewsTests.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.views.html#tests.views.test_user_views.UserViewsTests.test_dashboard_view"><code class="docutils literal notranslate"><span class="pre">UserViewsTests.test_dashboard_view()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.views.html#tests.views.test_user_views.UserViewsTests.test_home_view"><code class="docutils literal notranslate"><span class="pre">UserViewsTests.test_home_view()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.views.html#tests.views.test_user_views.UserViewsTests.test_user_login_view"><code class="docutils literal notranslate"><span class="pre">UserViewsTests.test_user_login_view()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.views.html#tests.views.test_user_views.UserViewsTests.test_user_logout_view"><code class="docutils literal notranslate"><span class="pre">UserViewsTests.test_user_logout_view()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.views.html#module-tests.views">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-tests">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tests" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="manage.html" class="btn btn-neutral float-left" title="manage module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests.admin.html" class="btn btn-neutral float-right" title="tests.admin package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

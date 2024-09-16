@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>classes.admin &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">classes.admin</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for classes.admin</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Sum</span><span class="p">,</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">django.db.models.query</span> <span class="kn">import</span> <span class="n">QuerySet</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpRequest</span><span class="p">,</span> <span class="n">HttpResponseRedirect</span>
+<span class="kn">from</span> <span class="nn">classes.models</span> <span class="kn">import</span> <span class="n">Module</span><span class="p">,</span> <span class="n">ModuleSession</span><span class="p">,</span> <span class="n">Skill</span><span class="p">,</span> <span class="n">RequirementSkill</span><span class="p">,</span> <span class="n">SessionSchedule</span><span class="p">,</span> <span class="n">Competency</span>
+<span class="kn">from</span> <span class="nn">classes.admin_inlines.skill_inline</span> <span class="kn">import</span> <span class="n">RequirementInline</span>
+<span class="kn">from</span> <span class="nn">classes.admin_inlines.module_session_inline</span> <span class="kn">import</span> <span class="n">ModuleSessionInline</span>
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">django.utils.html</span> <span class="kn">import</span> <span class="n">format_html</span>
+<span class="kn">from</span> <span class="nn">django.utils.http</span> <span class="kn">import</span> <span class="n">urlencode</span>
+
+
+
+<div class="viewcode-block" id="SkillAdmin">
+<a class="viewcode-back" href="../../classes.html#classes.admin.SkillAdmin">[docs]</a>
+<span class="k">class</span> <span class="nc">SkillAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `SkillAdmin` class customizes the Django admin interface for the `Skill` model. It includes search fields, </span>
+<span class="sd">    list displays, and fields for managing skills.</span>
+
+<span class="sd">    :param search_fields: Fields to include in the search functionality.</span>
+<span class="sd">    :type search_fields: list</span>
+<span class="sd">    :param list_display: Fields to display in the list view of the admin interface.</span>
+<span class="sd">    :type list_display: list</span>
+<span class="sd">    :param fields: Fields to include in the form for adding/editing skills.</span>
+<span class="sd">    :type fields: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">search_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;level&quot;</span><span class="p">]</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+    
+<div class="viewcode-block" id="SkillAdmin.save_model">
+<a class="viewcode-back" href="../../classes.html#classes.admin.SkillAdmin.save_model">[docs]</a>
+    <span class="k">def</span> <span class="nf">save_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">form</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">change</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Customize the save behavior to ensure a new skill is created or an existing one is updated.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :param obj: The skill instance being saved.</span>
+<span class="sd">        :type obj: Skill</span>
+<span class="sd">        :param form: The form used to input the skill data.</span>
+<span class="sd">        :type form: ModelForm</span>
+<span class="sd">        :param change: Boolean indicating whether this is an update to an existing object.</span>
+<span class="sd">        :type change: bool</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">change</span><span class="p">:</span>
+            <span class="n">Skill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="n">change</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="ModuleAdmin">
+<a class="viewcode-back" href="../../classes.html#classes.admin.ModuleAdmin">[docs]</a>
+<span class="k">class</span> <span class="nc">ModuleAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `ModuleAdmin` class customizes the Django admin interface for the `Module` model. It includes list displays, </span>
+<span class="sd">    fields, inlines, and custom actions for managing modules.</span>
+
+<span class="sd">    :param list_display: Fields to display in the list view of the admin interface.</span>
+<span class="sd">    :type list_display: list</span>
+<span class="sd">    :param fields: Fields to include in the form for adding/editing modules.</span>
+<span class="sd">    :type fields: list</span>
+<span class="sd">    :param inlines: Inline models to include in the form.</span>
+<span class="sd">    :type inlines: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;class_code&quot;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s2">&quot;formatted_lecturer_name&quot;</span><span class="p">,</span> <span class="s2">&quot;formatted_semester&quot;</span><span class="p">,</span> <span class="s2">&quot;num_sessions&quot;</span><span class="p">,</span> <span class="s2">&quot;num_schedules&quot;</span><span class="p">,</span> <span class="s2">&quot;view_module_sessions&quot;</span><span class="p">]</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;class_code&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;lecturer&quot;</span><span class="p">,</span> <span class="s2">&quot;semester&quot;</span><span class="p">]</span>
+    <span class="n">inlines</span> <span class="o">=</span> <span class="p">[</span><span class="n">ModuleSessionInline</span><span class="p">]</span>
+    
+<div class="viewcode-block" id="ModuleAdmin.view_module_sessions">
+<a class="viewcode-back" href="../../classes.html#classes.admin.ModuleAdmin.view_module_sessions">[docs]</a>
+    <span class="k">def</span> <span class="nf">view_module_sessions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide a link to view all sessions associated with the module.</span>
+
+<span class="sd">        :param obj: The module instance.</span>
+<span class="sd">        :type obj: Module</span>
+<span class="sd">        :return: A formatted HTML link to the sessions list.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;admin:classes_modulesession_changelist&quot;</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;?&quot;</span>
+            <span class="o">+</span> <span class="n">urlencode</span><span class="p">({</span><span class="s2">&quot;class_code__class_code__exact&quot;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">class_code</span><span class="p">})</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">format_html</span><span class="p">(</span><span class="s1">&#39;&lt;a href=&quot;</span><span class="si">{}</span><span class="s1">&quot;&gt;View Sessions&lt;/a&gt;&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span></div>
+
+    <span class="n">view_module_sessions</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Module Sessions&quot;</span>
+    
+<div class="viewcode-block" id="ModuleAdmin.num_sessions">
+<a class="viewcode-back" href="../../classes.html#classes.admin.ModuleAdmin.num_sessions">[docs]</a>
+    <span class="k">def</span> <span class="nf">num_sessions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of session types for the module.</span>
+
+<span class="sd">        :param obj: The module instance.</span>
+<span class="sd">        :type obj: Module</span>
+<span class="sd">        :return: The count of session types.</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">count_sessions</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
+
+    <span class="n">num_sessions</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Number of Session Types&quot;</span>
+    
+<div class="viewcode-block" id="ModuleAdmin.num_schedules">
+<a class="viewcode-back" href="../../classes.html#classes.admin.ModuleAdmin.num_schedules">[docs]</a>
+    <span class="k">def</span> <span class="nf">num_schedules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of timeslots used by the module&#39;s sessions.</span>
+
+<span class="sd">        :param obj: The module instance.</span>
+<span class="sd">        :type obj: Module</span>
+<span class="sd">        :return: The count of timeslots used.</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">count_sessions</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span></div>
+
+    <span class="n">num_schedules</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Timeslot used&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="ModuleSessionMixin">
+<a class="viewcode-back" href="../../classes.html#classes.admin.ModuleSessionMixin">[docs]</a>
+<span class="k">class</span> <span class="nc">ModuleSessionMixin</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `ModuleSessionMixin` class provides utility methods and actions for the `ModuleSessionAdmin` class, </span>
+<span class="sd">    including methods for retrieving class codes, ensuring correct allocation, and viewing module sessions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ModuleSessionMixin.get_class_code">
+<a class="viewcode-back" href="../../classes.html#classes.admin.ModuleSessionMixin.get_class_code">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_class_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the class code associated with the session.</span>
+
+<span class="sd">        :param obj: The module session instance.</span>
+<span class="sd">        :type obj: ModuleSession</span>
+<span class="sd">        :return: The class code.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">class_code</span><span class="o">.</span><span class="n">class_code</span></div>
+
+    <span class="n">get_class_code</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Class Code&quot;</span>
+    
+<div class="viewcode-block" id="ModuleSessionMixin.total_required_demonstrators">
+<a class="viewcode-back" href="../../classes.html#classes.admin.ModuleSessionMixin.total_required_demonstrators">[docs]</a>
+    <span class="k">def</span> <span class="nf">total_required_demonstrators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate and display the total number of required demonstrators for the selected sessions.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :param queryset: The queryset of selected sessions.</span>
+<span class="sd">        :type queryset: QuerySet</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="n">queryset</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">Sum</span><span class="p">(</span><span class="s2">&quot;required_demonstrator&quot;</span><span class="p">))[</span><span class="s2">&quot;total&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message_user</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Total required demonstrator: </span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+    <span class="n">total_required_demonstrators</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Total Required Demonstator&quot;</span>
+    
+<div class="viewcode-block" id="ModuleSessionMixin.ensure_correct_allocation">
+<a class="viewcode-back" href="../../classes.html#classes.admin.ModuleSessionMixin.ensure_correct_allocation">[docs]</a>
+    <span class="k">def</span> <span class="nf">ensure_correct_allocation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure that the allocations for the selected sessions are correct.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :param queryset: The queryset of selected sessions.</span>
+<span class="sd">        :type queryset: QuerySet</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">module_session</span> <span class="ow">in</span> <span class="n">queryset</span><span class="p">:</span>
+            <span class="n">module_session</span><span class="o">.</span><span class="n">ensure_correct_allocation</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message_user</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Checked and adjusted allocations for selected module sessions.&quot;</span><span class="p">)</span></div>
+
+    <span class="n">ensure_correct_allocation</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Ensure Correct Allocation&quot;</span>
+    
+<div class="viewcode-block" id="ModuleSessionMixin.view_module_session">
+<a class="viewcode-back" href="../../classes.html#classes.admin.ModuleSessionMixin.view_module_session">[docs]</a>
+    <span class="k">def</span> <span class="nf">view_module_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide a link to view the module session details.</span>
+
+<span class="sd">        :param obj: The module session instance.</span>
+<span class="sd">        :type obj: ModuleSession</span>
+<span class="sd">        :return: A formatted HTML link to the session details page.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;admin:classes_modulesession_change&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">class_session</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">format_html</span><span class="p">(</span><span class="s1">&#39;&lt;a href=&quot;</span><span class="si">{}</span><span class="s1">&quot;&gt;View Module Session&lt;/a&gt;&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span></div>
+
+    <span class="n">view_module_session</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Module Session&quot;</span>
+    
+<div class="viewcode-block" id="ModuleSessionMixin.get_queryset">
+<a class="viewcode-back" href="../../classes.html#classes.admin.ModuleSessionMixin.get_queryset">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter the queryset based on the class code if provided.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :return: The filtered queryset.</span>
+<span class="sd">        :rtype: QuerySet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">queryset</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="n">class_code</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;class_code__id__exact&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">class_code</span><span class="p">:</span>
+            <span class="n">queryset</span> <span class="o">=</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_code__id</span><span class="o">=</span><span class="n">class_code</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">queryset</span></div>
+
+
+<div class="viewcode-block" id="ModuleSessionMixin.changelist_view">
+<a class="viewcode-back" href="../../classes.html#classes.admin.ModuleSessionMixin.changelist_view">[docs]</a>
+    <span class="k">def</span> <span class="nf">changelist_view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">extra_context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Customize the changelist view to filter sessions by class code if provided.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :param extra_context: Additional context for the changelist view.</span>
+<span class="sd">        :type extra_context: dict</span>
+<span class="sd">        :return: The modified changelist view.</span>
+<span class="sd">        :rtype: HttpResponse</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">class_code</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;class_code__id__exact&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">class_code</span><span class="p">:</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="p">[</span><span class="s1">&#39;QUERY_STRING&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;class_code__id__exact&#39;</span><span class="p">:</span> <span class="n">class_code</span><span class="p">})</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">changelist_view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">extra_context</span><span class="o">=</span><span class="n">extra_context</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="ModuleSessionMixin.view_module">
+<a class="viewcode-back" href="../../classes.html#classes.admin.ModuleSessionMixin.view_module">[docs]</a>
+    <span class="k">def</span> <span class="nf">view_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide a link to view the module details.</span>
+
+<span class="sd">        :param obj: The module session instance.</span>
+<span class="sd">        :type obj: ModuleSession</span>
+<span class="sd">        :return: A formatted HTML link to the module details page.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;admin:classes_module_change&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">class_code</span><span class="o">.</span><span class="n">class_code</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">format_html</span><span class="p">(</span><span class="s1">&#39;&lt;a href=&quot;</span><span class="si">{}</span><span class="s1">&quot;&gt;View Module&lt;/a&gt;&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span></div>
+
+    <span class="n">view_module</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Module&quot;</span>
+    
+<div class="viewcode-block" id="ModuleSessionMixin.get_search_results">
+<a class="viewcode-back" href="../../classes.html#classes.admin.ModuleSessionMixin.get_search_results">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_search_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">,</span> <span class="n">queryset</span><span class="p">:</span> <span class="n">QuerySet</span><span class="p">,</span> <span class="n">search_term</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">QuerySet</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Customize the search results to include class codes that match the search term.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :param queryset: The queryset of sessions to search.</span>
+<span class="sd">        :type queryset: QuerySet</span>
+<span class="sd">        :param search_term: The search term entered by the user.</span>
+<span class="sd">        :type search_term: str</span>
+<span class="sd">        :return: The filtered queryset and a boolean indicating whether distinct results are required.</span>
+<span class="sd">        :rtype: tuple[QuerySet, bool]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">queryset</span><span class="p">,</span> <span class="n">use_distinct</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_search_results</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">,</span> <span class="n">search_term</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">search_term</span><span class="p">:</span>
+            <span class="n">search_terms</span> <span class="o">=</span> <span class="n">search_term</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">queries</span> <span class="o">=</span> <span class="n">Q</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">search_terms</span><span class="p">:</span>
+                <span class="n">queries</span> <span class="o">|=</span> <span class="n">Q</span><span class="p">(</span><span class="n">class_code__class_code__icontains</span><span class="o">=</span><span class="n">term</span><span class="p">)</span>
+            <span class="n">queryset</span> <span class="o">=</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">queries</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">queryset</span><span class="p">,</span> <span class="n">use_distinct</span></div>
+
+    
+<div class="viewcode-block" id="ModuleSessionMixin.view_allocations">
+<a class="viewcode-back" href="../../classes.html#classes.admin.ModuleSessionMixin.view_allocations">[docs]</a>
+    <span class="k">def</span> <span class="nf">view_allocations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide a link to view allocations for the selected sessions.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :param queryset: The queryset of selected sessions.</span>
+<span class="sd">        :type queryset: QuerySet</span>
+<span class="sd">        :return: A redirect response to the allocations list page.</span>
+<span class="sd">        :rtype: HttpResponseRedirect</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session_ids</span> <span class="o">=</span> <span class="n">queryset</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="n">urlencode</span><span class="p">({</span><span class="s1">&#39;class_session__id__in&#39;</span><span class="p">:</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">session_ids</span><span class="p">))})</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;admin:allocations_allocation_changelist&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">query_params</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+    <span class="n">view_allocations</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;View Allocations of Selected Sessions&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="ModuleSessionAdmin">
+<a class="viewcode-back" href="../../classes.html#classes.admin.ModuleSessionAdmin">[docs]</a>
+<span class="k">class</span> <span class="nc">ModuleSessionAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">,</span> <span class="n">ModuleSessionMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `ModuleSessionAdmin` class customizes the Django admin interface for the `ModuleSession` model. It includes list displays, </span>
+<span class="sd">    filters, inlines, actions, and search fields for managing module sessions.</span>
+
+<span class="sd">    :param inlines: Inline models to include in the form.</span>
+<span class="sd">    :type inlines: list</span>
+<span class="sd">    :param list_display: Fields to display in the list view of the admin interface.</span>
+<span class="sd">    :type list_display: list</span>
+<span class="sd">    :param list_filter: Filters to apply to the list view of the admin interface.</span>
+<span class="sd">    :type list_filter: list</span>
+<span class="sd">    :param actions: Custom actions available in the admin interface.</span>
+<span class="sd">    :type actions: list</span>
+<span class="sd">    :param search_fields: Fields to include in the search functionality.</span>
+<span class="sd">    :type search_fields: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">inlines</span> <span class="o">=</span> <span class="p">[</span><span class="n">RequirementInline</span><span class="p">]</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;get_class_code&quot;</span><span class="p">,</span> <span class="s2">&quot;session_type&quot;</span> <span class="p">,</span><span class="s2">&quot;required_demonstrator&quot;</span><span class="p">,</span> <span class="s2">&quot;view_module&quot;</span><span class="p">]</span>
+    <span class="n">list_filter</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;session_type&quot;</span><span class="p">]</span>
+    <span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;total_required_demonstrators&quot;</span><span class="p">,</span> <span class="s2">&quot;ensure_correct_allocation&quot;</span><span class="p">,</span> <span class="s2">&quot;view_allocations&quot;</span><span class="p">]</span>
+    <span class="n">search_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;class_code__class_code&quot;</span><span class="p">]</span></div>
+
+    
+
+
+<div class="viewcode-block" id="RequirementsMixin">
+<a class="viewcode-back" href="../../classes.html#classes.admin.RequirementsMixin">[docs]</a>
+<span class="k">class</span> <span class="nc">RequirementsMixin</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `RequirementsMixin` class provides utility methods for the `RequirementsAdmin` class, including methods </span>
+<span class="sd">    for retrieving class codes, displaying skill levels, and viewing module sessions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="RequirementsMixin.get_class_code">
+<a class="viewcode-back" href="../../classes.html#classes.admin.RequirementsMixin.get_class_code">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_class_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the class code associated with the requirement.</span>
+
+<span class="sd">        :param obj: The requirement skill instance.</span>
+<span class="sd">        :type obj: RequirementSkill</span>
+<span class="sd">        :return: The class code.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">class_session</span><span class="o">.</span><span class="n">class_code</span><span class="o">.</span><span class="n">class_code</span></div>
+
+    <span class="n">get_class_code</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Class Code&quot;</span>
+    
+<div class="viewcode-block" id="RequirementsMixin.get_skill_display">
+<a class="viewcode-back" href="../../classes.html#classes.admin.RequirementsMixin.get_skill_display">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_skill_display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a formatted display of the skill level and name.</span>
+
+<span class="sd">        :param obj: The requirement skill instance.</span>
+<span class="sd">        :type obj: RequirementSkill</span>
+<span class="sd">        :return: The formatted skill display.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">get_level_display</span><span class="p">()</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+    <span class="n">get_skill_display</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Skill&quot;</span>
+    
+<div class="viewcode-block" id="RequirementsMixin.view_module_session">
+<a class="viewcode-back" href="../../classes.html#classes.admin.RequirementsMixin.view_module_session">[docs]</a>
+    <span class="k">def</span> <span class="nf">view_module_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide a link to view the module session details.</span>
+
+<span class="sd">        :param obj: The requirement skill instance.</span>
+<span class="sd">        :type obj: RequirementSkill</span>
+<span class="sd">        :return: A formatted HTML link to the session details page.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;admin:classes_modulesession_change&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">class_session</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">format_html</span><span class="p">(</span><span class="s1">&#39;&lt;a href=&quot;</span><span class="si">{}</span><span class="s1">&quot;&gt;View Module Session&lt;/a&gt;&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span></div>
+
+    <span class="n">view_module_session</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Module Session&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="RequirementsAdmin">
+<a class="viewcode-back" href="../../classes.html#classes.admin.RequirementsAdmin">[docs]</a>
+<span class="k">class</span> <span class="nc">RequirementsAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">,</span> <span class="n">RequirementsMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `RequirementsAdmin` class customizes the Django admin interface for the `RequirementSkill` model. </span>
+<span class="sd">    It includes list displays, search fields, and fields for managing requirement skills.</span>
+
+<span class="sd">    :param list_display: Fields to display in the list view of the admin interface.</span>
+<span class="sd">    :type list_display: list</span>
+<span class="sd">    :param search_fields: Fields to include in the search functionality.</span>
+<span class="sd">    :type search_fields: list</span>
+<span class="sd">    :param fields: Fields to include in the form for adding/editing requirement skills.</span>
+<span class="sd">    :type fields: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;get_class_code&quot;</span><span class="p">,</span> <span class="s2">&quot;get_skill_display&quot;</span><span class="p">]</span>
+    <span class="n">search_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;class_session__class_code__class_code&quot;</span><span class="p">,</span><span class="s2">&quot;skill__name&quot;</span><span class="p">]</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;class_session&quot;</span><span class="p">,</span> <span class="s2">&quot;skill&quot;</span><span class="p">]</span>    </div>
+
+
+    
+<div class="viewcode-block" id="CompetencyMixin">
+<a class="viewcode-back" href="../../classes.html#classes.admin.CompetencyMixin">[docs]</a>
+<span class="k">class</span> <span class="nc">CompetencyMixin</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `CompetencyMixin` class provides utility methods for the `CompetencyAdmin` class, including methods </span>
+<span class="sd">    for retrieving demonstrator names and displaying skill levels.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CompetencyMixin.get_demonstrator_name">
+<a class="viewcode-back" href="../../classes.html#classes.admin.CompetencyMixin.get_demonstrator_name">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_demonstrator_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the name of the demonstrator associated with the competency.</span>
+
+<span class="sd">        :param obj: The competency instance.</span>
+<span class="sd">        :type obj: Competency</span>
+<span class="sd">        :return: The demonstrator&#39;s full name.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">demonstrator</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">demonstrator</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+    <span class="n">get_demonstrator_name</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Demonstrator&quot;</span>
+    
+<div class="viewcode-block" id="CompetencyMixin.get_skill_display">
+<a class="viewcode-back" href="../../classes.html#classes.admin.CompetencyMixin.get_skill_display">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_skill_display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a formatted display of the skill level and name.</span>
+
+<span class="sd">        :param obj: The competency instance.</span>
+<span class="sd">        :type obj: Competency</span>
+<span class="sd">        :return: The formatted skill display.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">get_level_display</span><span class="p">()</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+    <span class="n">get_skill_display</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Skill&quot;</span></div>
+
+    
+    
+<div class="viewcode-block" id="CompetencyAdmin">
+<a class="viewcode-back" href="../../classes.html#classes.admin.CompetencyAdmin">[docs]</a>
+<span class="k">class</span> <span class="nc">CompetencyAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">,</span> <span class="n">CompetencyMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `CompetencyAdmin` class customizes the Django admin interface for the `Competency` model. </span>
+<span class="sd">    It includes list displays and search fields for managing competencies.</span>
+
+<span class="sd">    :param list_display: Fields to display in the list view of the admin interface.</span>
+<span class="sd">    :type list_display: list</span>
+<span class="sd">    :param search_fields: Fields to include in the search functionality.</span>
+<span class="sd">    :type search_fields: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;get_demonstrator_name&quot;</span><span class="p">,</span> <span class="s2">&quot;get_skill_display&quot;</span><span class="p">]</span>
+    <span class="n">search_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;skill__name&quot;</span><span class="p">]</span></div>
+
+    
+    
+<div class="viewcode-block" id="SessionScheduleAdmin">
+<a class="viewcode-back" href="../../classes.html#classes.admin.SessionScheduleAdmin">[docs]</a>
+<span class="k">class</span> <span class="nc">SessionScheduleAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `SessionScheduleAdmin` class customizes the Django admin interface for the `SessionSchedule` model. </span>
+<span class="sd">    It includes list displays and search fields for managing session schedules.</span>
+
+<span class="sd">    :param list_display: Fields to display in the list view of the admin interface.</span>
+<span class="sd">    :type list_display: list</span>
+<span class="sd">    :param search_fields: Fields to include in the search functionality.</span>
+<span class="sd">    :type search_fields: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;get_class_code&quot;</span><span class="p">,</span> <span class="s2">&quot;get_class_type&quot;</span><span class="p">,</span> <span class="s2">&quot;timeslot&quot;</span><span class="p">]</span>
+    <span class="n">search_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;class_session__class_code__class_code&quot;</span><span class="p">]</span>
+    
+    
+    
+<div class="viewcode-block" id="SessionScheduleAdmin.get_class_code">
+<a class="viewcode-back" href="../../classes.html#classes.admin.SessionScheduleAdmin.get_class_code">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_class_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the class code associated with the session schedule.</span>
+
+<span class="sd">        :param obj: The session schedule instance.</span>
+<span class="sd">        :type obj: SessionSchedule</span>
+<span class="sd">        :return: The class code.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">class_session</span><span class="o">.</span><span class="n">class_code</span><span class="o">.</span><span class="n">class_code</span></div>
+
+    <span class="n">get_class_code</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Class Code&quot;</span>
+    
+<div class="viewcode-block" id="SessionScheduleAdmin.get_class_type">
+<a class="viewcode-back" href="../../classes.html#classes.admin.SessionScheduleAdmin.get_class_type">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_class_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the class type associated with the session schedule.</span>
+
+<span class="sd">        :param obj: The session schedule instance.</span>
+<span class="sd">        :type obj: SessionSchedule</span>
+<span class="sd">        :return: The class type.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">class_session</span><span class="o">.</span><span class="n">session_type</span></div>
+
+    <span class="n">get_class_type</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Class Type&quot;</span></div>
+
+    
+
+<span class="c1"># Register your models here.</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span><span class="n">ModuleAdmin</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ModuleSession</span><span class="p">,</span> <span class="n">ModuleSessionAdmin</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Skill</span><span class="p">,</span> <span class="n">SkillAdmin</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">RequirementSkill</span><span class="p">,</span> <span class="n">RequirementsAdmin</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">SessionSchedule</span><span class="p">,</span> <span class="n">SessionScheduleAdmin</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Competency</span><span class="p">,</span> <span class="n">CompetencyAdmin</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

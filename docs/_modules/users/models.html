@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>users.models &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">users.models</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for users.models</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">timetable.models</span> <span class="kn">import</span> <span class="n">Timeslot</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">AbstractUser</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">BaseUserManager</span>
+<span class="kn">from</span> <span class="nn">django.db.models.signals</span> <span class="kn">import</span> <span class="n">post_save</span>
+<span class="kn">from</span> <span class="nn">django.dispatch</span> <span class="kn">import</span> <span class="n">receiver</span>
+
+
+<div class="viewcode-block" id="UserManager">
+<a class="viewcode-back" href="../../users.html#users.models.UserManager">[docs]</a>
+<span class="k">class</span> <span class="nc">UserManager</span><span class="p">(</span><span class="n">BaseUserManager</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custom manager for the `User` model to overload certain functionalities.</span>
+
+<span class="sd">    :param BaseUserManager: Django&#39;s base manager for user models.</span>
+<span class="sd">    :type BaseUserManager: BaseUserManager</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="UserManager.create_superuser">
+<a class="viewcode-back" href="../../users.html#users.models.UserManager.create_superuser">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_superuser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_fields</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create and return a superuser with the given username, email, and password.</span>
+
+<span class="sd">        :param username: The username for the superuser.</span>
+<span class="sd">        :type username: str</span>
+<span class="sd">        :param email: The email address for the superuser.</span>
+<span class="sd">        :type email: str</span>
+<span class="sd">        :param password: The password for the superuser.</span>
+<span class="sd">        :type password: str, optional</span>
+<span class="sd">        :param extra_fields: Additional fields for the superuser.</span>
+<span class="sd">        :type extra_fields: dict</span>
+<span class="sd">        :raises ValueError: If `is_staff` or `is_superuser` is not set to True.</span>
+<span class="sd">        :return: The created superuser.</span>
+<span class="sd">        :rtype: User</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">extra_fields</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;is_staff&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">extra_fields</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;is_superuser&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">extra_fields</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;is_lecturer&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>  <span class="c1"># Set this based on your requirements</span>
+        <span class="n">extra_fields</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;is_demonstrator&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>  <span class="c1"># Set this based on your requirements</span>
+
+        <span class="k">if</span> <span class="n">extra_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;is_staff&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Superuser must have is_staff=True.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">extra_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;is_superuser&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Superuser must have is_superuser=True.&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_fields</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="User">
+<a class="viewcode-back" href="../../users.html#users.models.User">[docs]</a>
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">AbstractUser</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custom User model extending Django&#39;s AbstractUser. Adds additional fields and methods.</span>
+
+<span class="sd">    :param is_demonstrator: Indicates if the user is a demonstrator.</span>
+<span class="sd">    :type is_demonstrator: bool</span>
+<span class="sd">    :param is_lecturer: Indicates if the user is a lecturer.</span>
+<span class="sd">    :type is_lecturer: bool</span>
+<span class="sd">    :param is_fake: Indicates if the user is a fake user.</span>
+<span class="sd">    :type is_fake: bool</span>
+<span class="sd">    :param first_name: The first name of the user.</span>
+<span class="sd">    :type first_name: str</span>
+<span class="sd">    :param last_name: The last name of the user.</span>
+<span class="sd">    :type last_name: str</span>
+<span class="sd">    :param email: The email address of the user.</span>
+<span class="sd">    :type email: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">is_demonstrator</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">is_lecturer</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">is_fake</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">first_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+    <span class="n">last_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">EmailField</span><span class="p">(</span><span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a string representation of the user.</span>
+
+<span class="sd">        :return: A string representing the user, including their roles.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;User(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">, Lecturer: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">is_lecturer</span><span class="si">}</span><span class="s2">, Demonstrator: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">is_demonstrator</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<div class="viewcode-block" id="User.is_available">
+<a class="viewcode-back" href="../../users.html#users.models.User.is_available">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_available</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">timeslot</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the user is available for the given timeslot.</span>
+
+<span class="sd">        :param timeslot: The timeslot to check availability for.</span>
+<span class="sd">        :type timeslot: Timeslot</span>
+<span class="sd">        :return: True if the user is available, False otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">availability_slot</span> <span class="o">=</span> <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="n">timeslot</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">availability_slot</span><span class="o">.</span><span class="n">is_available</span></div>
+</div>
+
+
+<div class="viewcode-block" id="Role">
+<a class="viewcode-back" href="../../users.html#users.models.Role">[docs]</a>
+<span class="k">class</span> <span class="nc">Role</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract base model representing a role associated with a user.</span>
+
+<span class="sd">    :param user: A one-to-one relationship to the User model.</span>
+<span class="sd">    :type user: ForeignKey</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">User</span><span class="p">,</span>
+                                <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span>
+                                <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">abstract</span> <span class="o">=</span> <span class="kc">True</span>
+    
+<div class="viewcode-block" id="Role.get_first_name">
+<a class="viewcode-back" href="../../users.html#users.models.Role.get_first_name">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_first_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the first name of the user associated with the role.</span>
+
+<span class="sd">        :return: The user&#39;s first name.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">first_name</span></div>
+
+    
+<div class="viewcode-block" id="Role.get_last_name">
+<a class="viewcode-back" href="../../users.html#users.models.Role.get_last_name">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_last_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the last name of the user associated with the role.</span>
+
+<span class="sd">        :return: The user&#39;s last name.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">last_name</span></div>
+
+    
+<div class="viewcode-block" id="Role.is_available">
+<a class="viewcode-back" href="../../users.html#users.models.Role.is_available">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_available</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeslot</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the user associated with the role is available for the given timeslot.</span>
+
+<span class="sd">        :param timeslot: The timeslot to check availability for.</span>
+<span class="sd">        :type timeslot: Timeslot</span>
+<span class="sd">        :return: True if the user is available, False otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_available</span><span class="p">(</span><span class="n">timeslot</span><span class="p">)</span></div>
+
+    
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a string representation of the role, typically the user&#39;s name.</span>
+
+<span class="sd">        :return: The user&#39;s full name.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="Demonstrator">
+<a class="viewcode-back" href="../../users.html#users.models.Demonstrator">[docs]</a>
+<span class="k">class</span> <span class="nc">Demonstrator</span><span class="p">(</span><span class="n">Role</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Model representing a Demonstrator role associated with a user.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a string representation of the demonstrator, typically the demonstrator&#39;s name.</span>
+
+<span class="sd">        :return: The user&#39;s full name.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Demonstrator(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+    
+    
+
+<div class="viewcode-block" id="Lecturer">
+<a class="viewcode-back" href="../../users.html#users.models.Lecturer">[docs]</a>
+<span class="k">class</span> <span class="nc">Lecturer</span><span class="p">(</span><span class="n">Role</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Model representing a Lecturer role associated with a user.</span>
+
+<span class="sd">    :param department: The department the lecturer belongs to.</span>
+<span class="sd">    :type department: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">department</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a string representation of the lecturer.</span>
+
+<span class="sd">        :return: The user&#39;s full name.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Lecturer(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">, Department: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">department</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="UserAvailability">
+<a class="viewcode-back" href="../../users.html#users.models.UserAvailability">[docs]</a>
+<span class="k">class</span> <span class="nc">UserAvailability</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Model representing the availability of a user for a specific timeslot.</span>
+
+<span class="sd">    :param user: A foreign key linking to the User model.</span>
+<span class="sd">    :type user: ForeignKey</span>
+<span class="sd">    :param timeslot: A foreign key linking to the Timeslot model.</span>
+<span class="sd">    :type timeslot: ForeignKey</span>
+<span class="sd">    :param is_available: Indicates whether the user is available for the timeslot.</span>
+<span class="sd">    :type is_available: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+    <span class="n">timeslot</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Timeslot</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+    <span class="n">is_available</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s2">&quot;User Availability&quot;</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;timeslot&quot;</span><span class="p">]</span>
+        
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a string representation of the user&#39;s availability for a specific timeslot.</span>
+
+<span class="sd">        :return: A string representing the user&#39;s availability.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;UserAvailability(User: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">, Timeslot: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="si">}</span><span class="s2">, Available: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">is_available</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+
+<div class="viewcode-block" id="add_lecdem_when_user_create">
+<a class="viewcode-back" href="../../users.html#users.models.add_lecdem_when_user_create">[docs]</a>
+<span class="nd">@receiver</span><span class="p">(</span><span class="n">post_save</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">User</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_lecdem_when_user_create</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">created</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Signal receiver to automatically create a Lecturer or Demonstrator role </span>
+<span class="sd">    when a new User is created, based on the user&#39;s roles.</span>
+
+<span class="sd">    :param sender: The model class sending the signal.</span>
+<span class="sd">    :type sender: Model</span>
+<span class="sd">    :param instance: The instance of the User being saved.</span>
+<span class="sd">    :type instance: User</span>
+<span class="sd">    :param created: Indicates whether the User was created (True) or updated (False).</span>
+<span class="sd">    :type created: bool</span>
+<span class="sd">    :param kwargs: Additional keyword arguments.</span>
+<span class="sd">    :type kwargs: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">created</span> <span class="ow">and</span> <span class="n">instance</span><span class="o">.</span><span class="n">is_lecturer</span><span class="p">:</span>
+        <span class="n">Lecturer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">instance</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">created</span> <span class="ow">and</span> <span class="n">instance</span><span class="o">.</span><span class="n">is_demonstrator</span><span class="p">:</span>
+        <span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">instance</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="save_lecdem_when_user_saved">
+<a class="viewcode-back" href="../../users.html#users.models.save_lecdem_when_user_saved">[docs]</a>
+<span class="nd">@receiver</span><span class="p">(</span><span class="n">post_save</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">User</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">save_lecdem_when_user_saved</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">created</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Signal receiver to ensure the associated Lecturer or Demonstrator role is saved </span>
+<span class="sd">    when a User is saved.</span>
+
+<span class="sd">    :param sender: The model class sending the signal.</span>
+<span class="sd">    :type sender: Model</span>
+<span class="sd">    :param instance: The instance of the User being saved.</span>
+<span class="sd">    :type instance: User</span>
+<span class="sd">    :param created: Indicates whether the User was created (True) or updated (False).</span>
+<span class="sd">    :type created: bool</span>
+<span class="sd">    :param kwargs: Additional keyword arguments.</span>
+<span class="sd">    :type kwargs: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">is_lecturer</span><span class="p">:</span>
+       <span class="n">Lecturer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">instance</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">is_demonstrator</span><span class="p">:</span>
+        <span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">instance</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="create_blank_timetable">
+<a class="viewcode-back" href="../../users.html#users.models.create_blank_timetable">[docs]</a>
+<span class="nd">@receiver</span><span class="p">(</span><span class="n">post_save</span><span class="p">,</span> <span class="n">sender</span> <span class="o">=</span> <span class="n">User</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">create_blank_timetable</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">created</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Signal receiver to create a blank availability timetable for a new User </span>
+<span class="sd">    when the User is created.</span>
+
+<span class="sd">    :param sender: The model class sending the signal.</span>
+<span class="sd">    :type sender: Model</span>
+<span class="sd">    :param instance: The instance of the User being saved.</span>
+<span class="sd">    :type instance: User</span>
+<span class="sd">    :param created: Indicates whether the User was created (True) or updated (False).</span>
+<span class="sd">    :type created: bool</span>
+<span class="sd">    :param kwargs: Additional keyword arguments.</span>
+<span class="sd">    :type kwargs: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">created</span><span class="p">:</span>
+        <span class="n">timeslots</span> <span class="o">=</span> <span class="n">Timeslot</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="n">timeslots</span><span class="p">:</span>
+            <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="n">slot</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

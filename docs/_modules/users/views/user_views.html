@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>users.views.user_views &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">users.views.user_views</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for users.views.user_views</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span> <span class="nn">rest_framework.decorators</span> <span class="kn">import</span> <span class="n">api_view</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">user_passes_test</span><span class="p">,</span> <span class="n">login_required</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">authenticate</span><span class="p">,</span> <span class="n">login</span><span class="p">,</span> <span class="n">logout</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.views</span> <span class="kn">import</span> <span class="n">LoginView</span>
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse_lazy</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
+<span class="kn">from</span> <span class="nn">users.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">UserAvailability</span><span class="p">,</span> <span class="n">Demonstrator</span>
+<span class="kn">from</span> <span class="nn">classes.models</span> <span class="kn">import</span> <span class="n">Competency</span><span class="p">,</span> <span class="n">Module</span><span class="p">,</span> <span class="n">ModuleSession</span><span class="p">,</span> <span class="n">SessionSchedule</span><span class="p">,</span> <span class="n">Skill</span>
+<span class="kn">from</span> <span class="nn">allocations.models</span> <span class="kn">import</span> <span class="n">Allocation</span>
+<span class="kn">from</span> <span class="nn">users.forms</span> <span class="kn">import</span> <span class="n">UserForm</span><span class="p">,</span> <span class="n">AvailabilityForm</span><span class="p">,</span> <span class="n">ProfileCompetencyForm</span><span class="p">,</span> <span class="n">UserRegistrationForm</span><span class="p">,</span> <span class="n">SessionUpdateForm</span><span class="p">,</span> <span class="n">SkillCreationForm</span>
+<span class="kn">from</span> <span class="nn">timetable.models</span> <span class="kn">import</span> <span class="n">Timeslot</span>
+<span class="kn">from</span> <span class="nn">django.forms</span> <span class="kn">import</span> <span class="n">modelformset_factory</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="UserLoginView">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.UserLoginView">[docs]</a>
+<span class="k">class</span> <span class="nc">UserLoginView</span><span class="p">(</span><span class="n">LoginView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `UserLoginView` class provides a custom login view for handling user authentication. </span>
+<span class="sd">    It extends Django&#39;s `LoginView` and customizes the template and error handling.</span>
+
+<span class="sd">    :param template_name: The template used for rendering the login page.</span>
+<span class="sd">    :type template_name: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;login.html&quot;</span>
+    
+<div class="viewcode-block" id="UserLoginView.form_valid">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.UserLoginView.form_valid">[docs]</a>
+    <span class="k">def</span> <span class="nf">form_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle successful login form validation.</span>
+<span class="sd">        </span>
+<span class="sd">        :param form: The form submitted by the user.</span>
+<span class="sd">        :type form: Form</span>
+<span class="sd">        :return: A response rendering the login page with an error message.</span>
+<span class="sd">        :rtype: HttpResponse</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get_user</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;User found: </span><span class="si">{</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">, Active: </span><span class="si">{</span><span class="n">user</span><span class="o">.</span><span class="n">is_active</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Debugging line</span>
+            <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+                <span class="n">login</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_success_url</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;This account is inactive.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;No user found with these credentials.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_invalid</span><span class="p">(</span><span class="n">form</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="UserLoginView.form_invalid">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.UserLoginView.form_invalid">[docs]</a>
+    <span class="k">def</span> <span class="nf">form_invalid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle invalid login attempts by displaying an error message.</span>
+
+<span class="sd">        :param form: The form submitted by the user.</span>
+<span class="sd">        :type form: Form</span>
+<span class="sd">        :return: A response rendering the login page with an error message.</span>
+<span class="sd">        :rtype: HttpResponse</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Authentication failed. Please check your username and password.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_to_response</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="UserLoginView.get_success_url">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.UserLoginView.get_success_url">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_success_url</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the URL to redirect to upon successful login.</span>
+
+<span class="sd">        :return: The URL of the dashboard.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s2">&quot;dashboard&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="user_logout">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.user_logout">[docs]</a>
+<span class="k">def</span> <span class="nf">user_logout</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Log the user out and redirect to the login page.</span>
+
+<span class="sd">    :param request: The current HTTP request object.</span>
+<span class="sd">    :type request: HttpRequest</span>
+<span class="sd">    :return: A redirect response to the login page.</span>
+<span class="sd">    :rtype: HttpResponseRedirect</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logout</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="user_registration">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.user_registration">[docs]</a>
+<span class="k">def</span> <span class="nf">user_registration</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle user registration by processing the registration form and creating a new user.</span>
+
+<span class="sd">    :param request: The current HTTP request object.</span>
+<span class="sd">    :type request: HttpRequest</span>
+<span class="sd">    :return: A response rendering the registration page or redirecting to the dashboard on success.</span>
+<span class="sd">    :rtype: HttpResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">UserRegistrationForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">login</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Registration successful.&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;dashboard&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Unsuccessful registration. Invalid information.&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">UserRegistrationForm</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;registration.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span></div>
+
+
+
+<div class="viewcode-block" id="home">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.home">[docs]</a>
+<span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Redirect authenticated users to the dashboard, or render the login page for unauthenticated users.</span>
+
+<span class="sd">    :param request: The current HTTP request object.</span>
+<span class="sd">    :type request: HttpRequest</span>
+<span class="sd">    :return: A redirect to the dashboard or a response rendering the login page.</span>
+<span class="sd">    :rtype: HttpResponse or HttpResponseRedirect</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;dashboard&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="s2">&quot;login.html&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="dashboard">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.dashboard">[docs]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">dashboard</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render the dashboard with user-specific links based on their roles.</span>
+
+<span class="sd">    :param request: The current HTTP request object.</span>
+<span class="sd">    :type request: HttpRequest</span>
+<span class="sd">    :return: A response rendering the dashboard page.</span>
+<span class="sd">    :rtype: HttpResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user</span><span class="p">:</span> <span class="n">User</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;first_name&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span>
+        <span class="s2">&quot;last_name&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="p">,</span>
+        <span class="s2">&quot;lecturer&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">is_lecturer</span><span class="p">,</span>
+        <span class="s2">&quot;demonstrator&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">is_demonstrator</span><span class="p">,</span>
+        <span class="s2">&quot;my_classes_url&quot;</span><span class="p">:</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s2">&quot;class_list&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">is_lecturer</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;my_allocations_url&quot;</span><span class="p">:</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s2">&quot;my_allocations&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">is_demonstrator</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;my_timetable_url&quot;</span><span class="p">:</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s2">&quot;view_timetable&quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;dashboard.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="view_user_profile">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.view_user_profile">[docs]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">view_user_profile</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Allow users to view and edit their profile, including personal details, availability, and competencies.</span>
+
+<span class="sd">    :param request: The current HTTP request object.</span>
+<span class="sd">    :type request: HttpRequest</span>
+<span class="sd">    :return: A response rendering the profile page with forms for editing user details, availability, and competencies.</span>
+<span class="sd">    :rtype: HttpResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="n">is_demonstrator</span> <span class="o">=</span> <span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+    <span class="n">competencies</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">competency_form</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Handle user details form</span>
+    <span class="n">user_form</span> <span class="o">=</span> <span class="n">UserForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span> <span class="ow">and</span> <span class="s1">&#39;user_details_form&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+        <span class="n">user_form</span> <span class="o">=</span> <span class="n">UserForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">user_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">user_form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;User details updated successfully.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;view_user_profile&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Handle availability form</span>
+    <span class="n">days</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Monday&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Tuesday&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Wednesday&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Thursday&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;Friday&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;Saturday&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s2">&quot;Sunday&quot;</span><span class="p">)]</span>
+    <span class="n">hours</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;09:00&quot;</span><span class="p">,</span> <span class="s2">&quot;10:00&quot;</span><span class="p">,</span> <span class="s2">&quot;11:00&quot;</span><span class="p">,</span> <span class="s2">&quot;12:00&quot;</span><span class="p">,</span> <span class="s2">&quot;13:00&quot;</span><span class="p">,</span> <span class="s2">&quot;14:00&quot;</span><span class="p">,</span> <span class="s2">&quot;15:00&quot;</span><span class="p">,</span> <span class="s2">&quot;16:00&quot;</span><span class="p">,</span> <span class="s2">&quot;17:00&quot;</span><span class="p">]</span>
+
+    <span class="n">availability</span> <span class="o">=</span> <span class="p">{</span><span class="n">day</span><span class="p">:</span> <span class="p">{</span><span class="n">hour</span><span class="p">:</span> <span class="s1">&#39;X&#39;</span> <span class="k">for</span> <span class="n">hour</span> <span class="ow">in</span> <span class="n">hours</span><span class="p">}</span> <span class="k">for</span> <span class="n">day</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">days</span><span class="p">}</span>
+    <span class="n">availability_qs</span> <span class="o">=</span> <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s1">&#39;timeslot&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">availability_qs</span><span class="p">:</span>
+        <span class="n">day</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">timeslot</span><span class="o">.</span><span class="n">day</span>
+        <span class="n">hour</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">timeslot</span><span class="o">.</span><span class="n">start_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M&quot;</span><span class="p">)</span>
+        <span class="n">availability</span><span class="p">[</span><span class="n">day</span><span class="p">][</span><span class="n">hour</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;O&#39;</span> <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">is_available</span> <span class="k">else</span> <span class="s1">&#39;X&#39;</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span> <span class="ow">and</span> <span class="s1">&#39;availability_form&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+        <span class="n">availability_data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s1">&#39;availability&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">availability_data</span><span class="p">:</span>
+            <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="n">timeslot</span> <span class="o">=</span> <span class="n">Timeslot</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="n">day</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">hour</span> <span class="o">+</span> <span class="s2">&quot;:00&quot;</span><span class="p">)</span>
+            <span class="n">availability</span> <span class="o">=</span> <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="n">timeslot</span><span class="p">)</span>
+            <span class="n">availability</span><span class="o">.</span><span class="n">is_available</span> <span class="o">=</span> <span class="p">(</span><span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;O&quot;</span><span class="p">)</span>
+            <span class="n">availability</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Availability updated successfully.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;view_user_profile&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Handle competency form if the user is a demonstrator</span>
+    <span class="k">if</span> <span class="n">is_demonstrator</span><span class="p">:</span>
+        <span class="n">demonstrator</span> <span class="o">=</span> <span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">competencies</span> <span class="o">=</span> <span class="n">Competency</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">demonstrator</span><span class="o">=</span><span class="n">demonstrator</span><span class="p">)</span>
+        <span class="n">competency_form</span> <span class="o">=</span> <span class="n">ProfileCompetencyForm</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span> <span class="ow">and</span> <span class="s1">&#39;competency_form&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">competency_form</span> <span class="o">=</span> <span class="n">ProfileCompetencyForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">competency_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+                <span class="n">Competency</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">demonstrator</span><span class="o">=</span><span class="n">demonstrator</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+                <span class="n">skills</span> <span class="o">=</span> <span class="n">competency_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s1">&#39;skills&#39;</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">skill</span> <span class="ow">in</span> <span class="n">skills</span><span class="p">:</span>
+                    <span class="n">Competency</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">demonstrator</span><span class="o">=</span><span class="n">demonstrator</span><span class="p">,</span> <span class="n">skill</span><span class="o">=</span><span class="n">skill</span><span class="p">)</span>
+                <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Competencies updated successfully.&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;view_user_profile&#39;</span><span class="p">)</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;user_form&#39;</span><span class="p">:</span> <span class="n">user_form</span><span class="p">,</span>
+        <span class="s1">&#39;availability&#39;</span><span class="p">:</span> <span class="n">availability</span><span class="p">,</span>
+        <span class="s1">&#39;days&#39;</span><span class="p">:</span> <span class="n">days</span><span class="p">,</span>
+        <span class="s1">&#39;hours&#39;</span><span class="p">:</span> <span class="n">hours</span><span class="p">,</span>
+        <span class="s1">&#39;competencies&#39;</span><span class="p">:</span> <span class="n">competencies</span><span class="p">,</span>
+        <span class="s1">&#39;competency_form&#39;</span><span class="p">:</span> <span class="n">competency_form</span><span class="p">,</span>
+        <span class="s1">&#39;is_demonstrator&#39;</span><span class="p">:</span> <span class="n">is_demonstrator</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;profile.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="view_timetable">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.view_timetable">[docs]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">view_timetable</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render the user&#39;s timetable, showing all sessions they are involved in as a lecturer or demonstrator.</span>
+
+<span class="sd">    :param request: The current HTTP request object.</span>
+<span class="sd">    :type request: HttpRequest</span>
+<span class="sd">    :return: A response rendering the timetable page.</span>
+<span class="sd">    :rtype: HttpResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="n">days</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Monday&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Tuesday&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Wednesday&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Thursday&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;Friday&quot;</span><span class="p">)]</span>
+    <span class="n">hours</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;09:00&quot;</span><span class="p">,</span> <span class="s2">&quot;10:00&quot;</span><span class="p">,</span> <span class="s2">&quot;11:00&quot;</span><span class="p">,</span> <span class="s2">&quot;12:00&quot;</span><span class="p">,</span> <span class="s2">&quot;13:00&quot;</span><span class="p">,</span> <span class="s2">&quot;14:00&quot;</span><span class="p">,</span> <span class="s2">&quot;15:00&quot;</span><span class="p">,</span> <span class="s2">&quot;16:00&quot;</span><span class="p">,</span> <span class="s2">&quot;17:00&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Fetch all sessions for which the user is a lecturer or demonstrator</span>
+    <span class="n">lecturer_sessions</span> <span class="o">=</span> <span class="n">SessionSchedule</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session__class_code__lecturer__user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">demonstrator_sessions</span> <span class="o">=</span> <span class="n">SessionSchedule</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session__allocation__demonstrator__user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+
+    <span class="c1"># Dictionary to store the timetable data</span>
+    <span class="n">timetable_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">day</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="p">{</span><span class="n">hour</span><span class="p">:</span> <span class="s1">&#39;&#39;</span> <span class="k">for</span> <span class="n">hour</span> <span class="ow">in</span> <span class="n">hours</span><span class="p">}</span> <span class="k">for</span> <span class="n">day</span> <span class="ow">in</span> <span class="n">days</span><span class="p">}</span>
+    <span class="n">conflicts</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Add lecturer sessions to timetable data</span>
+    <span class="k">for</span> <span class="n">schedule</span> <span class="ow">in</span> <span class="n">lecturer_sessions</span><span class="p">:</span>
+        <span class="n">day</span> <span class="o">=</span> <span class="n">schedule</span><span class="o">.</span><span class="n">timeslot</span><span class="o">.</span><span class="n">day</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">schedule</span><span class="o">.</span><span class="n">timeslot</span><span class="o">.</span><span class="n">start_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M&quot;</span><span class="p">)</span>
+        <span class="n">cell_content</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Lecturer</span><span class="se">\n</span><span class="si">{</span><span class="n">schedule</span><span class="o">.</span><span class="n">class_session</span><span class="o">.</span><span class="n">get_class_code</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">schedule</span><span class="o">.</span><span class="n">class_session</span><span class="o">.</span><span class="n">session_type</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="n">timetable_data</span><span class="p">[</span><span class="n">day</span><span class="p">][</span><span class="n">start_time</span><span class="p">]:</span>
+            <span class="n">timetable_data</span><span class="p">[</span><span class="n">day</span><span class="p">][</span><span class="n">start_time</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Scheduling Conflict. Contact admin&quot;</span>
+            <span class="n">conflicts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">day</span><span class="p">,</span> <span class="n">start_time</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">timetable_data</span><span class="p">[</span><span class="n">day</span><span class="p">][</span><span class="n">start_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">cell_content</span>
+
+    <span class="c1"># Add demonstrator sessions to timetable data</span>
+    <span class="k">for</span> <span class="n">schedule</span> <span class="ow">in</span> <span class="n">demonstrator_sessions</span><span class="p">:</span>
+        <span class="n">day</span> <span class="o">=</span> <span class="n">schedule</span><span class="o">.</span><span class="n">timeslot</span><span class="o">.</span><span class="n">day</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">schedule</span><span class="o">.</span><span class="n">timeslot</span><span class="o">.</span><span class="n">start_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M&quot;</span><span class="p">)</span>
+        <span class="n">cell_content</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Demonstrator</span><span class="se">\n</span><span class="si">{</span><span class="n">schedule</span><span class="o">.</span><span class="n">class_session</span><span class="o">.</span><span class="n">get_class_code</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">schedule</span><span class="o">.</span><span class="n">class_session</span><span class="o">.</span><span class="n">session_type</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="n">timetable_data</span><span class="p">[</span><span class="n">day</span><span class="p">][</span><span class="n">start_time</span><span class="p">]:</span>
+            <span class="n">timetable_data</span><span class="p">[</span><span class="n">day</span><span class="p">][</span><span class="n">start_time</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Scheduling Conflict. Contact admin&quot;</span>
+            <span class="n">conflicts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">day</span><span class="p">,</span> <span class="n">start_time</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">timetable_data</span><span class="p">[</span><span class="n">day</span><span class="p">][</span><span class="n">start_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">cell_content</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;days&#39;</span><span class="p">:</span> <span class="n">days</span><span class="p">,</span>
+        <span class="s1">&#39;hours&#39;</span><span class="p">:</span> <span class="n">hours</span><span class="p">,</span>
+        <span class="s1">&#39;timetable_data&#39;</span><span class="p">:</span> <span class="n">timetable_data</span><span class="p">,</span>
+        <span class="s1">&#39;conflicts&#39;</span><span class="p">:</span> <span class="n">conflicts</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;my_timetable.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="edit_competencies">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.edit_competencies">[docs]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">edit_competencies</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Allow demonstrators to edit their competencies by selecting skills from a list.</span>
+
+<span class="sd">    :param request: The current HTTP request object.</span>
+<span class="sd">    :type request: HttpRequest</span>
+<span class="sd">    :return: A response rendering the edit competencies page with a form.</span>
+<span class="sd">    :rtype: HttpResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="n">demonstrator</span> <span class="o">=</span> <span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ProfileCompetencyForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="c1"># Clear existing competencies</span>
+            <span class="n">Competency</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">demonstrator</span><span class="o">=</span><span class="n">demonstrator</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+            <span class="c1"># Add new competencies</span>
+            <span class="n">skills</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s1">&#39;skills&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">skill</span> <span class="ow">in</span> <span class="n">skills</span><span class="p">:</span>
+                <span class="n">Competency</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">demonstrator</span><span class="o">=</span><span class="n">demonstrator</span><span class="p">,</span> <span class="n">skill</span><span class="o">=</span><span class="n">skill</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;view_user_profile&#39;</span><span class="p">)</span>  <span class="c1"># Redirect to the profile page</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ProfileCompetencyForm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;skills&#39;</span><span class="p">:</span> <span class="n">Competency</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">demonstrator</span><span class="o">=</span><span class="n">demonstrator</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s1">&#39;skill&#39;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">)})</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;edit_competencies.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="options">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.options">[docs]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">options</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render the options page where users can configure their settings.</span>
+
+<span class="sd">    :param request: The current HTTP request object.</span>
+<span class="sd">    :type request: HttpRequest</span>
+<span class="sd">    :return: A response rendering the options page.</span>
+<span class="sd">    :rtype: HttpResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;options.html&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="notifications">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.notifications">[docs]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">notifications</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render the notifications page where users can view their notifications.</span>
+
+<span class="sd">    :param request: The current HTTP request object.</span>
+<span class="sd">    :type request: HttpRequest</span>
+<span class="sd">    :return: A response rendering the notifications page.</span>
+<span class="sd">    :rtype: HttpResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;notifications.html&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="class_list">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.class_list">[docs]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">class_list</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display a list of classes (modules) for the logged-in lecturer.</span>
+
+<span class="sd">    :param request: The current HTTP request object.</span>
+<span class="sd">    :type request: HttpRequest</span>
+<span class="sd">    :return: A response rendering the class list page.</span>
+<span class="sd">    :rtype: HttpResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_lecturer</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;dashboard&#39;</span><span class="p">)</span>
+    
+    <span class="n">modules</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">lecturer__user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;modules&quot;</span><span class="p">:</span> <span class="n">modules</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;class_list.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="my_allocations">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.my_allocations">[docs]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">my_allocations</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display a list of session allocations for the logged-in demonstrator.</span>
+
+<span class="sd">    :param request: The current HTTP request object.</span>
+<span class="sd">    :type request: HttpRequest</span>
+<span class="sd">    :return: A response rendering the allocations page.</span>
+<span class="sd">    :rtype: HttpResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get the current user</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    
+    <span class="c1"># Ensure the user is a demonstrator</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_demonstrator</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;dashboard&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Fetch all allocations for the current demonstrator</span>
+    <span class="n">allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">demonstrator__user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s1">&#39;class_session__class_code&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Prepare the data for the table</span>
+    <span class="n">allocation_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">allocation</span><span class="o">.</span><span class="n">class_session</span>
+        <span class="n">required_skills</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">skill</span><span class="o">.</span><span class="n">skill</span><span class="p">)</span> <span class="k">for</span> <span class="n">skill</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">requirementskill_set</span><span class="o">.</span><span class="n">all</span><span class="p">()])</span>
+        
+        <span class="n">allocation_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s2">&quot;class_code&quot;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">class_code</span><span class="o">.</span><span class="n">class_code</span><span class="p">,</span>
+            <span class="s2">&quot;session_type&quot;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">session_type</span><span class="p">,</span>
+            <span class="s2">&quot;required_skills&quot;</span><span class="p">:</span> <span class="n">required_skills</span><span class="p">,</span>
+            <span class="s2">&quot;details_url&quot;</span><span class="p">:</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;module_detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">session</span><span class="o">.</span><span class="n">class_code</span><span class="o">.</span><span class="n">class_code</span><span class="p">])</span>
+        <span class="p">})</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;allocation_data&quot;</span><span class="p">:</span> <span class="n">allocation_data</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;my_allocations.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="module_detail">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.module_detail">[docs]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">module_detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">class_code</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display details of a specific module, including its sessions and timetable.</span>
+
+<span class="sd">    :param request: The current HTTP request object.</span>
+<span class="sd">    :type request: HttpRequest</span>
+<span class="sd">    :param class_code: The class code of the module to be viewed.</span>
+<span class="sd">    :type class_code: str</span>
+<span class="sd">    :return: A response rendering the module detail page.</span>
+<span class="sd">    :rtype: HttpResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">module</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Module</span><span class="p">,</span> <span class="n">class_code</span><span class="o">=</span><span class="n">class_code</span><span class="p">)</span>
+    <span class="n">sessions</span> <span class="o">=</span> <span class="n">ModuleSession</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_code</span><span class="o">=</span><span class="n">module</span><span class="p">)</span>
+    <span class="n">timetable</span> <span class="o">=</span> <span class="n">SessionSchedule</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session__class_code</span><span class="o">=</span><span class="n">module</span><span class="p">)</span>
+    
+    <span class="n">days</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Monday&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Tuesday&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Wednesday&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Thursday&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;Friday&quot;</span><span class="p">)]</span>
+    <span class="n">hours</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;09:00&quot;</span><span class="p">,</span> <span class="s2">&quot;10:00&quot;</span><span class="p">,</span> <span class="s2">&quot;11:00&quot;</span><span class="p">,</span> <span class="s2">&quot;12:00&quot;</span><span class="p">,</span> <span class="s2">&quot;13:00&quot;</span><span class="p">,</span> <span class="s2">&quot;14:00&quot;</span><span class="p">,</span> <span class="s2">&quot;15:00&quot;</span><span class="p">,</span> <span class="s2">&quot;16:00&quot;</span><span class="p">,</span> <span class="s2">&quot;17:00&quot;</span><span class="p">]</span>
+    
+    <span class="n">session_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">sessions</span><span class="p">:</span>
+        <span class="n">session_info</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">session_type</span><span class="p">,</span>
+            <span class="s2">&quot;hours&quot;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">get_timeslots</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+            <span class="s2">&quot;required_demonstrators&quot;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">required_demonstrator</span><span class="p">,</span>
+            <span class="s2">&quot;required_skill&quot;</span><span class="p">:</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">skill</span><span class="o">.</span><span class="n">skill</span><span class="p">)</span> <span class="k">for</span> <span class="n">skill</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">requirementskill_set</span><span class="o">.</span><span class="n">all</span><span class="p">()])</span>
+        <span class="p">}</span>
+        <span class="n">session_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">session_info</span><span class="p">)</span>
+    
+    <span class="n">timetable_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">day</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="p">{</span><span class="n">hour</span><span class="p">:</span> <span class="s1">&#39;&#39;</span> <span class="k">for</span> <span class="n">hour</span> <span class="ow">in</span> <span class="n">hours</span><span class="p">}</span> <span class="k">for</span> <span class="n">day</span> <span class="ow">in</span> <span class="n">days</span><span class="p">}</span>
+    
+    <span class="k">for</span> <span class="n">schedule</span> <span class="ow">in</span> <span class="n">timetable</span><span class="p">:</span>
+        <span class="n">day</span> <span class="o">=</span> <span class="n">schedule</span><span class="o">.</span><span class="n">timeslot</span><span class="o">.</span><span class="n">day</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">schedule</span><span class="o">.</span><span class="n">timeslot</span><span class="o">.</span><span class="n">start_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M&quot;</span><span class="p">)</span>
+        <span class="n">session_type</span> <span class="o">=</span> <span class="n">schedule</span><span class="o">.</span><span class="n">class_session</span><span class="o">.</span><span class="n">session_type</span>
+        <span class="n">timetable_data</span><span class="p">[</span><span class="n">day</span><span class="p">][</span><span class="n">start_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">session_type</span>
+    
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;module&quot;</span><span class="p">:</span> <span class="n">module</span><span class="p">,</span>
+        <span class="s2">&quot;sessions&quot;</span><span class="p">:</span> <span class="n">session_data</span><span class="p">,</span>
+        <span class="s2">&quot;days&quot;</span><span class="p">:</span> <span class="n">days</span><span class="p">,</span>
+        <span class="s2">&quot;hours&quot;</span><span class="p">:</span> <span class="n">hours</span><span class="p">,</span>
+        <span class="s2">&quot;timetable_data&quot;</span><span class="p">:</span> <span class="n">timetable_data</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;class_details.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="edit_session">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.edit_session">[docs]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">edit_session</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">session_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Allow lecturers to edit the details of a specific session, including the number of required demonstrators and relevant skills.</span>
+
+<span class="sd">    :param request: The current HTTP request object.</span>
+<span class="sd">    :type request: HttpRequest</span>
+<span class="sd">    :param session_id: The ID of the session to be edited.</span>
+<span class="sd">    :type session_id: int</span>
+<span class="sd">    :return: A response rendering the edit session page or redirecting to the module detail page on success.</span>
+<span class="sd">    :rtype: HttpResponse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">ModuleSession</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">session_id</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">SessionUpdateForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">required_demonstrator</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s1">&#39;required_demonstrators&#39;</span><span class="p">]</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            
+            <span class="n">new_skill_name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>  <span class="c1"># &#39;name&#39; corresponds to the new skill field in your form</span>
+            <span class="k">if</span> <span class="n">new_skill_name</span><span class="p">:</span>
+                <span class="n">new_skill</span><span class="p">,</span> <span class="n">created</span> <span class="o">=</span> <span class="n">Skill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">new_skill_name</span><span class="p">)</span>
+                <span class="n">session</span><span class="o">.</span><span class="n">requirementskill_set</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">skill</span><span class="o">=</span><span class="n">new_skill</span><span class="p">)</span>
+            
+            <span class="n">session</span><span class="o">.</span><span class="n">requirementskill_set</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+            <span class="n">skills</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s1">&#39;skills&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">skill</span> <span class="ow">in</span> <span class="n">skills</span><span class="p">:</span>
+                <span class="n">session</span><span class="o">.</span><span class="n">requirementskill_set</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">skill</span><span class="o">=</span><span class="n">skill</span><span class="p">)</span>
+            
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;module_detail&#39;</span><span class="p">,</span> <span class="n">class_code</span><span class="o">=</span><span class="n">session</span><span class="o">.</span><span class="n">class_code</span><span class="o">.</span><span class="n">class_code</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">SessionUpdateForm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;session_id&#39;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s1">&#39;required_demonstrators&#39;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">required_demonstrator</span><span class="p">,</span>
+            <span class="s1">&#39;skills&#39;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">requirementskill_set</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s1">&#39;skill&#39;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="p">})</span>
+    
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;session&#39;</span><span class="p">:</span> <span class="n">session</span><span class="p">,</span>
+        <span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;edit_session.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="create_skill">
+<a class="viewcode-back" href="../../../users.views.html#users.views.user_views.create_skill">[docs]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">create_skill</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Allow users to create a new skill if it doesn&#39;t already exist in the system.</span>
+
+<span class="sd">    :param request: The current HTTP request object.</span>
+<span class="sd">    :type request: HttpRequest</span>
+<span class="sd">    :return: A redirect response to the referring page or module detail page.</span>
+<span class="sd">    :rtype: HttpResponseRedirect</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">SkillCreationForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">skill_name</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">Skill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">skill_name</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="n">Skill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">skill_name</span><span class="p">)</span>
+            <span class="c1"># Redirect back to the referring page or another default page</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;HTTP_REFERER&#39;</span><span class="p">,</span> <span class="s1">&#39;module_detail&#39;</span><span class="p">))</span>
+    <span class="c1"># If not a POST request, or if form is invalid, just redirect back</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;HTTP_REFERER&#39;</span><span class="p">,</span> <span class="s1">&#39;module_detail&#39;</span><span class="p">))</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to Populate Database with Test Data &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="URL Endpoints" href="url_endpoint.html" />
+    <link rel="prev" title="Environment Setup" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Environment Setup</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How to Populate Database with Test Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-the-script-does">What the Script Does</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#additional-notes">Additional Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation-structure">Documentation Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scripts-overview">Scripts Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generate-test-users-py">generate_test_users.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generate-test-users-availability-py">generate_test_users_availability.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#add-new-skill-py">add_new_skill.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#populate-test-skills-py">populate_test_skills.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#populate-modules-py">populate_modules.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#populate-sessions-py">populate_sessions.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#populate-competencies-py">populate_competencies.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-test-timetables-py">create_test_timetables.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Documentation Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">How to Populate Database with Test Data</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="how-to-populate-database-with-test-data">
+<h1>How to Populate Database with Test Data<a class="headerlink" href="#how-to-populate-database-with-test-data" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This documentation provides detailed instructions and descriptions for the various scripts used to populate the test database with essential data required for development and testing purposes.</p>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#description" id="id2">Description</a></p></li>
+<li><p><a class="reference internal" href="#usage" id="id3">Usage</a></p></li>
+<li><p><a class="reference internal" href="#what-the-script-does" id="id4">What the Script Does</a></p></li>
+<li><p><a class="reference internal" href="#additional-notes" id="id5">Additional Notes</a></p></li>
+</ul>
+</nav>
+<p>To facilitate testing, a script is provided that populates the database with test data. This is particularly useful for running tests on a consistent dataset or simulating real-world scenarios.</p>
+<p><strong>Script</strong>: <cite>populate_test_database.ps1</cite></p>
+<section id="description">
+<h3><a class="toc-backref" href="#id2" role="doc-backlink">Description</a><a class="headerlink" href="#description" title="Link to this heading"></a></h3>
+<p>The <cite>populate_test_database.ps1</cite> script inserts a predefined set of test data into the database. This data is useful for testing various functionalities of the application without having to manually insert data each time.</p>
+</section>
+<section id="usage">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Usage</a><a class="headerlink" href="#usage" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Ensure that the virtual environment is activated and the database is correctly set up.</p></li>
+<li><p>Execute the script from the PowerShell command line:</p></li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>./populate_test_database.ps1
+</pre></div>
+</div>
+</section>
+<section id="what-the-script-does">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">What the Script Does</a><a class="headerlink" href="#what-the-script-does" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Connects to the database specified in your environment settings.</p></li>
+<li><p>Inserts a set of test data, including sample users, products, transactions, or other relevant entities.</p></li>
+<li><p>Can be run multiple times to reset the test data to its original state.</p></li>
+</ul>
+</section>
+<section id="additional-notes">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Additional Notes</a><a class="headerlink" href="#additional-notes" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>This script is intended for development and testing purposes only. Do not use it in a production environment.</p></li>
+<li><p>If modifications to the test data set are needed, update the script accordingly to reflect the new data requirements.</p></li>
+</ul>
+</section>
+</section>
+<section id="documentation-structure">
+<h2>Documentation Structure<a class="headerlink" href="#documentation-structure" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Each script is documented with its purpose, usage, and a description of its functionality.</p></li>
+<li><p>The scripts can be run individually to populate different parts of the test database.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ensure that the required CSV files are formatted correctly and located in the appropriate directories before running the scripts.</p>
+</div>
+</section>
+<section id="scripts-overview">
+<h2>Scripts Overview<a class="headerlink" href="#scripts-overview" title="Link to this heading"></a></h2>
+<p>This section provides an overview of each script used to populate the test database.</p>
+</section>
+<section id="generate-test-users-py">
+<h2>generate_test_users.py<a class="headerlink" href="#generate-test-users-py" title="Link to this heading"></a></h2>
+<p><strong>Purpose</strong>: Generates random users for testing purposes.</p>
+<p><strong>Usage</strong>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>generate_test_users<span class="w"> </span>--total<span class="w"> </span>&lt;number_of_users&gt;
+</pre></div>
+</div>
+<p>To generate test demonstrators:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>generate_test_users<span class="w"> </span>--demonstrator<span class="w"> </span>&lt;number_of_demonstrators&gt;
+</pre></div>
+</div>
+<p><strong>Description</strong>:
+- This script uses the <cite>Faker</cite> library to generate realistic fake user data.
+- Users can specify the number of test users or demonstrators to create.
+- The generated users have unique usernames and emails, and can be flagged as demonstrators or lecturers.</p>
+</section>
+<section id="generate-test-users-availability-py">
+<h2>generate_test_users_availability.py<a class="headerlink" href="#generate-test-users-availability-py" title="Link to this heading"></a></h2>
+<p><strong>Purpose</strong>: Generates availability records for users marked as fake for all available time slots.</p>
+<p><strong>Usage</strong>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>generate_test_users_availability
+</pre></div>
+</div>
+<p><strong>Description</strong>:
+- This script creates <cite>UserAvailability</cite> records for each fake user across all available time slots.
+- It ensures that no duplicate availability records are created.
+- The script provides feedback on the number of users for whom availability was created.</p>
+</section>
+<section id="add-new-skill-py">
+<h2>add_new_skill.py<a class="headerlink" href="#add-new-skill-py" title="Link to this heading"></a></h2>
+<p><strong>Purpose</strong>: Adds a new skill to the <cite>Skill</cite> database.</p>
+<p><strong>Usage</strong>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>add_new_skill<span class="w"> </span>&lt;skill_name&gt;
+</pre></div>
+</div>
+<p><strong>Description</strong>:
+- This script accepts the name of a skill as an argument and creates a new skill entry in the database.
+- If the skill is successfully created, a confirmation message is displayed.</p>
+</section>
+<section id="populate-test-skills-py">
+<h2>populate_test_skills.py<a class="headerlink" href="#populate-test-skills-py" title="Link to this heading"></a></h2>
+<p><strong>Purpose</strong>: Populates the database with a list of skills from a CSV file.</p>
+<p><strong>Usage</strong>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>populate_test_skills<span class="w"> </span>&lt;csv_file&gt;
+</pre></div>
+</div>
+<p><strong>Description</strong>:
+- This script reads skill data from a specified CSV file and creates new skill records in the database.
+- It provides feedback on the success or failure of the operation.</p>
+</section>
+<section id="populate-modules-py">
+<h2>populate_modules.py<a class="headerlink" href="#populate-modules-py" title="Link to this heading"></a></h2>
+<p><strong>Purpose</strong>: Populates the database with a list of modules from a CSV file.</p>
+<p><strong>Usage</strong>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>populate_modules<span class="w"> </span>&lt;csv_file&gt;
+</pre></div>
+</div>
+<p><strong>Description</strong>:
+- This script reads module data from a CSV file and either creates new module records or updates existing ones in the database.
+- The script can handle semester information and associate modules with the correct semester.</p>
+</section>
+<section id="populate-sessions-py">
+<h2>populate_sessions.py<a class="headerlink" href="#populate-sessions-py" title="Link to this heading"></a></h2>
+<p><strong>Purpose</strong>: Populates the database with a list of module sessions from a CSV file or generates random module sessions for testing purposes.</p>
+<p><strong>Usage</strong>:</p>
+<p>To populate from a CSV file:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>populate_sessions<span class="w"> </span>&lt;csv_file&gt;
+</pre></div>
+</div>
+<p>To randomly generate sessions:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>populate_sessions<span class="w"> </span>--test
+</pre></div>
+</div>
+<p><strong>Description</strong>:
+- The script can either populate sessions from a CSV file or randomly generate them for testing.
+- It handles session types like lectures, tutorials, and labs, and ensures no scheduling conflicts.</p>
+</section>
+<section id="populate-competencies-py">
+<h2>populate_competencies.py<a class="headerlink" href="#populate-competencies-py" title="Link to this heading"></a></h2>
+<p><strong>Purpose</strong>: Populates the database with a list of competencies from a CSV file or randomly generates competencies for test demonstrators.</p>
+<p><strong>Usage</strong>:</p>
+<p>To populate from a CSV file:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>populate_competencies<span class="w"> </span>&lt;csv_file&gt;
+</pre></div>
+</div>
+<p>To randomly generate competencies:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>populate_competencies<span class="w"> </span>--test
+</pre></div>
+</div>
+<p><strong>Description</strong>:
+- The script can either populate competencies from a CSV file or generate them randomly for test demonstrators.
+- It uses a biased random distribution to assign skill levels and removes duplicate skills.</p>
+</section>
+<section id="create-test-timetables-py">
+<h2>create_test_timetables.py<a class="headerlink" href="#create-test-timetables-py" title="Link to this heading"></a></h2>
+<p><strong>Purpose</strong>: Generates random timetables for testing purposes.</p>
+<p><strong>Usage</strong>:</p>
+<p>To generate a timetable for a specific module:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>create_test_timetables<span class="w"> </span>--class-code<span class="w"> </span>&lt;class_code&gt;
+</pre></div>
+</div>
+<p>To generate timetables for all modules:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>create_test_timetables<span class="w"> </span>--all
+</pre></div>
+</div>
+<p><strong>Description</strong>:
+- This script creates realistic timetables based on constraints such as session types and maximum teaching hours.
+- It ensures that the generated timetables do not exceed specified constraints and do not contain scheduling conflicts.</p>
+</section>
+<section id="id1">
+<h2>Documentation Structure<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Each script is documented with its purpose, usage, and a description of its functionality.</p></li>
+<li><p>The scripts can be run individually to populate different parts of the test database.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ensure that the required CSV files are formatted correctly and located in the appropriate directories before running the scripts.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Environment Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="url_endpoint.html" class="btn btn-neutral float-right" title="URL Endpoints" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

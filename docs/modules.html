@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API References &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="admin package" href="admin.html" />
+    <link rel="prev" title="Known Issues" href="known_issues.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_issues.html">Known Issues</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API References</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">admin package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.html">allocations package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html">classes package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demonstrator_timetabling_tool.html">demonstrator_timetabling_tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timetable.html">timetable package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="users.html">users package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API References</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-references">
+<h1>API References<a class="headerlink" href="#api-references" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin.html">admin package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="admin.html#subpackages">Subpackages</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html#module-admin.admin">admin.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html#module-admin.apps">admin.apps module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="admin.html#admin.apps.AdminConfig"><code class="docutils literal notranslate"><span class="pre">AdminConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="admin.html#admin.apps.AdminConfig.default_auto_field"><code class="docutils literal notranslate"><span class="pre">AdminConfig.default_auto_field</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="admin.html#admin.apps.AdminConfig.name"><code class="docutils literal notranslate"><span class="pre">AdminConfig.name</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html#module-admin.models">admin.models module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html#module-admin.views">admin.views module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html#module-admin">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="allocations.html">allocations package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="allocations.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="allocations.utils.html">allocations.utils package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#module-allocations.utils.allocation_manager">allocations.utils.allocation_manager module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#module-allocations.utils.constraint_filter">allocations.utils.constraint_filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#module-allocations.utils.constraint_manager">allocations.utils.constraint_manager module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#module-allocations.utils.goodness_of_fit">allocations.utils.goodness_of_fit module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.utils.html#module-allocations.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.html#module-allocations.admin">allocations.admin module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="allocations.html#allocations.admin.AllocationAdmin"><code class="docutils literal notranslate"><span class="pre">AllocationAdmin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationAdmin.actions"><code class="docutils literal notranslate"><span class="pre">AllocationAdmin.actions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationAdmin.assign_demonstrator"><code class="docutils literal notranslate"><span class="pre">AllocationAdmin.assign_demonstrator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationAdmin.changelist_view"><code class="docutils literal notranslate"><span class="pre">AllocationAdmin.changelist_view()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationAdmin.ensure_correct_approved_status"><code class="docutils literal notranslate"><span class="pre">AllocationAdmin.ensure_correct_approved_status()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationAdmin.get_demonstrator_name"><code class="docutils literal notranslate"><span class="pre">AllocationAdmin.get_demonstrator_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationAdmin.get_session_details"><code class="docutils literal notranslate"><span class="pre">AllocationAdmin.get_session_details()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationAdmin.list_display"><code class="docutils literal notranslate"><span class="pre">AllocationAdmin.list_display</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationAdmin.list_filter"><code class="docutils literal notranslate"><span class="pre">AllocationAdmin.list_filter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationAdmin.media"><code class="docutils literal notranslate"><span class="pre">AllocationAdmin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationAdmin.populate_solution_domain"><code class="docutils literal notranslate"><span class="pre">AllocationAdmin.populate_solution_domain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationAdmin.reset_allocation"><code class="docutils literal notranslate"><span class="pre">AllocationAdmin.reset_allocation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationAdmin.view_module_session"><code class="docutils literal notranslate"><span class="pre">AllocationAdmin.view_module_session()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="allocations.html#allocations.admin.AllocationDomainAdmin"><code class="docutils literal notranslate"><span class="pre">AllocationDomainAdmin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationDomainAdmin.get_session_details"><code class="docutils literal notranslate"><span class="pre">AllocationDomainAdmin.get_session_details()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationDomainAdmin.get_viable_hard_constraint_number"><code class="docutils literal notranslate"><span class="pre">AllocationDomainAdmin.get_viable_hard_constraint_number()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationDomainAdmin.get_viable_primary_constraint_number"><code class="docutils literal notranslate"><span class="pre">AllocationDomainAdmin.get_viable_primary_constraint_number()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationDomainAdmin.get_viable_secondary_constraint_number"><code class="docutils literal notranslate"><span class="pre">AllocationDomainAdmin.get_viable_secondary_constraint_number()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationDomainAdmin.get_viable_tertiary_constraint_number"><code class="docutils literal notranslate"><span class="pre">AllocationDomainAdmin.get_viable_tertiary_constraint_number()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationDomainAdmin.list_display"><code class="docutils literal notranslate"><span class="pre">AllocationDomainAdmin.list_display</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationDomainAdmin.media"><code class="docutils literal notranslate"><span class="pre">AllocationDomainAdmin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.admin.AllocationDomainAdmin.view_module_session"><code class="docutils literal notranslate"><span class="pre">AllocationDomainAdmin.view_module_session()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.html#module-allocations.apps">allocations.apps module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="allocations.html#allocations.apps.AllocationsConfig"><code class="docutils literal notranslate"><span class="pre">AllocationsConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.apps.AllocationsConfig.default_auto_field"><code class="docutils literal notranslate"><span class="pre">AllocationsConfig.default_auto_field</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.apps.AllocationsConfig.name"><code class="docutils literal notranslate"><span class="pre">AllocationsConfig.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.apps.AllocationsConfig.verbose_name"><code class="docutils literal notranslate"><span class="pre">AllocationsConfig.verbose_name</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.html#module-allocations.models">allocations.models module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="allocations.html#allocations.models.Allocation"><code class="docutils literal notranslate"><span class="pre">Allocation</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.Allocation.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Allocation.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.Allocation.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Allocation.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.Allocation.allocationdomain_set"><code class="docutils literal notranslate"><span class="pre">Allocation.allocationdomain_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.Allocation.approved"><code class="docutils literal notranslate"><span class="pre">Allocation.approved</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.Allocation.class_session"><code class="docutils literal notranslate"><span class="pre">Allocation.class_session</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.Allocation.class_session_id"><code class="docutils literal notranslate"><span class="pre">Allocation.class_session_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.Allocation.demonstrator"><code class="docutils literal notranslate"><span class="pre">Allocation.demonstrator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.Allocation.demonstrator_id"><code class="docutils literal notranslate"><span class="pre">Allocation.demonstrator_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.Allocation.ensure_not_approved_if_no_demonstrator"><code class="docutils literal notranslate"><span class="pre">Allocation.ensure_not_approved_if_no_demonstrator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.Allocation.id"><code class="docutils literal notranslate"><span class="pre">Allocation.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.Allocation.objects"><code class="docutils literal notranslate"><span class="pre">Allocation.objects</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="allocations.html#allocations.models.AllocationDomain"><code class="docutils literal notranslate"><span class="pre">AllocationDomain</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.AllocationDomain.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">AllocationDomain.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.AllocationDomain.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">AllocationDomain.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.AllocationDomain.allocation"><code class="docutils literal notranslate"><span class="pre">AllocationDomain.allocation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.AllocationDomain.allocation_id"><code class="docutils literal notranslate"><span class="pre">AllocationDomain.allocation_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.AllocationDomain.hard_constraint_demonstrators"><code class="docutils literal notranslate"><span class="pre">AllocationDomain.hard_constraint_demonstrators</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.AllocationDomain.id"><code class="docutils literal notranslate"><span class="pre">AllocationDomain.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.AllocationDomain.objects"><code class="docutils literal notranslate"><span class="pre">AllocationDomain.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.AllocationDomain.primary_soft_constraint_demonstrators"><code class="docutils literal notranslate"><span class="pre">AllocationDomain.primary_soft_constraint_demonstrators</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.AllocationDomain.secondary_soft_constraint_demonstrators"><code class="docutils literal notranslate"><span class="pre">AllocationDomain.secondary_soft_constraint_demonstrators</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="allocations.html#allocations.models.AllocationDomain.tertiary_soft_constraint_demonstrators"><code class="docutils literal notranslate"><span class="pre">AllocationDomain.tertiary_soft_constraint_demonstrators</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="allocations.html#allocations.models.reset_allocation_approved_status"><code class="docutils literal notranslate"><span class="pre">reset_allocation_approved_status()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.html#module-allocations">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="classes.html">classes package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classes.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classes.admin_inlines.html">classes.admin_inlines package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#module-classes.admin_inlines.module_lecturer_inline">classes.admin_inlines.module_lecturer_inline module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#module-classes.admin_inlines.module_session_inline">classes.admin_inlines.module_session_inline module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#module-classes.admin_inlines.skill_inline">classes.admin_inlines.skill_inline module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#module-classes.admin_inlines">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.management.html">classes.management package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.html#module-classes.management">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.utils.html">classes.utils package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.utils.html#module-classes.utils.check_module_session_conflict">classes.utils.check_module_session_conflict module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.utils.html#module-classes.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html#module-classes.admin">classes.admin module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.admin.CompetencyAdmin"><code class="docutils literal notranslate"><span class="pre">CompetencyAdmin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.CompetencyAdmin.list_display"><code class="docutils literal notranslate"><span class="pre">CompetencyAdmin.list_display</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.CompetencyAdmin.media"><code class="docutils literal notranslate"><span class="pre">CompetencyAdmin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.CompetencyAdmin.search_fields"><code class="docutils literal notranslate"><span class="pre">CompetencyAdmin.search_fields</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.admin.CompetencyMixin"><code class="docutils literal notranslate"><span class="pre">CompetencyMixin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.CompetencyMixin.get_demonstrator_name"><code class="docutils literal notranslate"><span class="pre">CompetencyMixin.get_demonstrator_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.CompetencyMixin.get_skill_display"><code class="docutils literal notranslate"><span class="pre">CompetencyMixin.get_skill_display()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.admin.ModuleAdmin"><code class="docutils literal notranslate"><span class="pre">ModuleAdmin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleAdmin.fields"><code class="docutils literal notranslate"><span class="pre">ModuleAdmin.fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleAdmin.inlines"><code class="docutils literal notranslate"><span class="pre">ModuleAdmin.inlines</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleAdmin.list_display"><code class="docutils literal notranslate"><span class="pre">ModuleAdmin.list_display</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleAdmin.media"><code class="docutils literal notranslate"><span class="pre">ModuleAdmin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleAdmin.num_schedules"><code class="docutils literal notranslate"><span class="pre">ModuleAdmin.num_schedules()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleAdmin.num_sessions"><code class="docutils literal notranslate"><span class="pre">ModuleAdmin.num_sessions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleAdmin.view_module_sessions"><code class="docutils literal notranslate"><span class="pre">ModuleAdmin.view_module_sessions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.admin.ModuleSessionAdmin"><code class="docutils literal notranslate"><span class="pre">ModuleSessionAdmin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleSessionAdmin.actions"><code class="docutils literal notranslate"><span class="pre">ModuleSessionAdmin.actions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleSessionAdmin.inlines"><code class="docutils literal notranslate"><span class="pre">ModuleSessionAdmin.inlines</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleSessionAdmin.list_display"><code class="docutils literal notranslate"><span class="pre">ModuleSessionAdmin.list_display</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleSessionAdmin.list_filter"><code class="docutils literal notranslate"><span class="pre">ModuleSessionAdmin.list_filter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleSessionAdmin.media"><code class="docutils literal notranslate"><span class="pre">ModuleSessionAdmin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleSessionAdmin.search_fields"><code class="docutils literal notranslate"><span class="pre">ModuleSessionAdmin.search_fields</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.admin.ModuleSessionMixin"><code class="docutils literal notranslate"><span class="pre">ModuleSessionMixin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleSessionMixin.changelist_view"><code class="docutils literal notranslate"><span class="pre">ModuleSessionMixin.changelist_view()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleSessionMixin.ensure_correct_allocation"><code class="docutils literal notranslate"><span class="pre">ModuleSessionMixin.ensure_correct_allocation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleSessionMixin.get_class_code"><code class="docutils literal notranslate"><span class="pre">ModuleSessionMixin.get_class_code()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleSessionMixin.get_queryset"><code class="docutils literal notranslate"><span class="pre">ModuleSessionMixin.get_queryset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleSessionMixin.get_search_results"><code class="docutils literal notranslate"><span class="pre">ModuleSessionMixin.get_search_results()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleSessionMixin.total_required_demonstrators"><code class="docutils literal notranslate"><span class="pre">ModuleSessionMixin.total_required_demonstrators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleSessionMixin.view_allocations"><code class="docutils literal notranslate"><span class="pre">ModuleSessionMixin.view_allocations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleSessionMixin.view_module"><code class="docutils literal notranslate"><span class="pre">ModuleSessionMixin.view_module()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.ModuleSessionMixin.view_module_session"><code class="docutils literal notranslate"><span class="pre">ModuleSessionMixin.view_module_session()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.admin.RequirementsAdmin"><code class="docutils literal notranslate"><span class="pre">RequirementsAdmin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.RequirementsAdmin.fields"><code class="docutils literal notranslate"><span class="pre">RequirementsAdmin.fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.RequirementsAdmin.list_display"><code class="docutils literal notranslate"><span class="pre">RequirementsAdmin.list_display</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.RequirementsAdmin.media"><code class="docutils literal notranslate"><span class="pre">RequirementsAdmin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.RequirementsAdmin.search_fields"><code class="docutils literal notranslate"><span class="pre">RequirementsAdmin.search_fields</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.admin.RequirementsMixin"><code class="docutils literal notranslate"><span class="pre">RequirementsMixin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.RequirementsMixin.get_class_code"><code class="docutils literal notranslate"><span class="pre">RequirementsMixin.get_class_code()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.RequirementsMixin.get_skill_display"><code class="docutils literal notranslate"><span class="pre">RequirementsMixin.get_skill_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.RequirementsMixin.view_module_session"><code class="docutils literal notranslate"><span class="pre">RequirementsMixin.view_module_session()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.admin.SessionScheduleAdmin"><code class="docutils literal notranslate"><span class="pre">SessionScheduleAdmin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.SessionScheduleAdmin.get_class_code"><code class="docutils literal notranslate"><span class="pre">SessionScheduleAdmin.get_class_code()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.SessionScheduleAdmin.get_class_type"><code class="docutils literal notranslate"><span class="pre">SessionScheduleAdmin.get_class_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.SessionScheduleAdmin.list_display"><code class="docutils literal notranslate"><span class="pre">SessionScheduleAdmin.list_display</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.SessionScheduleAdmin.media"><code class="docutils literal notranslate"><span class="pre">SessionScheduleAdmin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.SessionScheduleAdmin.search_fields"><code class="docutils literal notranslate"><span class="pre">SessionScheduleAdmin.search_fields</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.admin.SkillAdmin"><code class="docutils literal notranslate"><span class="pre">SkillAdmin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.SkillAdmin.fields"><code class="docutils literal notranslate"><span class="pre">SkillAdmin.fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.SkillAdmin.list_display"><code class="docutils literal notranslate"><span class="pre">SkillAdmin.list_display</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.SkillAdmin.media"><code class="docutils literal notranslate"><span class="pre">SkillAdmin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.SkillAdmin.save_model"><code class="docutils literal notranslate"><span class="pre">SkillAdmin.save_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.admin.SkillAdmin.search_fields"><code class="docutils literal notranslate"><span class="pre">SkillAdmin.search_fields</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html#module-classes.apps">classes.apps module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.apps.ClassesConfig"><code class="docutils literal notranslate"><span class="pre">ClassesConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.apps.ClassesConfig.default_auto_field"><code class="docutils literal notranslate"><span class="pre">ClassesConfig.default_auto_field</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.apps.ClassesConfig.name"><code class="docutils literal notranslate"><span class="pre">ClassesConfig.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.apps.ClassesConfig.verbose_name"><code class="docutils literal notranslate"><span class="pre">ClassesConfig.verbose_name</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html#module-classes.models">classes.models module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.models.Competency"><code class="docutils literal notranslate"><span class="pre">Competency</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Competency.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Competency.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Competency.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Competency.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Competency.demonstrator"><code class="docutils literal notranslate"><span class="pre">Competency.demonstrator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Competency.demonstrator_id"><code class="docutils literal notranslate"><span class="pre">Competency.demonstrator_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Competency.id"><code class="docutils literal notranslate"><span class="pre">Competency.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Competency.objects"><code class="docutils literal notranslate"><span class="pre">Competency.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Competency.skill"><code class="docutils literal notranslate"><span class="pre">Competency.skill</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Competency.skill_id"><code class="docutils literal notranslate"><span class="pre">Competency.skill_id</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.models.Module"><code class="docutils literal notranslate"><span class="pre">Module</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Module.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Module.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Module.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Module.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Module.class_code"><code class="docutils literal notranslate"><span class="pre">Module.class_code</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Module.count_sessions"><code class="docutils literal notranslate"><span class="pre">Module.count_sessions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Module.formatted_lecturer_name"><code class="docutils literal notranslate"><span class="pre">Module.formatted_lecturer_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Module.formatted_semester"><code class="docutils literal notranslate"><span class="pre">Module.formatted_semester()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Module.get_schedule"><code class="docutils literal notranslate"><span class="pre">Module.get_schedule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Module.get_session_types"><code class="docutils literal notranslate"><span class="pre">Module.get_session_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Module.has_conflict"><code class="docutils literal notranslate"><span class="pre">Module.has_conflict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Module.lecturer"><code class="docutils literal notranslate"><span class="pre">Module.lecturer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Module.lecturer_id"><code class="docutils literal notranslate"><span class="pre">Module.lecturer_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Module.modulesession_set"><code class="docutils literal notranslate"><span class="pre">Module.modulesession_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Module.name"><code class="docutils literal notranslate"><span class="pre">Module.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Module.objects"><code class="docutils literal notranslate"><span class="pre">Module.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Module.semester"><code class="docutils literal notranslate"><span class="pre">Module.semester</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Module.semester_id"><code class="docutils literal notranslate"><span class="pre">Module.semester_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Module.update_lecturer_availability"><code class="docutils literal notranslate"><span class="pre">Module.update_lecturer_availability()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.models.ModuleSession"><code class="docutils literal notranslate"><span class="pre">ModuleSession</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.ModuleSession.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">ModuleSession.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.ModuleSession.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">ModuleSession.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.ModuleSession.allocation_set"><code class="docutils literal notranslate"><span class="pre">ModuleSession.allocation_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.ModuleSession.class_code"><code class="docutils literal notranslate"><span class="pre">ModuleSession.class_code</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.ModuleSession.class_code_id"><code class="docutils literal notranslate"><span class="pre">ModuleSession.class_code_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.ModuleSession.ensure_correct_allocation"><code class="docutils literal notranslate"><span class="pre">ModuleSession.ensure_correct_allocation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.ModuleSession.get_class_code"><code class="docutils literal notranslate"><span class="pre">ModuleSession.get_class_code()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.ModuleSession.get_timeslots"><code class="docutils literal notranslate"><span class="pre">ModuleSession.get_timeslots()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.ModuleSession.id"><code class="docutils literal notranslate"><span class="pre">ModuleSession.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.ModuleSession.objects"><code class="docutils literal notranslate"><span class="pre">ModuleSession.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.ModuleSession.required_demonstrator"><code class="docutils literal notranslate"><span class="pre">ModuleSession.required_demonstrator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.ModuleSession.requirementskill_set"><code class="docutils literal notranslate"><span class="pre">ModuleSession.requirementskill_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.ModuleSession.save"><code class="docutils literal notranslate"><span class="pre">ModuleSession.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.ModuleSession.session_type"><code class="docutils literal notranslate"><span class="pre">ModuleSession.session_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.ModuleSession.sessionschedule_set"><code class="docutils literal notranslate"><span class="pre">ModuleSession.sessionschedule_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.ModuleSession.test_session"><code class="docutils literal notranslate"><span class="pre">ModuleSession.test_session</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.models.RequirementSkill"><code class="docutils literal notranslate"><span class="pre">RequirementSkill</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.RequirementSkill.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">RequirementSkill.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.RequirementSkill.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">RequirementSkill.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.RequirementSkill.class_session"><code class="docutils literal notranslate"><span class="pre">RequirementSkill.class_session</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.RequirementSkill.class_session_id"><code class="docutils literal notranslate"><span class="pre">RequirementSkill.class_session_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.RequirementSkill.id"><code class="docutils literal notranslate"><span class="pre">RequirementSkill.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.RequirementSkill.objects"><code class="docutils literal notranslate"><span class="pre">RequirementSkill.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.RequirementSkill.save"><code class="docutils literal notranslate"><span class="pre">RequirementSkill.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.RequirementSkill.skill"><code class="docutils literal notranslate"><span class="pre">RequirementSkill.skill</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.RequirementSkill.skill_id"><code class="docutils literal notranslate"><span class="pre">RequirementSkill.skill_id</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.models.SessionSchedule"><code class="docutils literal notranslate"><span class="pre">SessionSchedule</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.SessionSchedule.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">SessionSchedule.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.SessionSchedule.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">SessionSchedule.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.SessionSchedule.class_session"><code class="docutils literal notranslate"><span class="pre">SessionSchedule.class_session</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.SessionSchedule.class_session_id"><code class="docutils literal notranslate"><span class="pre">SessionSchedule.class_session_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.SessionSchedule.id"><code class="docutils literal notranslate"><span class="pre">SessionSchedule.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.SessionSchedule.objects"><code class="docutils literal notranslate"><span class="pre">SessionSchedule.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.SessionSchedule.timeslot"><code class="docutils literal notranslate"><span class="pre">SessionSchedule.timeslot</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.SessionSchedule.timeslot_id"><code class="docutils literal notranslate"><span class="pre">SessionSchedule.timeslot_id</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.models.Skill"><code class="docutils literal notranslate"><span class="pre">Skill</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Skill.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Skill.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Skill.LEVEL_CHOICES"><code class="docutils literal notranslate"><span class="pre">Skill.LEVEL_CHOICES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Skill.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Skill.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Skill.competency_set"><code class="docutils literal notranslate"><span class="pre">Skill.competency_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Skill.get_level_display"><code class="docutils literal notranslate"><span class="pre">Skill.get_level_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Skill.id"><code class="docutils literal notranslate"><span class="pre">Skill.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Skill.level"><code class="docutils literal notranslate"><span class="pre">Skill.level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Skill.name"><code class="docutils literal notranslate"><span class="pre">Skill.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Skill.objects"><code class="docutils literal notranslate"><span class="pre">Skill.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.Skill.requirementskill_set"><code class="docutils literal notranslate"><span class="pre">Skill.requirementskill_set</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.models.SkillManager"><code class="docutils literal notranslate"><span class="pre">SkillManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.html#classes.models.SkillManager.create"><code class="docutils literal notranslate"><span class="pre">SkillManager.create()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.models.update_lecturer_availability_after_module_save"><code class="docutils literal notranslate"><span class="pre">update_lecturer_availability_after_module_save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#classes.models.update_lecturer_availability_before_module_save"><code class="docutils literal notranslate"><span class="pre">update_lecturer_availability_before_module_save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html#module-classes">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demonstrator_timetabling_tool.html">demonstrator_timetabling_tool package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demonstrator_timetabling_tool.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demonstrator_timetabling_tool.html#module-demonstrator_timetabling_tool.asgi">demonstrator_timetabling_tool.asgi module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demonstrator_timetabling_tool.html#module-demonstrator_timetabling_tool.settings">demonstrator_timetabling_tool.settings module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demonstrator_timetabling_tool.html#module-demonstrator_timetabling_tool.urls">demonstrator_timetabling_tool.urls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demonstrator_timetabling_tool.html#module-demonstrator_timetabling_tool.wsgi">demonstrator_timetabling_tool.wsgi module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demonstrator_timetabling_tool.html#module-demonstrator_timetabling_tool">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="manage.html">manage module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manage.html#manage.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">tests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.admin.html">tests.admin package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#module-tests.admin.test_allocation_admin">tests.admin.test_allocation_admin module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#module-tests.admin.test_classes_admin">tests.admin.test_classes_admin module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#module-tests.admin.test_timetable_admin">tests.admin.test_timetable_admin module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#module-tests.admin.test_users_admin">tests.admin.test_users_admin module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html#module-tests.admin">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.allocation_eval.html">tests.allocation_eval package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#module-tests.allocation_eval.test_strategy_analysis">tests.allocation_eval.test_strategy_analysis module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html#module-tests.allocation_eval">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.models.html">tests.models package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#module-tests.models.test_allocation_models">tests.models.test_allocation_models module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#module-tests.models.test_classes_models">tests.models.test_classes_models module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#module-tests.models.test_timetable_models">tests.models.test_timetable_models module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#module-tests.models.test_users_models">tests.models.test_users_models module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.models.html#module-tests.models">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.utils.html">tests.utils package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#module-tests.utils.test_allocation_manager">tests.utils.test_allocation_manager module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#module-tests.utils.test_constraint_filter">tests.utils.test_constraint_filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#module-tests.utils.test_constraint_manager">tests.utils.test_constraint_manager module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#module-tests.utils.test_timetable_utils">tests.utils.test_timetable_utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html#module-tests.utils">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.views.html">tests.views package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.views.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.views.html#module-tests.views.test_user_views">tests.views.test_user_views module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.views.html#module-tests.views">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#module-tests">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="timetable.html">timetable package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="timetable.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="timetable.management.html">timetable.management package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timetable.management.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.management.html#module-timetable.management">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="timetable.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timetable.html#module-timetable.admin">timetable.admin module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="timetable.html#timetable.admin.SemesterAdmin"><code class="docutils literal notranslate"><span class="pre">SemesterAdmin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.admin.SemesterAdmin.list_display"><code class="docutils literal notranslate"><span class="pre">SemesterAdmin.list_display</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.admin.SemesterAdmin.media"><code class="docutils literal notranslate"><span class="pre">SemesterAdmin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.admin.SemesterAdmin.search_fields"><code class="docutils literal notranslate"><span class="pre">SemesterAdmin.search_fields</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="timetable.html#timetable.admin.SessionScheduleMixin"><code class="docutils literal notranslate"><span class="pre">SessionScheduleMixin</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="timetable.html#timetable.admin.TimeslotAdmin"><code class="docutils literal notranslate"><span class="pre">TimeslotAdmin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.admin.TimeslotAdmin.list_display"><code class="docutils literal notranslate"><span class="pre">TimeslotAdmin.list_display</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.admin.TimeslotAdmin.media"><code class="docutils literal notranslate"><span class="pre">TimeslotAdmin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.admin.TimeslotAdmin.ordering"><code class="docutils literal notranslate"><span class="pre">TimeslotAdmin.ordering</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="timetable.html#timetable.admin.TimetableMixin"><code class="docutils literal notranslate"><span class="pre">TimetableMixin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.admin.TimetableMixin.get_timeslot"><code class="docutils literal notranslate"><span class="pre">TimetableMixin.get_timeslot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="timetable.html#timetable.admin.UserAvailabilityAdmin"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityAdmin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.admin.UserAvailabilityAdmin.get_search_results"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityAdmin.get_search_results()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.admin.UserAvailabilityAdmin.list_display"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityAdmin.list_display</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.admin.UserAvailabilityAdmin.media"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityAdmin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.admin.UserAvailabilityAdmin.search_fields"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityAdmin.search_fields</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="timetable.html#timetable.admin.UserAvailabilityMixin"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityMixin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.admin.UserAvailabilityMixin.get_user_name"><code class="docutils literal notranslate"><span class="pre">UserAvailabilityMixin.get_user_name()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="timetable.html#module-timetable.apps">timetable.apps module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="timetable.html#timetable.apps.TimetableConfig"><code class="docutils literal notranslate"><span class="pre">TimetableConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.apps.TimetableConfig.default_auto_field"><code class="docutils literal notranslate"><span class="pre">TimetableConfig.default_auto_field</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.apps.TimetableConfig.name"><code class="docutils literal notranslate"><span class="pre">TimetableConfig.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.apps.TimetableConfig.verbose_name"><code class="docutils literal notranslate"><span class="pre">TimetableConfig.verbose_name</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="timetable.html#module-timetable.models">timetable.models module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="timetable.html#timetable.models.Semester"><code class="docutils literal notranslate"><span class="pre">Semester</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Semester.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Semester.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Semester.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Semester.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Semester.SEMESTER_NAME"><code class="docutils literal notranslate"><span class="pre">Semester.SEMESTER_NAME</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Semester.end_date"><code class="docutils literal notranslate"><span class="pre">Semester.end_date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Semester.get_semester_display"><code class="docutils literal notranslate"><span class="pre">Semester.get_semester_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Semester.id"><code class="docutils literal notranslate"><span class="pre">Semester.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Semester.module_set"><code class="docutils literal notranslate"><span class="pre">Semester.module_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Semester.objects"><code class="docutils literal notranslate"><span class="pre">Semester.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Semester.semester"><code class="docutils literal notranslate"><span class="pre">Semester.semester</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Semester.start_date"><code class="docutils literal notranslate"><span class="pre">Semester.start_date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Semester.year"><code class="docutils literal notranslate"><span class="pre">Semester.year</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="timetable.html#timetable.models.Timeslot"><code class="docutils literal notranslate"><span class="pre">Timeslot</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Timeslot.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Timeslot.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Timeslot.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Timeslot.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Timeslot.WEEKDAY"><code class="docutils literal notranslate"><span class="pre">Timeslot.WEEKDAY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Timeslot.are_same_day"><code class="docutils literal notranslate"><span class="pre">Timeslot.are_same_day()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Timeslot.day"><code class="docutils literal notranslate"><span class="pre">Timeslot.day</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Timeslot.end_time"><code class="docutils literal notranslate"><span class="pre">Timeslot.end_time</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Timeslot.get_day_display"><code class="docutils literal notranslate"><span class="pre">Timeslot.get_day_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Timeslot.get_next"><code class="docutils literal notranslate"><span class="pre">Timeslot.get_next()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Timeslot.get_random_slot"><code class="docutils literal notranslate"><span class="pre">Timeslot.get_random_slot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Timeslot.id"><code class="docutils literal notranslate"><span class="pre">Timeslot.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Timeslot.objects"><code class="docutils literal notranslate"><span class="pre">Timeslot.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Timeslot.sessionschedule_set"><code class="docutils literal notranslate"><span class="pre">Timeslot.sessionschedule_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Timeslot.start_time"><code class="docutils literal notranslate"><span class="pre">Timeslot.start_time</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.models.Timeslot.useravailability_set"><code class="docutils literal notranslate"><span class="pre">Timeslot.useravailability_set</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="timetable.html#module-timetable.utils">timetable.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="timetable.html#timetable.utils.Timetable"><code class="docutils literal notranslate"><span class="pre">Timetable</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.utils.Timetable.__init__"><code class="docutils literal notranslate"><span class="pre">Timetable.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.utils.Timetable.generate_time_slots"><code class="docutils literal notranslate"><span class="pre">Timetable.generate_time_slots()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="timetable.html#timetable.utils.Timetable.populate_timeslot"><code class="docutils literal notranslate"><span class="pre">Timetable.populate_timeslot()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="timetable.html#module-timetable">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="users.html">users package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="users.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="users.management.html">users.management package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.management.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.management.html#module-users.management">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="users.templatetags.html">users.templatetags package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.templatetags.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.templatetags.html#module-users.templatetags.custom_tags">users.templatetags.custom_tags module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.templatetags.html#module-users.templatetags">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="users.views.html">users.views package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.views.html#module-users.views.user_views">users.views.user_views module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.views.html#module-users.views">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="users.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="users.html#module-users.admin">users.admin module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.admin.DemonstratorAdmin"><code class="docutils literal notranslate"><span class="pre">DemonstratorAdmin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.DemonstratorAdmin.inlines"><code class="docutils literal notranslate"><span class="pre">DemonstratorAdmin.inlines</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.DemonstratorAdmin.list_display"><code class="docutils literal notranslate"><span class="pre">DemonstratorAdmin.list_display</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.DemonstratorAdmin.media"><code class="docutils literal notranslate"><span class="pre">DemonstratorAdmin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.DemonstratorAdmin.search_fields"><code class="docutils literal notranslate"><span class="pre">DemonstratorAdmin.search_fields</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.admin.LecturerAdmin"><code class="docutils literal notranslate"><span class="pre">LecturerAdmin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.LecturerAdmin.inlines"><code class="docutils literal notranslate"><span class="pre">LecturerAdmin.inlines</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.LecturerAdmin.list_display"><code class="docutils literal notranslate"><span class="pre">LecturerAdmin.list_display</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.LecturerAdmin.media"><code class="docutils literal notranslate"><span class="pre">LecturerAdmin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.LecturerAdmin.search_fields"><code class="docutils literal notranslate"><span class="pre">LecturerAdmin.search_fields</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.admin.RoleAdminMixin"><code class="docutils literal notranslate"><span class="pre">RoleAdminMixin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.RoleAdminMixin.get_first_name"><code class="docutils literal notranslate"><span class="pre">RoleAdminMixin.get_first_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.RoleAdminMixin.get_last_name"><code class="docutils literal notranslate"><span class="pre">RoleAdminMixin.get_last_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.RoleAdminMixin.has_change_permission"><code class="docutils literal notranslate"><span class="pre">RoleAdminMixin.has_change_permission()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.RoleAdminMixin.has_delete_permission"><code class="docutils literal notranslate"><span class="pre">RoleAdminMixin.has_delete_permission()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.RoleAdminMixin.has_view_permission"><code class="docutils literal notranslate"><span class="pre">RoleAdminMixin.has_view_permission()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.RoleAdminMixin.view_user"><code class="docutils literal notranslate"><span class="pre">RoleAdminMixin.view_user()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.admin.UserAdmin"><code class="docutils literal notranslate"><span class="pre">UserAdmin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.UserAdmin.actions"><code class="docutils literal notranslate"><span class="pre">UserAdmin.actions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.UserAdmin.create_user_availability"><code class="docutils literal notranslate"><span class="pre">UserAdmin.create_user_availability()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.UserAdmin.list_display"><code class="docutils literal notranslate"><span class="pre">UserAdmin.list_display</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.UserAdmin.list_filter"><code class="docutils literal notranslate"><span class="pre">UserAdmin.list_filter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.UserAdmin.media"><code class="docutils literal notranslate"><span class="pre">UserAdmin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.admin.UserAdmin.search_fields"><code class="docutils literal notranslate"><span class="pre">UserAdmin.search_fields</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="users.html#module-users.apps">users.apps module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.apps.UsersConfig"><code class="docutils literal notranslate"><span class="pre">UsersConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.apps.UsersConfig.default_auto_field"><code class="docutils literal notranslate"><span class="pre">UsersConfig.default_auto_field</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.apps.UsersConfig.name"><code class="docutils literal notranslate"><span class="pre">UsersConfig.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.apps.UsersConfig.verbose_name"><code class="docutils literal notranslate"><span class="pre">UsersConfig.verbose_name</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="users.html#module-users.forms">users.forms module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.forms.AvailabilityForm"><code class="docutils literal notranslate"><span class="pre">AvailabilityForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.forms.AvailabilityForm.media"><code class="docutils literal notranslate"><span class="pre">AvailabilityForm.media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.forms.CompetencyForm"><code class="docutils literal notranslate"><span class="pre">CompetencyForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.forms.CompetencyForm.media"><code class="docutils literal notranslate"><span class="pre">CompetencyForm.media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.forms.ProfileCompetencyForm"><code class="docutils literal notranslate"><span class="pre">ProfileCompetencyForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.forms.ProfileCompetencyForm.media"><code class="docutils literal notranslate"><span class="pre">ProfileCompetencyForm.media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.forms.SessionUpdateForm"><code class="docutils literal notranslate"><span class="pre">SessionUpdateForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.forms.SessionUpdateForm.media"><code class="docutils literal notranslate"><span class="pre">SessionUpdateForm.media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.forms.SkillCreationForm"><code class="docutils literal notranslate"><span class="pre">SkillCreationForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.forms.SkillCreationForm.media"><code class="docutils literal notranslate"><span class="pre">SkillCreationForm.media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.forms.UserForm"><code class="docutils literal notranslate"><span class="pre">UserForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.forms.UserForm.media"><code class="docutils literal notranslate"><span class="pre">UserForm.media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.forms.UserRegistrationForm"><code class="docutils literal notranslate"><span class="pre">UserRegistrationForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.forms.UserRegistrationForm.media"><code class="docutils literal notranslate"><span class="pre">UserRegistrationForm.media</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="users.html#users-middleware-module">users.middleware module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="users.html#module-users.models">users.models module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.models.Demonstrator"><code class="docutils literal notranslate"><span class="pre">Demonstrator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Demonstrator.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Demonstrator.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Demonstrator.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Demonstrator.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Demonstrator.allocation_set"><code class="docutils literal notranslate"><span class="pre">Demonstrator.allocation_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Demonstrator.competency_set"><code class="docutils literal notranslate"><span class="pre">Demonstrator.competency_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Demonstrator.hard_constraint_demonstrators"><code class="docutils literal notranslate"><span class="pre">Demonstrator.hard_constraint_demonstrators</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Demonstrator.objects"><code class="docutils literal notranslate"><span class="pre">Demonstrator.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Demonstrator.primary_soft_constraint_demonstrators"><code class="docutils literal notranslate"><span class="pre">Demonstrator.primary_soft_constraint_demonstrators</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Demonstrator.secondary_soft_constraint_demonstrators"><code class="docutils literal notranslate"><span class="pre">Demonstrator.secondary_soft_constraint_demonstrators</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Demonstrator.tertiary_soft_constraint_demonstrators"><code class="docutils literal notranslate"><span class="pre">Demonstrator.tertiary_soft_constraint_demonstrators</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Demonstrator.user"><code class="docutils literal notranslate"><span class="pre">Demonstrator.user</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.models.Lecturer"><code class="docutils literal notranslate"><span class="pre">Lecturer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Lecturer.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Lecturer.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Lecturer.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Lecturer.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Lecturer.department"><code class="docutils literal notranslate"><span class="pre">Lecturer.department</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Lecturer.module_set"><code class="docutils literal notranslate"><span class="pre">Lecturer.module_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Lecturer.objects"><code class="docutils literal notranslate"><span class="pre">Lecturer.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Lecturer.user"><code class="docutils literal notranslate"><span class="pre">Lecturer.user</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.models.Role"><code class="docutils literal notranslate"><span class="pre">Role</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Role.get_first_name"><code class="docutils literal notranslate"><span class="pre">Role.get_first_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Role.get_last_name"><code class="docutils literal notranslate"><span class="pre">Role.get_last_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Role.is_available"><code class="docutils literal notranslate"><span class="pre">Role.is_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Role.user"><code class="docutils literal notranslate"><span class="pre">Role.user</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.Role.user_id"><code class="docutils literal notranslate"><span class="pre">Role.user_id</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.models.User"><code class="docutils literal notranslate"><span class="pre">User</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.User.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">User.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.User.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">User.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.User.demonstrator"><code class="docutils literal notranslate"><span class="pre">User.demonstrator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.User.get_next_by_date_joined"><code class="docutils literal notranslate"><span class="pre">User.get_next_by_date_joined()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.User.get_previous_by_date_joined"><code class="docutils literal notranslate"><span class="pre">User.get_previous_by_date_joined()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.User.groups"><code class="docutils literal notranslate"><span class="pre">User.groups</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.User.id"><code class="docutils literal notranslate"><span class="pre">User.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.User.is_available"><code class="docutils literal notranslate"><span class="pre">User.is_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.User.is_demonstrator"><code class="docutils literal notranslate"><span class="pre">User.is_demonstrator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.User.is_fake"><code class="docutils literal notranslate"><span class="pre">User.is_fake</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.User.is_lecturer"><code class="docutils literal notranslate"><span class="pre">User.is_lecturer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.User.lecturer"><code class="docutils literal notranslate"><span class="pre">User.lecturer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.User.logentry_set"><code class="docutils literal notranslate"><span class="pre">User.logentry_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.User.user_permissions"><code class="docutils literal notranslate"><span class="pre">User.user_permissions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.User.useravailability_set"><code class="docutils literal notranslate"><span class="pre">User.useravailability_set</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.models.UserAvailability"><code class="docutils literal notranslate"><span class="pre">UserAvailability</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.UserAvailability.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">UserAvailability.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.UserAvailability.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">UserAvailability.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.UserAvailability.id"><code class="docutils literal notranslate"><span class="pre">UserAvailability.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.UserAvailability.is_available"><code class="docutils literal notranslate"><span class="pre">UserAvailability.is_available</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.UserAvailability.objects"><code class="docutils literal notranslate"><span class="pre">UserAvailability.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.UserAvailability.timeslot"><code class="docutils literal notranslate"><span class="pre">UserAvailability.timeslot</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.UserAvailability.timeslot_id"><code class="docutils literal notranslate"><span class="pre">UserAvailability.timeslot_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.UserAvailability.user"><code class="docutils literal notranslate"><span class="pre">UserAvailability.user</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.UserAvailability.user_id"><code class="docutils literal notranslate"><span class="pre">UserAvailability.user_id</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.models.UserManager"><code class="docutils literal notranslate"><span class="pre">UserManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="users.html#users.models.UserManager.create_superuser"><code class="docutils literal notranslate"><span class="pre">UserManager.create_superuser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.models.add_lecdem_when_user_create"><code class="docutils literal notranslate"><span class="pre">add_lecdem_when_user_create()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.models.create_blank_timetable"><code class="docutils literal notranslate"><span class="pre">create_blank_timetable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="users.html#users.models.save_lecdem_when_user_saved"><code class="docutils literal notranslate"><span class="pre">save_lecdem_when_user_saved()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="users.html#module-users.urls">users.urls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="users.html#module-users">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="known_issues.html" class="btn btn-neutral float-left" title="Known Issues" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="admin.html" class="btn btn-neutral float-right" title="admin package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

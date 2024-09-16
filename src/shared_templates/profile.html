@@ -1,0 +1,128 @@
+{% extends "master.html" %}
+
+{% load custom_tags %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Profile</h1>
+    <!-- User Details -->
+    <form method="post" id="user-details-form">
+        {% csrf_token %}
+        <fieldset>
+            <legend>User Details</legend>
+            {{ user_form.as_p }}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Save User Details</button>
+    </form>
+
+    <!-- Availability Form -->
+    <form method="post" id="availability-form">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Availability</legend>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Day / Time</th>
+                        {% for hour in hours %}
+                        <th>{{ hour }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for day, day_name in days %}
+                    <tr>
+                        <td>{{ day_name }}</td>
+                        {% for hour in hours %}
+                        <td class="availability-cell" data-day="{{ day }}" data-hour="{{ hour }}">
+                            {{ availability|get_item:day|get_item:hour }}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </fieldset>
+        <button type="submit" name="availability_form" class="btn btn-primary">Save Availability</button>
+    </form>
+
+    {% if is_demonstrator %}
+    <!-- Competencies Form -->
+    <form method="post" action="{% url 'edit_competencies' %}" id="competency-form">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Competencies</legend>
+            <ul>
+                {% for competency in competencies %}
+                <li>{{ competency.skill.name }} ({{ competency.skill.get_level_display }})</li>
+                {% endfor %}
+            </ul>
+            <button type="button" class="btn btn-secondary" id="edit-competencies-button">Edit Competencies</button>
+        </fieldset>
+
+        <!-- Edit Competencies Form (initially hidden) -->
+        <div id="edit-competencies-section" style="display: none;">
+            {{ competency_form.as_p }}
+            <button type="submit" name="competency_form" class="btn btn-primary">Save Competencies</button>
+        </div>
+    </form>
+    {% endif %}
+</div>
+
+<style>
+    .available {
+      background-color: green;
+      color: white;
+    }
+    .unavailable {
+      background-color: red;
+      color: white;
+    }
+  </style>
+
+  <script>
+    document.getElementById('edit-competencies-button').addEventListener('click', function() {
+        document.getElementById('edit-competencies-section').style.display = 'block';
+        this.style.display = 'none';
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const cells = document.querySelectorAll('.availability-cell');
+        cells.forEach(cell => {
+            updateCellClass(cell);
+
+            cell.addEventListener('click', function() {
+                if (this.textContent === 'O') {
+                    this.textContent = 'X';
+                    this.classList.remove('available');
+                    this.classList.add('unavailable');
+                } else {
+                    this.textContent = 'O';
+                    this.classList.remove('unavailable');
+                    this.classList.add('available');
+                }
+            });
+        });
+
+        function updateCellClass(cell) {
+            if (cell.textContent.trim() === 'O') {
+                cell.classList.add('available');
+            } else {
+                cell.classList.add('unavailable');
+            }
+        }
+
+        document.getElementById('availability-form').addEventListener('submit', function() {
+            cells.forEach(cell => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'availability';
+                input.value = `${cell.dataset.day},${cell.dataset.hour},${cell.textContent.trim()}`;
+                this.appendChild(input);
+            });
+        });
+    });
+</script>
+{% endblock content %}

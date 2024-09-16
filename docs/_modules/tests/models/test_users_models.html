@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.models.test_users_models &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tests.models.test_users_models</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tests.models.test_users_models</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">tests</span>
+<span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
+<span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span><span class="p">,</span> <span class="n">MagicMock</span>
+<span class="kn">from</span> <span class="nn">users.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">Demonstrator</span><span class="p">,</span> <span class="n">Lecturer</span><span class="p">,</span> <span class="n">UserAvailability</span><span class="p">,</span> <span class="n">Role</span>
+<span class="kn">from</span> <span class="nn">timetable.models</span> <span class="kn">import</span> <span class="n">Timeslot</span>
+<span class="kn">from</span> <span class="nn">django.db.utils</span> <span class="kn">import</span> <span class="n">IntegrityError</span>
+
+
+
+<div class="viewcode-block" id="UserModelTest">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.UserModelTest">[docs]</a>
+<span class="k">class</span> <span class="nc">UserModelTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `UserModelTest` class contains test cases for the `User` model in the Django application.</span>
+
+<span class="sd">    :param setUp: Initializes the test environment, creating instances of `User` and `Timeslot`.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_create_user: Tests the creation of a `User` instance and verifies that it is saved correctly.</span>
+<span class="sd">    :type test_create_user: Method</span>
+<span class="sd">    :param test_str: Tests the `__str__` method to ensure it returns the correct string representation of the `User`.</span>
+<span class="sd">    :type test_str: Method</span>
+<span class="sd">    :param test_is_available: Tests the `is_available` method to ensure it correctly identifies if the user is available for a given timeslot.</span>
+<span class="sd">    :type test_is_available: Method</span>
+<span class="sd">    :param test_fake_user: Tests the `is_fake` field to ensure it correctly marks a user as fake.</span>
+<span class="sd">    :type test_fake_user: Method</span>
+<span class="sd">    :param test_unique_email: Tests the unique constraint on the `email` field to ensure duplicate emails cannot be created.</span>
+<span class="sd">    :type test_unique_email: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="UserModelTest.setUp">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.UserModelTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;testuser&#39;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;testuser@example.com&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;password123&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeslot1</span> <span class="o">=</span> <span class="n">Timeslot</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="s2">&quot;09:00&quot;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s2">&quot;10:00&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeslot2</span> <span class="o">=</span> <span class="n">Timeslot</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="s2">&quot;10:00&quot;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s2">&quot;11:00&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeslot3</span> <span class="o">=</span> <span class="n">Timeslot</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="s2">&quot;09:00&quot;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s2">&quot;10:00&quot;</span><span class="p">)</span>
+        <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot1</span><span class="p">,</span> <span class="n">is_available</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot2</span><span class="p">,</span> <span class="n">is_available</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="UserModelTest.test_create_user">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.UserModelTest.test_create_user">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_create_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="s1">&#39;testuser&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="s1">&#39;testuser@example.com&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">check_password</span><span class="p">(</span><span class="s1">&#39;password123&#39;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="UserModelTest.test_str">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.UserModelTest.test_str">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_str</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">first_name</span> <span class="o">=</span> <span class="s1">&#39;Test&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">last_name</span> <span class="o">=</span> <span class="s1">&#39;User&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_lecturer</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">expected_str</span> <span class="o">=</span> <span class="s2">&quot;User(testuser, Test, User, Lecturer: True, Demonstrator: False)&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">),</span> <span class="n">expected_str</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UserModelTest.test_is_available">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.UserModelTest.test_is_available">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_is_available</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Test case where the user is available for a given timeslot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_available</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot1</span><span class="p">))</span>
+        
+        <span class="c1"># Test case where the user is not available for a given timeslot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_available</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot2</span><span class="p">))</span>
+        
+        <span class="c1"># Test case where no availability record exists for the given timeslot</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">UserAvailability</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_available</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot3</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="UserModelTest.test_fake_user">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.UserModelTest.test_fake_user">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_fake_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_fake</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_fake</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UserModelTest.test_unique_email">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.UserModelTest.test_unique_email">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_unique_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">IntegrityError</span><span class="p">):</span>
+            <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;user2&#39;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;testuser@example.com&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;password123&#39;</span><span class="p">)</span></div>
+</div>
+
+
+    
+<div class="viewcode-block" id="DemonstratorModelTest">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.DemonstratorModelTest">[docs]</a>
+<span class="k">class</span> <span class="nc">DemonstratorModelTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `DemonstratorModelTest` class contains test cases for the `Demonstrator` model in the Django application.</span>
+
+<span class="sd">    :param setUp: Initializes the test environment, creating instances of `User` and `Demonstrator`.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_get_first_name: Tests the `get_first_name` method to ensure it returns the correct first name of the demonstrator.</span>
+<span class="sd">    :type test_get_first_name: Method</span>
+<span class="sd">    :param test_get_last_name: Tests the `get_last_name` method to ensure it returns the correct last name of the demonstrator.</span>
+<span class="sd">    :type test_get_last_name: Method</span>
+<span class="sd">    :param test_is_available: Tests the `is_available` method to ensure it correctly identifies if the demonstrator is available for a given timeslot.</span>
+<span class="sd">    :type test_is_available: Method</span>
+<span class="sd">    :param test_create_demonstrator_from_user: Tests the creation of a `Demonstrator` instance from a `User` and verifies that it is associated correctly.</span>
+<span class="sd">    :type test_create_demonstrator_from_user: Method</span>
+<span class="sd">    :param test_assign_user_demonstrator_role: Tests the assignment of the demonstrator role to a user.</span>
+<span class="sd">    :type test_assign_user_demonstrator_role: Method</span>
+<span class="sd">    :param test_delete_demonstrator: Tests the deletion of a demonstrator and ensures that the role is removed from the user.</span>
+<span class="sd">    :type test_delete_demonstrator: Method</span>
+<span class="sd">    :param test_remove_demonstrator_role_from_user: Tests the removal of the demonstrator role from a user.</span>
+<span class="sd">    :type test_remove_demonstrator_role_from_user: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="DemonstratorModelTest.setUp">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.DemonstratorModelTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;demonstratoruser&#39;</span><span class="p">,</span> <span class="n">first_name</span><span class="o">=</span><span class="s1">&#39;Demonstrator&#39;</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="s1">&#39;Tester&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="DemonstratorModelTest.test_get_first_name">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.DemonstratorModelTest.test_get_first_name">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_get_first_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="o">.</span><span class="n">get_first_name</span><span class="p">(),</span> <span class="s1">&#39;Demonstrator&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DemonstratorModelTest.test_get_last_name">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.DemonstratorModelTest.test_get_last_name">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_get_last_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="o">.</span><span class="n">get_last_name</span><span class="p">(),</span> <span class="s1">&#39;Tester&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DemonstratorModelTest.test_is_available">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.DemonstratorModelTest.test_is_available">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_is_available</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span> <span class="o">=</span> <span class="n">Timeslot</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="s2">&quot;09:00&quot;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s2">&quot;10:00&quot;</span><span class="p">)</span>
+        <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="p">,</span> <span class="n">is_available</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="o">.</span><span class="n">is_available</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="DemonstratorModelTest.test_create_demonstrator_from_user">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.DemonstratorModelTest.test_create_demonstrator_from_user">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_create_demonstrator_from_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DemonstratorModelTest.test_assign_user_demonstrator_role">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.DemonstratorModelTest.test_assign_user_demonstrator_role">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_assign_user_demonstrator_role</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_demonstrator</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="DemonstratorModelTest.test_delete_demonstrator">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.DemonstratorModelTest.test_delete_demonstrator">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_delete_demonstrator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="DemonstratorModelTest.test_remove_demonstrator_role_from_user">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.DemonstratorModelTest.test_remove_demonstrator_role_from_user">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_remove_demonstrator_role_from_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_demonstrator</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_demonstrator</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">())</span></div>
+</div>
+
+
+<div class="viewcode-block" id="LecturerModelTest">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.LecturerModelTest">[docs]</a>
+<span class="k">class</span> <span class="nc">LecturerModelTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `LecturerModelTest` class contains test cases for the `Lecturer` model in the Django application.</span>
+
+<span class="sd">    :param setUp: Initializes the test environment, creating instances of `User` and `Lecturer`.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_get_first_name: Tests the `get_first_name` method to ensure it returns the correct first name of the lecturer.</span>
+<span class="sd">    :type test_get_first_name: Method</span>
+<span class="sd">    :param test_get_last_name: Tests the `get_last_name` method to ensure it returns the correct last name of the lecturer.</span>
+<span class="sd">    :type test_get_last_name: Method</span>
+<span class="sd">    :param test_is_available: Tests the `is_available` method to ensure it correctly identifies if the lecturer is available for a given timeslot.</span>
+<span class="sd">    :type test_is_available: Method</span>
+<span class="sd">    :param test_create_lecturer_from_user: Tests the creation of a `Lecturer` instance from a `User` and verifies that it is associated correctly.</span>
+<span class="sd">    :type test_create_lecturer_from_user: Method</span>
+<span class="sd">    :param test_assign_user_lecturer_role: Tests the assignment of the lecturer role to a user.</span>
+<span class="sd">    :type test_assign_user_lecturer_role: Method</span>
+<span class="sd">    :param test_delete_lecturer: Tests the deletion of a lecturer and ensures that the role is removed from the user.</span>
+<span class="sd">    :type test_delete_lecturer: Method</span>
+<span class="sd">    :param test_remove_lecturer_role_from_user: Tests the removal of the lecturer role from a user.</span>
+<span class="sd">    :type test_remove_lecturer_role_from_user: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="LecturerModelTest.setUp">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.LecturerModelTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;lectureruser&#39;</span><span class="p">,</span> <span class="n">first_name</span><span class="o">=</span><span class="s1">&#39;Lecturer&#39;</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="s1">&#39;Tester&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span> <span class="o">=</span> <span class="n">Lecturer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">department</span><span class="o">=</span><span class="s1">&#39;Maths&#39;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="LecturerModelTest.test_get_first_name">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.LecturerModelTest.test_get_first_name">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_get_first_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span><span class="o">.</span><span class="n">get_first_name</span><span class="p">(),</span> <span class="s1">&#39;Lecturer&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LecturerModelTest.test_get_last_name">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.LecturerModelTest.test_get_last_name">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_get_last_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span><span class="o">.</span><span class="n">get_last_name</span><span class="p">(),</span> <span class="s1">&#39;Tester&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LecturerModelTest.test_is_available">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.LecturerModelTest.test_is_available">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_is_available</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span> <span class="o">=</span> <span class="n">Timeslot</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="s2">&quot;09:00&quot;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s2">&quot;10:00&quot;</span><span class="p">)</span>
+        <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="p">,</span> <span class="n">is_available</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span><span class="o">.</span><span class="n">is_available</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="LecturerModelTest.test_create_lecturer_from_user">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.LecturerModelTest.test_create_lecturer_from_user">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_create_lecturer_from_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span><span class="o">.</span><span class="n">department</span><span class="p">,</span> <span class="s1">&#39;Maths&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LecturerModelTest.test_assign_user_lecturer_role">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.LecturerModelTest.test_assign_user_lecturer_role">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_assign_user_lecturer_role</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_lecturer</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">Lecturer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="LecturerModelTest.test_delete_lecturer">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.LecturerModelTest.test_delete_lecturer">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_delete_lecturer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">Lecturer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="LecturerModelTest.test_remove_lecturer_role_from_user">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.LecturerModelTest.test_remove_lecturer_role_from_user">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_remove_lecturer_role_from_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_lecturer</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_lecturer</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">Lecturer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">())</span></div>
+</div>
+
+
+<div class="viewcode-block" id="UserAvailabilityModelTest">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.UserAvailabilityModelTest">[docs]</a>
+<span class="k">class</span> <span class="nc">UserAvailabilityModelTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `UserAvailabilityModelTest` class contains test cases for the `UserAvailability` model in the Django application.</span>
+
+<span class="sd">    :param setUp: Initializes the test environment, creating instances of `User`, `Timeslot`, and `UserAvailability`.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_create_user_availability: Tests the creation of a `UserAvailability` instance and verifies that it is saved correctly.</span>
+<span class="sd">    :type test_create_user_availability: Method</span>
+<span class="sd">    :param test_availability_status: Tests the `is_available` field to ensure it correctly reflects the availability status of the user.</span>
+<span class="sd">    :type test_availability_status: Method</span>
+<span class="sd">    :param test_unique_together: Tests the unique constraint on the `user` and `timeslot` fields to ensure duplicate availabilities cannot be created.</span>
+<span class="sd">    :type test_unique_together: Method</span>
+<span class="sd">    :param test_user_deletion: Tests the behavior when the associated user is deleted, ensuring the availability record is also deleted.</span>
+<span class="sd">    :type test_user_deletion: Method</span>
+<span class="sd">    :param test_timeslot_deletion: Tests the behavior when the associated timeslot is deleted, ensuring the availability record is also deleted.</span>
+<span class="sd">    :type test_timeslot_deletion: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="UserAvailabilityModelTest.setUp">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.UserAvailabilityModelTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;testuser&#39;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;testuser@example.com&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;password123&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span> <span class="o">=</span> <span class="n">Timeslot</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="s2">&quot;09:00&quot;</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="s2">&quot;10:00&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UserAvailabilityModelTest.test_create_user_availability">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.UserAvailabilityModelTest.test_create_user_availability">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_create_user_availability</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">availability</span> <span class="o">=</span> <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="p">,</span> <span class="n">is_available</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">availability</span><span class="o">.</span><span class="n">is_available</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UserAvailabilityModelTest.test_availability_status">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.UserAvailabilityModelTest.test_availability_status">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_availability_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">availability</span> <span class="o">=</span> <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="p">,</span> <span class="n">is_available</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">availability</span><span class="o">.</span><span class="n">is_available</span><span class="p">)</span>
+        <span class="n">availability</span><span class="o">.</span><span class="n">is_available</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">availability</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">availability</span><span class="o">.</span><span class="n">is_available</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UserAvailabilityModelTest.test_unique_together">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.UserAvailabilityModelTest.test_unique_together">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_unique_together</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="p">)</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">IntegrityError</span><span class="p">):</span>
+            <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UserAvailabilityModelTest.test_user_deletion">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.UserAvailabilityModelTest.test_user_deletion">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_user_deletion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">availability</span> <span class="o">=</span> <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">availability</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="UserAvailabilityModelTest.test_timeslot_deletion">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.UserAvailabilityModelTest.test_timeslot_deletion">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_timeslot_deletion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">availability</span> <span class="o">=</span> <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">availability</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">())</span></div>
+</div>
+
+
+<div class="viewcode-block" id="UserSignalsTest">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.UserSignalsTest">[docs]</a>
+<span class="k">class</span> <span class="nc">UserSignalsTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_add_lecturer_role_on_user_create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span> <span class="nf">test_add_demonstrator_role_on_user_save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+    
+<div class="viewcode-block" id="UserSignalsTest.test_add_lecturer_role_on_user_create">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.UserSignalsTest.test_add_lecturer_role_on_user_create">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_add_lecturer_role_on_user_create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    
+<div class="viewcode-block" id="UserSignalsTest.test_add_demonstrator_role_on_user_save">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_users_models.UserSignalsTest.test_add_demonstrator_role_on_user_save">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_add_demonstrator_role_on_user_save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

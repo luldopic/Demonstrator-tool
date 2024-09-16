@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>allocations.utils package &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="classes package" href="classes.html" />
+    <link rel="prev" title="allocations package" href="allocations.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_issues.html">Known Issues</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API References</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="admin.html">admin package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="allocations.html">allocations package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="allocations.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">allocations.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="allocations.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="allocations.html#module-allocations.admin">allocations.admin module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="allocations.html#module-allocations.apps">allocations.apps module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="allocations.html#module-allocations.models">allocations.models module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="allocations.html#module-allocations">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html">classes package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demonstrator_timetabling_tool.html">demonstrator_timetabling_tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timetable.html">timetable package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="users.html">users package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API References</a></li>
+          <li class="breadcrumb-item"><a href="allocations.html">allocations package</a></li>
+      <li class="breadcrumb-item active">allocations.utils package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/allocations.utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="allocations-utils-package">
+<h1>allocations.utils package<a class="headerlink" href="#allocations-utils-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-allocations.utils.allocation_manager">
+<span id="allocations-utils-allocation-manager-module"></span><h2>allocations.utils.allocation_manager module<a class="headerlink" href="#module-allocations.utils.allocation_manager" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="allocations.utils.allocation_manager.AllocationManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allocations.utils.allocation_manager.</span></span><span class="sig-name descname"><span class="pre">AllocationManager</span></span><a class="reference internal" href="_modules/allocations/utils/allocation_manager.html#AllocationManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.allocation_manager.AllocationManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>The <cite>AllocationManager</cite> class provides a set of static methods for managing and allocating demonstrators to 
+various allocations based on a series of constraints. The allocation process involves filtering demonstrators 
+through a series of hard, primary, secondary, and tertiary soft constraints to find the most suitable candidates 
+for each allocation.</p>
+<p>The class includes methods for retrieving unallocated objects, filtering demonstrators based on different levels 
+of constraints, and assigning demonstrators through various allocation strategies.</p>
+<p>This class interacts with several models including <cite>Allocation</cite>, <cite>AllocationDomain</cite>, and <cite>Demonstrator</cite>, and utilizes 
+constraint managers to enforce the constraints during allocation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- An instance of the <cite>Allocation</cite> model representing the current allocation for which demonstrators 
+need to be assigned.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.allocation_manager.AllocationManager.allocate_with_constraints">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">allocate_with_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/allocation_manager.html#AllocationManager.allocate_with_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.allocation_manager.AllocationManager.allocate_with_constraints" title="Link to this definition"></a></dt>
+<dd><p>Attempt to allocate a demonstrator to the allocation by applying constraints from harshest to least harsh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation to be fulfilled.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if a demonstrator is successfully allocated, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.allocation_manager.AllocationManager.assign_demonstrators">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">assign_demonstrators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/allocation_manager.html#AllocationManager.assign_demonstrators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.allocation_manager.AllocationManager.assign_demonstrators" title="Link to this definition"></a></dt>
+<dd><p>Assign demonstrators to allocations in the provided queryset by applying the backtracking algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>queryset</strong> (<em>QuerySet</em>) -- A queryset of allocations to be fulfilled.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if all allocations are successfully assigned and approved, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.allocation_manager.AllocationManager.backtracking">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">backtracking</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/allocation_manager.html#AllocationManager.backtracking"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.allocation_manager.AllocationManager.backtracking" title="Link to this definition"></a></dt>
+<dd><p>Perform backtracking to allocate demonstrators to unallocated allocations within the queryset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>queryset</strong> (<em>QuerySet</em>) -- A queryset of allocations to be fulfilled.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if all allocations are successfully assigned, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.allocation_manager.AllocationManager.batch_allocate">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">batch_allocate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/allocation_manager.html#AllocationManager.batch_allocate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.allocation_manager.AllocationManager.batch_allocate" title="Link to this definition"></a></dt>
+<dd><p>Batch allocate demonstrators to allocations by dividing unallocated objects into batches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>batch_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) -- The number of allocations to process in each batch.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.allocation_manager.AllocationManager.get_demonstrators_by_hard_constraints">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_demonstrators_by_hard_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/allocation_manager.html#AllocationManager.get_demonstrators_by_hard_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.allocation_manager.AllocationManager.get_demonstrators_by_hard_constraints" title="Link to this definition"></a></dt>
+<dd><p>Filter demonstrators by applying hard constraints to an allocation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation for which demonstrators need to be filtered.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of demonstrators that satisfy all hard constraints for the given allocation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of <cite>Demonstrator</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.allocation_manager.AllocationManager.get_demonstrators_by_primary_soft_constraints">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_demonstrators_by_primary_soft_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/allocation_manager.html#AllocationManager.get_demonstrators_by_primary_soft_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.allocation_manager.AllocationManager.get_demonstrators_by_primary_soft_constraints" title="Link to this definition"></a></dt>
+<dd><p>Filter demonstrators by applying primary soft constraints after applying hard constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation for which demonstrators need to be filtered.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of demonstrators that satisfy both hard and primary soft constraints for the given allocation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of <cite>Demonstrator</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.allocation_manager.AllocationManager.get_demonstrators_by_secondary_soft_constraints">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_demonstrators_by_secondary_soft_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/allocation_manager.html#AllocationManager.get_demonstrators_by_secondary_soft_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.allocation_manager.AllocationManager.get_demonstrators_by_secondary_soft_constraints" title="Link to this definition"></a></dt>
+<dd><p>Filter demonstrators by applying secondary soft constraints after applying primary soft constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation for which demonstrators need to be filtered.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of demonstrators that satisfy hard, primary, and secondary soft constraints for the given allocation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of <cite>Demonstrator</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.allocation_manager.AllocationManager.get_demonstrators_by_tertiary_soft_constraints">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_demonstrators_by_tertiary_soft_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/allocation_manager.html#AllocationManager.get_demonstrators_by_tertiary_soft_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.allocation_manager.AllocationManager.get_demonstrators_by_tertiary_soft_constraints" title="Link to this definition"></a></dt>
+<dd><p>Filter demonstrators by applying tertiary soft constraints after applying secondary soft constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation for which demonstrators need to be filtered.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of demonstrators that satisfy hard, primary, secondary, and tertiary soft constraints for the given allocation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of <cite>Demonstrator</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.allocation_manager.AllocationManager.get_solution_domain">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_solution_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/allocation_manager.html#AllocationManager.get_solution_domain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.allocation_manager.AllocationManager.get_solution_domain" title="Link to this definition"></a></dt>
+<dd><p>Generate and save the solution domain for a given allocation, including demonstrators filtered by 
+hard and soft constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation for which the solution domain needs to be generated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.allocation_manager.AllocationManager.get_unallocated">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_unallocated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/allocation_manager.html#AllocationManager.get_unallocated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.allocation_manager.AllocationManager.get_unallocated" title="Link to this definition"></a></dt>
+<dd><p>Retrieve all allocations that have not yet been assigned to a demonstrator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A queryset of <cite>Allocation</cite> objects where <cite>demonstrator</cite> is <cite>None</cite>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>QuerySet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.allocation_manager.AllocationManager.try_allocate_with_primary_constraints">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">try_allocate_with_primary_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/allocation_manager.html#AllocationManager.try_allocate_with_primary_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.allocation_manager.AllocationManager.try_allocate_with_primary_constraints" title="Link to this definition"></a></dt>
+<dd><p>Attempt to allocate a demonstrator by applying primary soft constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation to be fulfilled.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if a demonstrator is successfully allocated, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.allocation_manager.AllocationManager.try_allocate_with_secondary_constraints">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">try_allocate_with_secondary_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/allocation_manager.html#AllocationManager.try_allocate_with_secondary_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.allocation_manager.AllocationManager.try_allocate_with_secondary_constraints" title="Link to this definition"></a></dt>
+<dd><p>Attempt to allocate a demonstrator by applying secondary soft constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation to be fulfilled.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if a demonstrator is successfully allocated, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.allocation_manager.AllocationManager.try_allocate_with_tertiary_constraints">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">try_allocate_with_tertiary_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/allocation_manager.html#AllocationManager.try_allocate_with_tertiary_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.allocation_manager.AllocationManager.try_allocate_with_tertiary_constraints" title="Link to this definition"></a></dt>
+<dd><p>Attempt to allocate a demonstrator by applying tertiary soft constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation to be fulfilled.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if a demonstrator is successfully allocated, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.allocation_manager.AllocationManager.try_allocation">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">try_allocation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_demonstrators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/allocation_manager.html#AllocationManager.try_allocation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.allocation_manager.AllocationManager.try_allocation" title="Link to this definition"></a></dt>
+<dd><p>Try to allocate one of the valid demonstrators to the allocation. The allocation is saved if 
+successful.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation to be fulfilled.</p></li>
+<li><p><strong>valid_demonstrators</strong> (list of <cite>Demonstrator</cite>) -- A list of demonstrators that satisfy the necessary constraints.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if a demonstrator is successfully allocated, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-allocations.utils.constraint_filter">
+<span id="allocations-utils-constraint-filter-module"></span><h2>allocations.utils.constraint_filter module<a class="headerlink" href="#module-allocations.utils.constraint_filter" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.ConstrantFilterQuery">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allocations.utils.constraint_filter.</span></span><span class="sig-name descname"><span class="pre">ConstrantFilterQuery</span></span><a class="reference internal" href="_modules/allocations/utils/constraint_filter.html#ConstrantFilterQuery"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_filter.ConstrantFilterQuery" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>The <cite>ConstrantFilterQuery</cite> class provides a set of static methods for filtering allocations based on various 
+hard and soft constraints. These methods are used to narrow down the list of allocations to those that meet 
+specific criteria as defined by the constraint managers.</p>
+<p>The filtering process includes applying hard constraints, primary soft constraints, and secondary soft constraints 
+to ensure that only allocations meeting the necessary conditions are selected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>queryset</strong> (<em>QuerySet</em>) -- A Django QuerySet containing the allocations to be filtered.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.ConstrantFilterQuery.filter_allocation_by_primary_soft_constraints">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filter_allocation_by_primary_soft_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/constraint_filter.html#ConstrantFilterQuery.filter_allocation_by_primary_soft_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_filter.ConstrantFilterQuery.filter_allocation_by_primary_soft_constraints" title="Link to this definition"></a></dt>
+<dd><p>Filter allocations by applying primary soft constraints. Valid allocations must have half of the 
+required demonstrators and must have demonstrators with beginner skill level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>queryset</strong> (<em>QuerySet</em>) -- The queryset of allocations to filter.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A queryset of allocations that satisfy the primary soft constraints.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QuerySet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.ConstrantFilterQuery.filter_allocation_by_secondary_soft_constraints">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filter_allocation_by_secondary_soft_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/constraint_filter.html#ConstrantFilterQuery.filter_allocation_by_secondary_soft_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_filter.ConstrantFilterQuery.filter_allocation_by_secondary_soft_constraints" title="Link to this definition"></a></dt>
+<dd><p>Filter allocations by applying secondary soft constraints. Valid allocations must have all required 
+demonstrators and demonstrators with the necessary skill level or higher.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>queryset</strong> (<em>QuerySet</em>) -- The queryset of allocations to filter.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A queryset of allocations that satisfy the secondary soft constraints.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QuerySet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.ConstrantFilterQuery.filter_allocations_by_hard_constraints">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filter_allocations_by_hard_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/constraint_filter.html#ConstrantFilterQuery.filter_allocations_by_hard_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_filter.ConstrantFilterQuery.filter_allocations_by_hard_constraints" title="Link to this definition"></a></dt>
+<dd><p>Filter allocations by applying hard constraints. Only allocations where the demonstrator is not 
+double booked, fully available, and the allocation has not been previously approved are considered valid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>queryset</strong> (<em>QuerySet</em>) -- The queryset of allocations to filter.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A queryset of allocations that satisfy all hard constraints.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QuerySet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.ConstrantFilterQuery.filter_allocations_by_hard_constraints_post_approve">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filter_allocations_by_hard_constraints_post_approve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/constraint_filter.html#ConstrantFilterQuery.filter_allocations_by_hard_constraints_post_approve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_filter.ConstrantFilterQuery.filter_allocations_by_hard_constraints_post_approve" title="Link to this definition"></a></dt>
+<dd><p>Filter allocations by applying hard constraints, excluding the check for previous approval. 
+This is typically used post-approval to ensure all remaining constraints are met.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>queryset</strong> (<em>QuerySet</em>) -- The queryset of allocations to filter.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A queryset of allocations that satisfy the remaining hard constraints.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QuerySet</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.HardConstraintFilter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allocations.utils.constraint_filter.</span></span><span class="sig-name descname"><span class="pre">HardConstraintFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_admin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/constraint_filter.html#HardConstraintFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_filter.HardConstraintFilter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleListFilter</span></code></p>
+<p>The <cite>HardConstraintFilter</cite> class is a Django admin filter used to filter allocations in the admin interface 
+based on hard constraints. The filter provides options to display allocations that pass all hard constraints 
+or fail specific checks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- The title of the filter as displayed in the admin interface.</p></li>
+<li><p><strong>parameter_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- The query parameter used in the admin interface to select the filter option.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.HardConstraintFilter.lookups">
+<span class="sig-name descname"><span class="pre">lookups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_admin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/constraint_filter.html#HardConstraintFilter.lookups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_filter.HardConstraintFilter.lookups" title="Link to this definition"></a></dt>
+<dd><p>Define the filter options for the hard constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>model_admin</strong> (<em>ModelAdmin</em>) -- The model admin class where this filter is applied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple of filter options.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.HardConstraintFilter.parameter_name">
+<span class="sig-name descname"><span class="pre">parameter_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'hard_constraints'</span></em><a class="headerlink" href="#allocations.utils.constraint_filter.HardConstraintFilter.parameter_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.HardConstraintFilter.queryset">
+<span class="sig-name descname"><span class="pre">queryset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/constraint_filter.html#HardConstraintFilter.queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_filter.HardConstraintFilter.queryset" title="Link to this definition"></a></dt>
+<dd><p>Filter the queryset of allocations based on the selected hard constraint option.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>queryset</strong> (<em>QuerySet</em>) -- The queryset of allocations to filter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A filtered queryset based on the selected hard constraint option.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QuerySet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.HardConstraintFilter.title">
+<span class="sig-name descname"><span class="pre">title</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'hard</span> <span class="pre">constraints'</span></em><a class="headerlink" href="#allocations.utils.constraint_filter.HardConstraintFilter.title" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.SoftPrimaryConstraintFilter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allocations.utils.constraint_filter.</span></span><span class="sig-name descname"><span class="pre">SoftPrimaryConstraintFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_admin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/constraint_filter.html#SoftPrimaryConstraintFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_filter.SoftPrimaryConstraintFilter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleListFilter</span></code></p>
+<p>The <cite>SoftPrimaryConstraintFilter</cite> class is a Django admin filter used to filter allocations in the admin interface 
+based on primary soft constraints. The filter provides options to display allocations that pass all primary 
+soft constraints or fail specific checks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- The title of the filter as displayed in the admin interface.</p></li>
+<li><p><strong>parameter_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- The query parameter used in the admin interface to select the filter option.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.SoftPrimaryConstraintFilter.lookups">
+<span class="sig-name descname"><span class="pre">lookups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_admin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/constraint_filter.html#SoftPrimaryConstraintFilter.lookups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_filter.SoftPrimaryConstraintFilter.lookups" title="Link to this definition"></a></dt>
+<dd><p>Define the filter options for the primary soft constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>model_admin</strong> (<em>ModelAdmin</em>) -- The model admin class where this filter is applied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple of filter options.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.SoftPrimaryConstraintFilter.parameter_name">
+<span class="sig-name descname"><span class="pre">parameter_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'soft_primary_constraints'</span></em><a class="headerlink" href="#allocations.utils.constraint_filter.SoftPrimaryConstraintFilter.parameter_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.SoftPrimaryConstraintFilter.queryset">
+<span class="sig-name descname"><span class="pre">queryset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/constraint_filter.html#SoftPrimaryConstraintFilter.queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_filter.SoftPrimaryConstraintFilter.queryset" title="Link to this definition"></a></dt>
+<dd><p>Filter the queryset of allocations based on the selected primary soft constraint option.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>queryset</strong> (<em>QuerySet</em>) -- The queryset of allocations to filter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A filtered queryset based on the selected primary soft constraint option.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QuerySet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.SoftPrimaryConstraintFilter.title">
+<span class="sig-name descname"><span class="pre">title</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'primary</span> <span class="pre">soft</span> <span class="pre">constraints'</span></em><a class="headerlink" href="#allocations.utils.constraint_filter.SoftPrimaryConstraintFilter.title" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.SoftSecondaryConstraintFilter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allocations.utils.constraint_filter.</span></span><span class="sig-name descname"><span class="pre">SoftSecondaryConstraintFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_admin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/constraint_filter.html#SoftSecondaryConstraintFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_filter.SoftSecondaryConstraintFilter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleListFilter</span></code></p>
+<p>The <cite>SoftSecondaryConstraintFilter</cite> class is a Django admin filter used to filter allocations in the admin interface 
+based on secondary soft constraints. The filter provides options to display allocations that pass all secondary 
+soft constraints or fail specific checks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- The title of the filter as displayed in the admin interface.</p></li>
+<li><p><strong>parameter_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- The query parameter used in the admin interface to select the filter option.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.SoftSecondaryConstraintFilter.lookups">
+<span class="sig-name descname"><span class="pre">lookups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_admin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/constraint_filter.html#SoftSecondaryConstraintFilter.lookups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_filter.SoftSecondaryConstraintFilter.lookups" title="Link to this definition"></a></dt>
+<dd><p>Define the filter options for the secondary soft constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>model_admin</strong> (<em>ModelAdmin</em>) -- The model admin class where this filter is applied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple of filter options.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.SoftSecondaryConstraintFilter.parameter_name">
+<span class="sig-name descname"><span class="pre">parameter_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'soft_secondary_constraints'</span></em><a class="headerlink" href="#allocations.utils.constraint_filter.SoftSecondaryConstraintFilter.parameter_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.SoftSecondaryConstraintFilter.queryset">
+<span class="sig-name descname"><span class="pre">queryset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/constraint_filter.html#SoftSecondaryConstraintFilter.queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_filter.SoftSecondaryConstraintFilter.queryset" title="Link to this definition"></a></dt>
+<dd><p>Filter the queryset of allocations based on the selected secondary soft constraint option.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>queryset</strong> (<em>QuerySet</em>) -- The queryset of allocations to filter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A filtered queryset based on the selected secondary soft constraint option.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QuerySet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="allocations.utils.constraint_filter.SoftSecondaryConstraintFilter.title">
+<span class="sig-name descname"><span class="pre">title</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'secondary</span> <span class="pre">soft</span> <span class="pre">constraints'</span></em><a class="headerlink" href="#allocations.utils.constraint_filter.SoftSecondaryConstraintFilter.title" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-allocations.utils.constraint_manager">
+<span id="allocations-utils-constraint-manager-module"></span><h2>allocations.utils.constraint_manager module<a class="headerlink" href="#module-allocations.utils.constraint_manager" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="allocations.utils.constraint_manager.ConstraintManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allocations.utils.constraint_manager.</span></span><span class="sig-name descname"><span class="pre">ConstraintManager</span></span><a class="reference internal" href="_modules/allocations/utils/constraint_manager.html#ConstraintManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_manager.ConstraintManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>The <cite>ConstraintManager</cite> class is a base class for managing constraints during the allocation of demonstrators 
+to various sessions. This class serves as the foundation for more specific constraint managers that handle 
+both hard and soft constraints.</p>
+<p>This class does not implement any functionality directly but provides a structure for subclasses to enforce 
+constraints on allocations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- An instance of the <cite>Allocation</cite> model representing the current allocation being processed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="allocations.utils.constraint_manager.HardConstraintManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allocations.utils.constraint_manager.</span></span><span class="sig-name descname"><span class="pre">HardConstraintManager</span></span><a class="reference internal" href="_modules/allocations/utils/constraint_manager.html#HardConstraintManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_manager.HardConstraintManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#allocations.utils.constraint_manager.ConstraintManager" title="allocations.utils.constraint_manager.ConstraintManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConstraintManager</span></code></a></p>
+<p>The <cite>HardConstraintManager</cite> class is responsible for enforcing hard constraints during the allocation process. 
+These constraints ensure that no demonstrator is double booked, that demonstrators are fully available for 
+the sessions they are assigned to, and that previously approved allocations are not modified.</p>
+<p>This class provides static methods that check specific hard constraints on allocations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- An instance of the <cite>Allocation</cite> model representing the current allocation being processed.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_manager.HardConstraintManager.is_allocation_not_previously_approved">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_allocation_not_previously_approved</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="allocations.html#allocations.models.Allocation" title="allocations.models.Allocation"><span class="pre">Allocation</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="_modules/allocations/utils/constraint_manager.html#HardConstraintManager.is_allocation_not_previously_approved"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_manager.HardConstraintManager.is_allocation_not_previously_approved" title="Link to this definition"></a></dt>
+<dd><p>Check if the allocation has not been previously approved.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation to check.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if the allocation is not previously approved, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_manager.HardConstraintManager.is_demonstator_available_for_all">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_demonstator_available_for_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="allocations.html#allocations.models.Allocation" title="allocations.models.Allocation"><span class="pre">Allocation</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dem</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="_modules/allocations/utils/constraint_manager.html#HardConstraintManager.is_demonstator_available_for_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_manager.HardConstraintManager.is_demonstator_available_for_all" title="Link to this definition"></a></dt>
+<dd><p>Check if the demonstrator assigned to the allocation is available for all timeslots of the session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation to check.</p></li>
+<li><p><strong>dem</strong> (<cite>Demonstrator</cite>, optional) -- An optional specific demonstrator to check. If <cite>None</cite>, the method checks the demonstrator assigned to the allocation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if the demonstrator is available for all timeslots, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_manager.HardConstraintManager.is_demonstrator_not_double_booked">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_demonstrator_not_double_booked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="allocations.html#allocations.models.Allocation" title="allocations.models.Allocation"><span class="pre">Allocation</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dem</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="_modules/allocations/utils/constraint_manager.html#HardConstraintManager.is_demonstrator_not_double_booked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_manager.HardConstraintManager.is_demonstrator_not_double_booked" title="Link to this definition"></a></dt>
+<dd><p>Check if the demonstrator assigned to the allocation is not double booked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation to check.</p></li>
+<li><p><strong>dem</strong> (<cite>Demonstrator</cite>, optional) -- An optional specific demonstrator to check. If <cite>None</cite>, the method checks the demonstrator assigned to the allocation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if the demonstrator is not double booked, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="allocations.utils.constraint_manager.PrimaryConstraintManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allocations.utils.constraint_manager.</span></span><span class="sig-name descname"><span class="pre">PrimaryConstraintManager</span></span><a class="reference internal" href="_modules/allocations/utils/constraint_manager.html#PrimaryConstraintManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_manager.PrimaryConstraintManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#allocations.utils.constraint_manager.SoftConstraintManager" title="allocations.utils.constraint_manager.SoftConstraintManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">SoftConstraintManager</span></code></a></p>
+<p>The <cite>PrimaryConstraintManager</cite> class handles primary soft constraints during the allocation process. 
+These constraints include ensuring that sessions have at least half of the required demonstrators and 
+that all demonstrators meet the minimum skill requirements.</p>
+<p>This class provides static methods that enforce primary soft constraints on allocations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- An instance of the <cite>Allocation</cite> model representing the current allocation being processed.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_manager.PrimaryConstraintManager.demonstrator_has_beginner_skill">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">demonstrator_has_beginner_skill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="allocations.html#allocations.models.Allocation" title="allocations.models.Allocation"><span class="pre">Allocation</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dem</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="_modules/allocations/utils/constraint_manager.html#PrimaryConstraintManager.demonstrator_has_beginner_skill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_manager.PrimaryConstraintManager.demonstrator_has_beginner_skill" title="Link to this definition"></a></dt>
+<dd><p>Check if the demonstrator assigned to the allocation has at least a beginner skill level in the required skills.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation to check.</p></li>
+<li><p><strong>dem</strong> (<cite>Demonstrator</cite>, optional) -- An optional specific demonstrator to check. If <cite>None</cite>, the method checks the demonstrator assigned to the allocation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if the demonstrator has the required beginner skills, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_manager.PrimaryConstraintManager.session_has_half_demonstrators">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">session_has_half_demonstrators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="allocations.html#allocations.models.Allocation" title="allocations.models.Allocation"><span class="pre">Allocation</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="_modules/allocations/utils/constraint_manager.html#PrimaryConstraintManager.session_has_half_demonstrators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_manager.PrimaryConstraintManager.session_has_half_demonstrators" title="Link to this definition"></a></dt>
+<dd><p>Check if the session associated with the allocation has at least half of the required number of demonstrators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation to check.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if the session has at least half the required number of demonstrators, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="allocations.utils.constraint_manager.SecondaryConstraintManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allocations.utils.constraint_manager.</span></span><span class="sig-name descname"><span class="pre">SecondaryConstraintManager</span></span><a class="reference internal" href="_modules/allocations/utils/constraint_manager.html#SecondaryConstraintManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_manager.SecondaryConstraintManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#allocations.utils.constraint_manager.SoftConstraintManager" title="allocations.utils.constraint_manager.SoftConstraintManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">SoftConstraintManager</span></code></a></p>
+<p>The <cite>SecondaryConstraintManager</cite> class handles secondary soft constraints during the allocation process. 
+These constraints ensure that sessions have the exact number of required demonstrators and that the demonstrators 
+meet or exceed the skill level required for the session.</p>
+<p>This class provides static methods that enforce secondary soft constraints on allocations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- An instance of the <cite>Allocation</cite> model representing the current allocation being processed.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_manager.SecondaryConstraintManager.demonstrator_has_skill_or_higher">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">demonstrator_has_skill_or_higher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="allocations.html#allocations.models.Allocation" title="allocations.models.Allocation"><span class="pre">Allocation</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dem</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="_modules/allocations/utils/constraint_manager.html#SecondaryConstraintManager.demonstrator_has_skill_or_higher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_manager.SecondaryConstraintManager.demonstrator_has_skill_or_higher" title="Link to this definition"></a></dt>
+<dd><p>Check if the demonstrator assigned to the allocation meets or exceeds the required skill level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation to check.</p></li>
+<li><p><strong>dem</strong> (<cite>Demonstrator</cite>, optional) -- An optional specific demonstrator to check. If <cite>None</cite>, the method checks the demonstrator assigned to the allocation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if the demonstrator has the required skill level or higher, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_manager.SecondaryConstraintManager.session_has_all_demonstrators">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">session_has_all_demonstrators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="allocations.html#allocations.models.Allocation" title="allocations.models.Allocation"><span class="pre">Allocation</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="_modules/allocations/utils/constraint_manager.html#SecondaryConstraintManager.session_has_all_demonstrators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_manager.SecondaryConstraintManager.session_has_all_demonstrators" title="Link to this definition"></a></dt>
+<dd><p>Check if the session associated with the allocation has the exact number of required demonstrators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation to check.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if the session has the required number of demonstrators, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="allocations.utils.constraint_manager.SoftConstraintManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allocations.utils.constraint_manager.</span></span><span class="sig-name descname"><span class="pre">SoftConstraintManager</span></span><a class="reference internal" href="_modules/allocations/utils/constraint_manager.html#SoftConstraintManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_manager.SoftConstraintManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#allocations.utils.constraint_manager.ConstraintManager" title="allocations.utils.constraint_manager.ConstraintManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConstraintManager</span></code></a></p>
+<p>The <cite>SoftConstraintManager</cite> class serves as a base class for enforcing soft constraints during the allocation process. 
+Soft constraints can include primary, secondary, and tertiary constraints that provide additional flexibility 
+compared to hard constraints.</p>
+<p>This class provides utility methods and serves as the base for more specific soft constraint managers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- An instance of the <cite>Allocation</cite> model representing the current allocation being processed.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.constraint_manager.SoftConstraintManager.is_subset">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_subset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/constraint_manager.html#SoftConstraintManager.is_subset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_manager.SoftConstraintManager.is_subset" title="Link to this definition"></a></dt>
+<dd><p>Check if <cite>list1</cite> is a subset of <cite>list2</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list1</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- The list to check as a subset.</p></li>
+<li><p><strong>list2</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- The list to check against.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if <cite>list1</cite> is a subset of <cite>list2</cite>, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="allocations.utils.constraint_manager.TertiaryConstraintManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allocations.utils.constraint_manager.</span></span><span class="sig-name descname"><span class="pre">TertiaryConstraintManager</span></span><a class="reference internal" href="_modules/allocations/utils/constraint_manager.html#TertiaryConstraintManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.constraint_manager.TertiaryConstraintManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#allocations.utils.constraint_manager.SoftConstraintManager" title="allocations.utils.constraint_manager.SoftConstraintManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">SoftConstraintManager</span></code></a></p>
+<p>The <cite>TertiaryConstraintManager</cite> class is intended to handle tertiary soft constraints during the allocation process. 
+These constraints may include preferences such as assigning the lecturer's preferred demonstrator or 
+ensuring demonstrators meet the required skill level.</p>
+<p>This class currently serves as a placeholder for future implementations of tertiary constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- An instance of the <cite>Allocation</cite> model representing the current allocation being processed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-allocations.utils.goodness_of_fit">
+<span id="allocations-utils-goodness-of-fit-module"></span><h2>allocations.utils.goodness_of_fit module<a class="headerlink" href="#module-allocations.utils.goodness_of_fit" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allocations.utils.goodness_of_fit.</span></span><span class="sig-name descname"><span class="pre">GoodnessOfFit</span></span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>The <cite>GoodnessOfFit</cite> class provides various static methods to evaluate and generate reports on the goodness of fit 
+for the allocation system. This includes calculating ratios, compliance with constraints, skill match scores, 
+utilization rates, and statistical measures like chi-square for load balancing.</p>
+<p>This class interacts with several models including <cite>Allocation</cite>, <cite>RequirementSkill</cite>, <cite>Competency</cite>, <cite>Demonstrator</cite>, 
+and <cite>UserAvailability</cite> to gather and analyze data for generating metrics and reports.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- An instance of the <cite>Allocation</cite> model representing the current allocation being processed.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.calculate_overall_fit">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calculate_overall_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scores</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.calculate_overall_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.calculate_overall_fit" title="Link to this definition"></a></dt>
+<dd><p>Calculate the overall fit score based on a set of individual scores.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scores</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- A list of individual scores.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the unweighted score and the weighted score.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.convert_seconds_to_hms">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert_seconds_to_hms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.convert_seconds_to_hms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.convert_seconds_to_hms" title="Link to this definition"></a></dt>
+<dd><p>Convert a time duration from seconds to hours, minutes, and seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>seconds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) -- The time duration in seconds.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing hours, minutes, and seconds.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.generate_report">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elapsed_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.generate_report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.generate_report" title="Link to this definition"></a></dt>
+<dd><p>Generate a comprehensive report on the goodness of fit, including various metrics and their compliance scores.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>elapsed_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) -- The time taken for the allocation process, in seconds. Defaults to 0 if time isn't provided</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the report string and a dictionary of results.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)">dict</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_demonstrator_time_load_balance_chi_square">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_demonstrator_time_load_balance_chi_square</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_demonstrator_time_load_balance_chi_square"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_demonstrator_time_load_balance_chi_square" title="Link to this definition"></a></dt>
+<dd><p>Calculate the chi-square statistic for demonstrator time load balance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The chi-square statistic for time load balance.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_distribution_competencies">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_distribution_competencies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_distribution_competencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_distribution_competencies" title="Link to this definition"></a></dt>
+<dd><p>Get the distribution of competencies across all demonstrators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary where the keys are skill names and the values are their respective counts.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_distribution_required_skills">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_distribution_required_skills</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_distribution_required_skills"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_distribution_required_skills" title="Link to this definition"></a></dt>
+<dd><p>Get the distribution of required skills across all sessions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary where the keys are skill names and the values are their respective counts.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_distribution_tertiary_constraint">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_distribution_tertiary_constraint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_distribution_tertiary_constraint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_distribution_tertiary_constraint" title="Link to this definition"></a></dt>
+<dd><p>(Placeholder) Calculate the distribution based on tertiary constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Not implemented.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_hard_constraint_compliance">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_hard_constraint_compliance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_hard_constraint_compliance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_hard_constraint_compliance" title="Link to this definition"></a></dt>
+<dd><p>Calculate the compliance percentage for hard constraints across all allocations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The percentage of allocations that pass hard constraints.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_percentage_allocated">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_percentage_allocated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_percentage_allocated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_percentage_allocated" title="Link to this definition"></a></dt>
+<dd><p>Calculate the percentage of allocations that have been approved.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The percentage of approved allocations.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_preference_fulfillment">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_preference_fulfillment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_preference_fulfillment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_preference_fulfillment" title="Link to this definition"></a></dt>
+<dd><p>(Placeholder) Calculate the fulfillment of demonstrator preferences.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Not implemented.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_primary_constraint_compliance">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_primary_constraint_compliance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_primary_constraint_compliance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_primary_constraint_compliance" title="Link to this definition"></a></dt>
+<dd><p>Calculate the compliance percentage for primary constraints across all allocations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The percentage of allocations that pass primary constraints.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_ratio_hard_constraint">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_ratio_hard_constraint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_ratio_hard_constraint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_ratio_hard_constraint" title="Link to this definition"></a></dt>
+<dd><p>Calculate the ratio of valid demonstrators for allocations based on hard constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The ratio of valid demonstrators to total allocations.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_ratio_primary_constraint">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_ratio_primary_constraint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_ratio_primary_constraint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_ratio_primary_constraint" title="Link to this definition"></a></dt>
+<dd><p>Calculate the ratio of valid demonstrators for allocations based on primary constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The ratio of valid demonstrators to total allocations.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_ratio_secondary_constraint">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_ratio_secondary_constraint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_ratio_secondary_constraint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_ratio_secondary_constraint" title="Link to this definition"></a></dt>
+<dd><p>Calculate the ratio of valid demonstrators for allocations based on secondary constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The ratio of valid demonstrators to total allocations.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_secondary_constraint_compliance">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_secondary_constraint_compliance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_secondary_constraint_compliance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_secondary_constraint_compliance" title="Link to this definition"></a></dt>
+<dd><p>Calculate the compliance percentage for secondary constraints across all allocations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The percentage of allocations that pass secondary constraints.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_skill_match_score_distribution">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_skill_match_score_distribution</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_skill_match_score_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_skill_match_score_distribution" title="Link to this definition"></a></dt>
+<dd><p>Calculate the average skill match score across all allocations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The average skill match score.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_skill_match_score_single">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_skill_match_score_single</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allocation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_skill_match_score_single"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_skill_match_score_single" title="Link to this definition"></a></dt>
+<dd><p>Calculate the skill match score for a single allocation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>allocation</strong> (<cite>Allocation</cite>) -- The allocation to calculate the skill match score for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The skill match score for the allocation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_tertiary_constraint_compliance">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_tertiary_constraint_compliance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_tertiary_constraint_compliance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_tertiary_constraint_compliance" title="Link to this definition"></a></dt>
+<dd><p>(Placeholder) Calculate the compliance percentage for tertiary constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Not implemented.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_total_allocation">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_total_allocation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_total_allocation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_total_allocation" title="Link to this definition"></a></dt>
+<dd><p>Get the total number of allocations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The total number of allocations.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_total_allocation_notnull">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_total_allocation_notnull</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_total_allocation_notnull"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_total_allocation_notnull" title="Link to this definition"></a></dt>
+<dd><p>Get the total number of allocations that have a demonstrator assigned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The total number of allocations with a non-null demonstrator.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.get_utilisation_rate">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_utilisation_rate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.get_utilisation_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.get_utilisation_rate" title="Link to this definition"></a></dt>
+<dd><p>Calculate the utilisation rate of demonstrators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The utilisation rate of demonstrators.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.normalise_chi_square_stat">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">normalise_chi_square_stat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chi_square_stat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_chi_square</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2700</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.normalise_chi_square_stat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.normalise_chi_square_stat" title="Link to this definition"></a></dt>
+<dd><p>Normalize the chi-square statistic to a score between 0 and 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chi_square_stat</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) -- The chi-square statistic to normalize.</p></li>
+<li><p><strong>max_chi_square</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) -- The maximum chi-square value used for normalization, defaults to 1000.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The normalized chi-square score.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="allocations.utils.goodness_of_fit.GoodnessOfFit.normalise_weights">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">normalise_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/allocations/utils/goodness_of_fit.html#GoodnessOfFit.normalise_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#allocations.utils.goodness_of_fit.GoodnessOfFit.normalise_weights" title="Link to this definition"></a></dt>
+<dd><p>Normalize a list of weights to sum to 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- The list of weights to normalize.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The normalized list of weights.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-allocations.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-allocations.utils" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="allocations.html" class="btn btn-neutral float-left" title="allocations package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classes.html" class="btn btn-neutral float-right" title="classes package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

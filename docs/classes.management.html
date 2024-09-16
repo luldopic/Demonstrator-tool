@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>classes.management package &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="classes.management.commands package" href="classes.management.commands.html" />
+    <link rel="prev" title="classes.admin_inlines package" href="classes.admin_inlines.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_issues.html">Known Issues</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API References</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="admin.html">admin package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.html">allocations package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="classes.html">classes package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="classes.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html">classes.admin_inlines package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">classes.management package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.utils.html">classes.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#module-classes.admin">classes.admin module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#module-classes.apps">classes.apps module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#module-classes.models">classes.models module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#module-classes">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="demonstrator_timetabling_tool.html">demonstrator_timetabling_tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timetable.html">timetable package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="users.html">users package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API References</a></li>
+          <li class="breadcrumb-item"><a href="classes.html">classes package</a></li>
+      <li class="breadcrumb-item active">classes.management package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/classes.management.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="classes-management-package">
+<h1>classes.management package<a class="headerlink" href="#classes-management-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classes.management.commands.html">classes.management.commands package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classes.management.commands.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.add_new_skill">classes.management.commands.add_new_skill module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.add_new_skill.Command"><code class="docutils literal notranslate"><span class="pre">Command</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.add_new_skill.Command.add_arguments"><code class="docutils literal notranslate"><span class="pre">Command.add_arguments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.add_new_skill.Command.handle"><code class="docutils literal notranslate"><span class="pre">Command.handle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.add_new_skill.Command.help"><code class="docutils literal notranslate"><span class="pre">Command.help</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.check_module_session_conflict">classes.management.commands.check_module_session_conflict module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.check_module_session_conflict.Command"><code class="docutils literal notranslate"><span class="pre">Command</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.check_module_session_conflict.Command.add_arguments"><code class="docutils literal notranslate"><span class="pre">Command.add_arguments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.check_module_session_conflict.Command.handle"><code class="docutils literal notranslate"><span class="pre">Command.handle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.check_module_session_conflict.Command.help"><code class="docutils literal notranslate"><span class="pre">Command.help</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.create_test_timetables">classes.management.commands.create_test_timetables module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.create_test_timetables.Command"><code class="docutils literal notranslate"><span class="pre">Command</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.create_test_timetables.Command.add_arguments"><code class="docutils literal notranslate"><span class="pre">Command.add_arguments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.create_test_timetables.Command.add_lab"><code class="docutils literal notranslate"><span class="pre">Command.add_lab()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.create_test_timetables.Command.add_lecture"><code class="docutils literal notranslate"><span class="pre">Command.add_lecture()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.create_test_timetables.Command.add_tutorial"><code class="docutils literal notranslate"><span class="pre">Command.add_tutorial()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.create_test_timetables.Command.assign_timeslots"><code class="docutils literal notranslate"><span class="pre">Command.assign_timeslots()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.create_test_timetables.Command.check_constraint_fulfilled"><code class="docutils literal notranslate"><span class="pre">Command.check_constraint_fulfilled()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.create_test_timetables.Command.check_max_constraints"><code class="docutils literal notranslate"><span class="pre">Command.check_max_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.create_test_timetables.Command.check_scheduling_conflicts"><code class="docutils literal notranslate"><span class="pre">Command.check_scheduling_conflicts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.create_test_timetables.Command.count_session_type"><code class="docutils literal notranslate"><span class="pre">Command.count_session_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.create_test_timetables.Command.create_schedule"><code class="docutils literal notranslate"><span class="pre">Command.create_schedule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.create_test_timetables.Command.get_constraints"><code class="docutils literal notranslate"><span class="pre">Command.get_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.create_test_timetables.Command.get_schedule"><code class="docutils literal notranslate"><span class="pre">Command.get_schedule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.create_test_timetables.Command.get_timeslots"><code class="docutils literal notranslate"><span class="pre">Command.get_timeslots()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.create_test_timetables.Command.get_total_hours"><code class="docutils literal notranslate"><span class="pre">Command.get_total_hours()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.create_test_timetables.Command.handle"><code class="docutils literal notranslate"><span class="pre">Command.handle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.create_test_timetables.Command.help"><code class="docutils literal notranslate"><span class="pre">Command.help</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.delete_test_competencies">classes.management.commands.delete_test_competencies module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.delete_test_sessions">classes.management.commands.delete_test_sessions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.delete_test_sessions.Command"><code class="docutils literal notranslate"><span class="pre">Command</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.delete_test_sessions.Command.handle"><code class="docutils literal notranslate"><span class="pre">Command.handle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.delete_test_sessions.Command.help"><code class="docutils literal notranslate"><span class="pre">Command.help</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.populate_competencies">classes.management.commands.populate_competencies module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_competencies.Command"><code class="docutils literal notranslate"><span class="pre">Command</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_competencies.Command.add_arguments"><code class="docutils literal notranslate"><span class="pre">Command.add_arguments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_competencies.Command.biased_skill_level"><code class="docutils literal notranslate"><span class="pre">Command.biased_skill_level()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_competencies.Command.handle"><code class="docutils literal notranslate"><span class="pre">Command.handle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_competencies.Command.help"><code class="docutils literal notranslate"><span class="pre">Command.help</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_competencies.Command.remove_duplicates"><code class="docutils literal notranslate"><span class="pre">Command.remove_duplicates()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.populate_modules">classes.management.commands.populate_modules module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_modules.Command"><code class="docutils literal notranslate"><span class="pre">Command</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_modules.Command.add_arguments"><code class="docutils literal notranslate"><span class="pre">Command.add_arguments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_modules.Command.handle"><code class="docutils literal notranslate"><span class="pre">Command.handle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_modules.Command.help"><code class="docutils literal notranslate"><span class="pre">Command.help</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.populate_sessions">classes.management.commands.populate_sessions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_sessions.Command"><code class="docutils literal notranslate"><span class="pre">Command</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_sessions.Command.add_arguments"><code class="docutils literal notranslate"><span class="pre">Command.add_arguments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_sessions.Command.handle"><code class="docutils literal notranslate"><span class="pre">Command.handle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_sessions.Command.help"><code class="docutils literal notranslate"><span class="pre">Command.help</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_sessions.Command.remove_duplicates"><code class="docutils literal notranslate"><span class="pre">Command.remove_duplicates()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.populate_test_skills">classes.management.commands.populate_test_skills module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_test_skills.Command"><code class="docutils literal notranslate"><span class="pre">Command</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_test_skills.Command.add_arguments"><code class="docutils literal notranslate"><span class="pre">Command.add_arguments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_test_skills.Command.handle"><code class="docutils literal notranslate"><span class="pre">Command.handle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#classes.management.commands.populate_test_skills.Command.help"><code class="docutils literal notranslate"><span class="pre">Command.help</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-classes.management">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-classes.management" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classes.admin_inlines.html" class="btn btn-neutral float-left" title="classes.admin_inlines package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classes.management.commands.html" class="btn btn-neutral float-right" title="classes.management.commands package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

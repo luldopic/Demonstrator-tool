@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.allocation_eval.test_strategy_analysis &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tests.allocation_eval.test_strategy_analysis</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tests.allocation_eval.test_strategy_analysis</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
+<span class="kn">from</span> <span class="nn">django.core.management</span> <span class="kn">import</span> <span class="n">call_command</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">get_user_model</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span> <span class="nn">allocations.models</span> <span class="kn">import</span> <span class="n">Allocation</span>
+<span class="kn">from</span> <span class="nn">classes.admin</span> <span class="kn">import</span> <span class="n">ModuleSessionAdmin</span>
+<span class="kn">from</span> <span class="nn">classes.models</span> <span class="kn">import</span> <span class="n">ModuleSession</span>
+<span class="kn">from</span> <span class="nn">allocations.utils.goodness_of_fit</span> <span class="kn">import</span> <span class="n">GoodnessOfFit</span>
+<span class="kn">from</span> <span class="nn">allocations.utils.allocation_manager</span> <span class="kn">import</span> <span class="n">AllocationManager</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<div class="viewcode-block" id="StrategyTests">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests">[docs]</a>
+<span class="k">class</span> <span class="nc">StrategyTests</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `StrategyTests` class contains test cases for various allocation strategies in the Django application.</span>
+
+<span class="sd">    :param setUpTestData: Sets up the test data at the class level, including creating a superuser, populating default timeslots, skills, modules, sessions, and timetables.</span>
+<span class="sd">    :type setUpTestData: Class Method</span>
+<span class="sd">    :param generate_demonstrators: Generates a specified number of demonstrators based on a multiplier.</span>
+<span class="sd">    :type generate_demonstrators: Static Method</span>
+<span class="sd">    :param setUp: Initializes the test environment for each test case, including logging in as the admin user and resetting allocations.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param time_for_allocation: Measures and returns the time taken for batch allocation.</span>
+<span class="sd">    :type time_for_allocation: Static Method</span>
+<span class="sd">    :param test_double_ratio_single_size: Tests the allocation strategy with a double demonstrator ratio and single batch size.</span>
+<span class="sd">    :type test_double_ratio_single_size: Method</span>
+<span class="sd">    :param test_double_ratio_one_size: Tests the allocation strategy with a double demonstrator ratio and 1% batch size.</span>
+<span class="sd">    :type test_double_ratio_one_size: Method</span>
+<span class="sd">    :param test_double_ratio_five_size: Tests the allocation strategy with a double demonstrator ratio and 5% batch size.</span>
+<span class="sd">    :type test_double_ratio_five_size: Method</span>
+<span class="sd">    :param test_double_ratio_ten_size: Tests the allocation strategy with a double demonstrator ratio and 10% batch size.</span>
+<span class="sd">    :type test_double_ratio_ten_size: Method</span>
+<span class="sd">    :param test_double_ratio_twenty_size: Tests the allocation strategy with a double demonstrator ratio and 20% batch size.</span>
+<span class="sd">    :type test_double_ratio_twenty_size: Method</span>
+<span class="sd">    :param test_equal_ratio_single_size: Tests the allocation strategy with an equal demonstrator ratio and single batch size.</span>
+<span class="sd">    :type test_equal_ratio_single_size: Method</span>
+<span class="sd">    :param test_equal_ratio_one_size: Tests the allocation strategy with an equal demonstrator ratio and 1% batch size.</span>
+<span class="sd">    :type test_equal_ratio_one_size: Method</span>
+<span class="sd">    :param test_equal_ratio_five_size: Tests the allocation strategy with an equal demonstrator ratio and 5% batch size.</span>
+<span class="sd">    :type test_equal_ratio_five_size: Method</span>
+<span class="sd">    :param test_equal_ratio_ten_size: Tests the allocation strategy with an equal demonstrator ratio and 10% batch size.</span>
+<span class="sd">    :type test_equal_ratio_ten_size: Method</span>
+<span class="sd">    :param test_equal_ratio_twenty_size: Tests the allocation strategy with an equal demonstrator ratio and 20% batch size.</span>
+<span class="sd">    :type test_equal_ratio_twenty_size: Method</span>
+<span class="sd">    :param test_half_ratio_single_size: Tests the allocation strategy with a half demonstrator ratio and single batch size.</span>
+<span class="sd">    :type test_half_ratio_single_size: Method</span>
+<span class="sd">    :param test_half_ratio_one_size: Tests the allocation strategy with a half demonstrator ratio and 1% batch size.</span>
+<span class="sd">    :type test_half_ratio_one_size: Method</span>
+<span class="sd">    :param test_half_ratio_five_size: Tests the allocation strategy with a half demonstrator ratio and 5% batch size.</span>
+<span class="sd">    :type test_half_ratio_five_size: Method</span>
+<span class="sd">    :param test_half_ratio_ten_size: Tests the allocation strategy with a half demonstrator ratio and 10% batch size.</span>
+<span class="sd">    :type test_half_ratio_ten_size: Method</span>
+<span class="sd">    :param test_half_ratio_twenty_size: Tests the allocation strategy with a half demonstrator ratio and 20% batch size.</span>
+<span class="sd">    :type test_half_ratio_twenty_size: Method</span>
+<span class="sd">    :param test_quarter_ratio_single_size: Tests the allocation strategy with a quarter demonstrator ratio and single batch size.</span>
+<span class="sd">    :type test_quarter_ratio_single_size: Method</span>
+<span class="sd">    :param test_quarter_ratio_one_size: Tests the allocation strategy with a quarter demonstrator ratio and 1% batch size.</span>
+<span class="sd">    :type test_quarter_ratio_one_size: Method</span>
+<span class="sd">    :param test_quarter_ratio_five_size: Tests the allocation strategy with a quarter demonstrator ratio and 5% batch size.</span>
+<span class="sd">    :type test_quarter_ratio_five_size: Method</span>
+<span class="sd">    :param test_quarter_ratio_ten_size: Tests the allocation strategy with a quarter demonstrator ratio and 10% batch size.</span>
+<span class="sd">    :type test_quarter_ratio_ten_size: Method</span>
+<span class="sd">    :param test_quarter_ratio_twenty_size: Tests the allocation strategy with a quarter demonstrator ratio and 20% batch size.</span>
+<span class="sd">    :type test_quarter_ratio_twenty_size: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="StrategyTests.setUpTestData">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.setUpTestData">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">setUpTestData</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up the test data once for the entire test class.&quot;&quot;&quot;</span>
+        <span class="n">User</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span>
+        <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_superuser</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s1">&#39;admin@example.com&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;admin&#39;</span><span class="p">)</span>
+        <span class="n">call_command</span><span class="p">(</span><span class="s2">&quot;populate_default_timeslots&quot;</span><span class="p">)</span>
+        <span class="n">call_command</span><span class="p">(</span><span class="s2">&quot;populate_test_skills&quot;</span><span class="p">,</span><span class="s2">&quot;test_data/skills.csv&quot;</span><span class="p">)</span>
+        <span class="n">call_command</span><span class="p">(</span><span class="s2">&quot;populate_modules&quot;</span><span class="p">,</span>  <span class="s2">&quot;test_data/CIS_modules.csv&quot;</span><span class="p">)</span>
+        <span class="n">call_command</span><span class="p">(</span><span class="s2">&quot;populate_sessions&quot;</span><span class="p">,</span> <span class="s2">&quot;--test&quot;</span><span class="p">)</span>
+        <span class="n">call_command</span><span class="p">(</span><span class="s2">&quot;create_test_timetables&quot;</span><span class="p">,</span>  <span class="s2">&quot;--all&quot;</span><span class="p">)</span>
+        
+        <span class="c1">## Get batch sizes</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">]:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">batch_size</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="n">n</span><span class="o">*</span><span class="bp">cls</span><span class="o">.</span><span class="n">total</span><span class="p">)</span><span class="o">/</span><span class="mi">100</span><span class="p">))</span></div>
+
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Strategies</span>
+<span class="sd">    Demonstrator: Allocation Slot Ratio -&gt; Double, Equal, Half (2,1,0.5)</span>
+<span class="sd">    BatchSize -&gt; 1, 1%, 5%, 10%, 20%</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="StrategyTests.generate_demonstrators">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.generate_demonstrators">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">generate_demonstrators</span><span class="p">(</span><span class="n">multiplier</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a specific number of demonstrators based on the multiplier.&quot;&quot;&quot;</span>
+        <span class="n">num_demonstrator</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">StrategyTests</span><span class="o">.</span><span class="n">total</span> <span class="o">*</span> <span class="n">multiplier</span><span class="p">)</span>
+        <span class="n">call_command</span><span class="p">(</span><span class="s2">&quot;generate_test_users&quot;</span><span class="p">,</span> <span class="n">demonstrator</span> <span class="o">=</span> <span class="n">num_demonstrator</span><span class="p">)</span>
+        <span class="n">call_command</span><span class="p">(</span><span class="s2">&quot;populate_competencies&quot;</span><span class="p">,</span> <span class="s2">&quot;--test&quot;</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="StrategyTests.setUp">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up the test environment for each test case.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;admin&#39;</span><span class="p">)</span>
+        <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="n">module_session_admin</span> <span class="o">=</span> <span class="n">ModuleSessionAdmin</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">ModuleSession</span><span class="p">,</span> <span class="n">admin_site</span><span class="o">=</span><span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="p">)</span>
+        
+        <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">request</span><span class="p">()</span><span class="o">.</span><span class="n">wsgi_request</span>
+        <span class="n">queryset</span> <span class="o">=</span> <span class="n">ModuleSession</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">module_session_admin</span><span class="o">.</span><span class="n">ensure_correct_allocation</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StrategyTests.time_for_allocation">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.time_for_allocation">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">time_for_allocation</span><span class="p">(</span><span class="n">batch_num</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Measure and return the time taken for batch allocation.&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Allocation Start&quot;</span><span class="p">)</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">AllocationManager</span><span class="o">.</span><span class="n">batch_allocate</span><span class="p">(</span><span class="n">StrategyTests</span><span class="o">.</span><span class="n">batch_size</span><span class="p">[</span><span class="n">batch_num</span><span class="p">])</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Allocation Complete in </span><span class="si">{</span><span class="n">end_time</span><span class="o">-</span><span class="n">start_time</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">end_time</span><span class="o">-</span><span class="n">start_time</span></div>
+
+        
+    <span class="c1">#Double</span>
+<div class="viewcode-block" id="StrategyTests.test_double_ratio_single_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_double_ratio_single_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_double_ratio_single_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_doubleratio_singlesize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StrategyTests.test_double_ratio_one_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_double_ratio_one_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_double_ratio_one_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_doubleratio_onesize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StrategyTests.test_double_ratio_five_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_double_ratio_five_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_double_ratio_five_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_doubleratio_fivesize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StrategyTests.test_double_ratio_ten_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_double_ratio_ten_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_double_ratio_ten_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_doubleratio_tensize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StrategyTests.test_double_ratio_twenty_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_double_ratio_twenty_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_double_ratio_twenty_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_doubleratio_twentysize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+
+            
+    <span class="c1">#Equal</span>
+<div class="viewcode-block" id="StrategyTests.test_equal_ratio_single_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_equal_ratio_single_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_equal_ratio_single_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_equalratio_singlesize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StrategyTests.test_equal_ratio_one_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_equal_ratio_one_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_equal_ratio_one_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_equalratio_onesize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+
+            
+<div class="viewcode-block" id="StrategyTests.test_equal_ratio_five_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_equal_ratio_five_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_equal_ratio_five_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_equalratio_fivesize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StrategyTests.test_equal_ratio_ten_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_equal_ratio_ten_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_equal_ratio_ten_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_equalratio_tensize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StrategyTests.test_equal_ratio_twenty_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_equal_ratio_twenty_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_equal_ratio_twenty_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_equalratio_twentysize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+
+    
+    <span class="c1">#Half</span>
+<div class="viewcode-block" id="StrategyTests.test_half_ratio_single_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_half_ratio_single_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_half_ratio_single_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_halfratio_singlesize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StrategyTests.test_half_ratio_one_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_half_ratio_one_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_half_ratio_one_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_halfratio_onesize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StrategyTests.test_half_ratio_five_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_half_ratio_five_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_half_ratio_five_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_halfratio_fivesize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+
+            
+    <span class="k">def</span> <span class="nf">test_half_ratio_ten_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_halfratio_tensize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+            
+    <span class="k">def</span> <span class="nf">test_half_ratio_twenty_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_halfratio_twentysize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+    
+    <span class="c1">#Quarter</span>
+<div class="viewcode-block" id="StrategyTests.test_quarter_ratio_single_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_quarter_ratio_single_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_quarter_ratio_single_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_quarterratio_singlesize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StrategyTests.test_quarter_ratio_one_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_quarter_ratio_one_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_quarter_ratio_one_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_quarterratio_onesize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StrategyTests.test_quarter_ratio_five_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_quarter_ratio_five_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_quarter_ratio_five_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_quarterratio_fivesize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+
+            
+<div class="viewcode-block" id="StrategyTests.test_half_ratio_ten_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_half_ratio_ten_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_half_ratio_ten_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_quarterratio_tensize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+
+            
+<div class="viewcode-block" id="StrategyTests.test_half_ratio_twenty_size">
+<a class="viewcode-back" href="../../../tests.allocation_eval.html#tests.allocation_eval.test_strategy_analysis.StrategyTests.test_half_ratio_twenty_size">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_half_ratio_twenty_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">StrategyTests</span><span class="o">.</span><span class="n">generate_demonstrators</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">StrategyTests</span><span class="o">.</span><span class="n">time_for_allocation</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">,</span> <span class="n">results_dict</span> <span class="o">=</span> <span class="n">GoodnessOfFit</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_quarterratio_twentysize_report.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></div>
+</div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

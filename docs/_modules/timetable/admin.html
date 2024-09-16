@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>timetable.admin &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">timetable.admin</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for timetable.admin</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">django.db.models.query</span> <span class="kn">import</span> <span class="n">QuerySet</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpRequest</span>
+<span class="kn">from</span> <span class="nn">timetable.models</span> <span class="kn">import</span> <span class="n">Timeslot</span><span class="p">,</span> <span class="n">Semester</span>
+<span class="kn">from</span> <span class="nn">classes.models</span> <span class="kn">import</span> <span class="n">SessionSchedule</span>
+<span class="kn">from</span> <span class="nn">users.models</span> <span class="kn">import</span> <span class="n">UserAvailability</span>
+
+
+<span class="c1"># Register your models here.</span>
+
+<div class="viewcode-block" id="SemesterAdmin">
+<a class="viewcode-back" href="../../timetable.html#timetable.admin.SemesterAdmin">[docs]</a>
+<span class="k">class</span> <span class="nc">SemesterAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `SemesterAdmin` class customizes the Django admin interface for the `Semester` model. It includes search fields </span>
+<span class="sd">    and list displays to manage semesters.</span>
+
+<span class="sd">    :param search_fields: Fields to include in the search functionality.</span>
+<span class="sd">    :type search_fields: list</span>
+<span class="sd">    :param list_display: Fields to display in the list view of the admin interface.</span>
+<span class="sd">    :type list_display: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">search_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;semester&quot;</span><span class="p">]</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;semester&quot;</span><span class="p">]</span></div>
+
+    
+<div class="viewcode-block" id="TimeslotAdmin">
+<a class="viewcode-back" href="../../timetable.html#timetable.admin.TimeslotAdmin">[docs]</a>
+<span class="k">class</span> <span class="nc">TimeslotAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `TimeslotAdmin` class customizes the Django admin interface for the `Timeslot` model. It includes list displays </span>
+<span class="sd">    and ordering to manage timeslots.</span>
+
+<span class="sd">    :param list_display: Fields to display in the list view of the admin interface.</span>
+<span class="sd">    :type list_display: list</span>
+<span class="sd">    :param ordering: Fields by which to order the list view.</span>
+<span class="sd">    :type ordering: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;start_time&quot;</span><span class="p">,</span> <span class="s2">&quot;end_time&quot;</span><span class="p">]</span>
+    <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;start_time&quot;</span><span class="p">]</span></div>
+
+    
+<div class="viewcode-block" id="TimetableMixin">
+<a class="viewcode-back" href="../../timetable.html#timetable.admin.TimetableMixin">[docs]</a>
+<span class="k">class</span> <span class="nc">TimetableMixin</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `TimetableMixin` class provides utility methods for displaying information about timeslots in related models.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="TimetableMixin.get_timeslot">
+<a class="viewcode-back" href="../../timetable.html#timetable.admin.TimetableMixin.get_timeslot">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_timeslot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a formatted string representing the timeslot associated with the object.</span>
+
+<span class="sd">        :param obj: The instance of the model that contains a timeslot.</span>
+<span class="sd">        :type obj: Model instance</span>
+<span class="sd">        :return: A formatted string of the day and time range.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">timeslot</span><span class="o">.</span><span class="n">get_day_display</span><span class="p">()</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">timeslot</span><span class="o">.</span><span class="n">start_time</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">timeslot</span><span class="o">.</span><span class="n">end_time</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+    <span class="n">get_timeslot</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Timeslot&quot;</span></div>
+
+    
+<div class="viewcode-block" id="SessionScheduleMixin">
+<a class="viewcode-back" href="../../timetable.html#timetable.admin.SessionScheduleMixin">[docs]</a>
+<span class="k">class</span> <span class="nc">SessionScheduleMixin</span><span class="p">(</span><span class="n">TimetableMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `SessionScheduleMixin` class is a subclass of `TimetableMixin` that provides additional functionality </span>
+<span class="sd">    for models related to session schedules.&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="UserAvailabilityMixin">
+<a class="viewcode-back" href="../../timetable.html#timetable.admin.UserAvailabilityMixin">[docs]</a>
+<span class="k">class</span> <span class="nc">UserAvailabilityMixin</span><span class="p">(</span><span class="n">TimetableMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `UserAvailabilityMixin` class is a subclass of `TimetableMixin` that provides additional functionality </span>
+<span class="sd">    for models related to user availability.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="UserAvailabilityMixin.get_user_name">
+<a class="viewcode-back" href="../../timetable.html#timetable.admin.UserAvailabilityMixin.get_user_name">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_user_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the full name of the user associated with the availability record.</span>
+
+<span class="sd">        :param obj: The instance of the model that contains user availability.</span>
+<span class="sd">        :type obj: Model instance</span>
+<span class="sd">        :return: The user&#39;s full name.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span></div>
+
+    <span class="n">get_user_name</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Username&quot;</span></div>
+
+
+<div class="viewcode-block" id="UserAvailabilityAdmin">
+<a class="viewcode-back" href="../../timetable.html#timetable.admin.UserAvailabilityAdmin">[docs]</a>
+<span class="k">class</span> <span class="nc">UserAvailabilityAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">,</span> <span class="n">UserAvailabilityMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `UserAvailabilityAdmin` class customizes the Django admin interface for the `UserAvailability` model. </span>
+<span class="sd">    It includes list displays, search fields, and a custom search results method for managing user availability.</span>
+
+<span class="sd">    :param list_display: Fields to display in the list view of the admin interface.</span>
+<span class="sd">    :type list_display: list</span>
+<span class="sd">    :param search_fields: Fields to include in the search functionality.</span>
+<span class="sd">    :type search_fields: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;get_user_name&quot;</span><span class="p">,</span><span class="s2">&quot;get_timeslot&quot;</span><span class="p">,</span><span class="s2">&quot;is_available&quot;</span><span class="p">]</span>
+    <span class="n">search_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;user__first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;user__last_name&quot;</span><span class="p">,</span><span class="s2">&quot;user__username&quot;</span><span class="p">]</span>
+    
+<div class="viewcode-block" id="UserAvailabilityAdmin.get_search_results">
+<a class="viewcode-back" href="../../timetable.html#timetable.admin.UserAvailabilityAdmin.get_search_results">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_search_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">,</span> <span class="n">queryset</span><span class="p">:</span> <span class="n">QuerySet</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">search_term</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">QuerySet</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Customize the search results to include user names that match the search term.</span>
+
+<span class="sd">        :param request: The current HTTP request object.</span>
+<span class="sd">        :type request: HttpRequest</span>
+<span class="sd">        :param queryset: The queryset of user availability records to search.</span>
+<span class="sd">        :type queryset: QuerySet</span>
+<span class="sd">        :param search_term: The search term entered by the user.</span>
+<span class="sd">        :type search_term: str</span>
+<span class="sd">        :return: The filtered queryset and a boolean indicating whether distinct results are required.</span>
+<span class="sd">        :rtype: tuple[QuerySet[Any], bool]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">queryset</span><span class="p">,</span> <span class="n">use_distinct</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_search_results</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">,</span> <span class="n">search_term</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">search_term</span><span class="p">:</span>
+            <span class="n">search_term</span> <span class="o">=</span> <span class="n">search_term</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">queries</span> <span class="o">=</span> <span class="n">Q</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">search_term</span><span class="p">:</span>
+                <span class="n">queries</span> <span class="o">|=</span> <span class="n">Q</span><span class="p">(</span><span class="n">user__first_name__icontains</span><span class="o">=</span><span class="n">term</span><span class="p">)</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">user__last_name__icontains</span><span class="o">=</span><span class="n">term</span><span class="p">)</span>
+            <span class="n">queryset</span> <span class="o">=</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">queries</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">queryset</span><span class="p">,</span> <span class="n">use_distinct</span></div>
+</div>
+
+
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Timeslot</span><span class="p">,</span> <span class="n">TimeslotAdmin</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Semester</span><span class="p">,</span> <span class="n">SemesterAdmin</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">UserAvailability</span><span class="p">,</span><span class="n">UserAvailabilityAdmin</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

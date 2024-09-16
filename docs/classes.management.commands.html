@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>classes.management.commands package &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="classes.utils package" href="classes.utils.html" />
+    <link rel="prev" title="classes.management package" href="classes.management.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_issues.html">Known Issues</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API References</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="admin.html">admin package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.html">allocations package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="classes.html">classes package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="classes.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html">classes.admin_inlines package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="classes.management.html">classes.management package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.utils.html">classes.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#module-classes.admin">classes.admin module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#module-classes.apps">classes.apps module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#module-classes.models">classes.models module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classes.html#module-classes">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="demonstrator_timetabling_tool.html">demonstrator_timetabling_tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timetable.html">timetable package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="users.html">users package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API References</a></li>
+          <li class="breadcrumb-item"><a href="classes.html">classes package</a></li>
+          <li class="breadcrumb-item"><a href="classes.management.html">classes.management package</a></li>
+      <li class="breadcrumb-item active">classes.management.commands package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/classes.management.commands.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="classes-management-commands-package">
+<h1>classes.management.commands package<a class="headerlink" href="#classes-management-commands-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-classes.management.commands.add_new_skill">
+<span id="classes-management-commands-add-new-skill-module"></span><h2>classes.management.commands.add_new_skill module<a class="headerlink" href="#module-classes.management.commands.add_new_skill" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.management.commands.add_new_skill.Command">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.management.commands.add_new_skill.</span></span><span class="sig-name descname"><span class="pre">Command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stdout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/add_new_skill.html#Command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.add_new_skill.Command" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCommand</span></code></p>
+<p>The <cite>Command</cite> class defines a custom Django management command to add a new skill to the <cite>Skill</cite> database. 
+This command accepts the name of the skill as an argument and creates a new skill entry in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>help</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- A brief description of what the command does, which is displayed when the <cite>help</cite> flag is used.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.add_new_skill.Command.add_arguments">
+<span class="sig-name descname"><span class="pre">add_arguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CommandParser</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/classes/management/commands/add_new_skill.html#Command.add_arguments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.add_new_skill.Command.add_arguments" title="Link to this definition"></a></dt>
+<dd><p>Define the arguments that the command accepts. In this case, the command requires a single argument, 
+the name of the skill.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parser</strong> (<em>CommandParser</em>) -- The argument parser for the command.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.add_new_skill.Command.handle">
+<span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/classes/management/commands/add_new_skill.html#Command.handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.add_new_skill.Command.handle" title="Link to this definition"></a></dt>
+<dd><p>Handle the logic for creating a new skill in the database. This method is executed when the command is run. 
+It retrieves the skill name from the options, creates a new <cite>Skill</cite> instance, and provides feedback to the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Additional positional arguments.</p></li>
+<li><p><strong>options</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) -- A dictionary of options passed to the command.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A success message if the skill is created successfully, or <cite>None</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.management.commands.add_new_skill.Command.help">
+<span class="sig-name descname"><span class="pre">help</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Add</span> <span class="pre">a</span> <span class="pre">new</span> <span class="pre">skill</span> <span class="pre">in</span> <span class="pre">skill</span> <span class="pre">database'</span></em><a class="headerlink" href="#classes.management.commands.add_new_skill.Command.help" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-classes.management.commands.check_module_session_conflict">
+<span id="classes-management-commands-check-module-session-conflict-module"></span><h2>classes.management.commands.check_module_session_conflict module<a class="headerlink" href="#module-classes.management.commands.check_module_session_conflict" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.management.commands.check_module_session_conflict.Command">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.management.commands.check_module_session_conflict.</span></span><span class="sig-name descname"><span class="pre">Command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stdout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/check_module_session_conflict.html#Command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.check_module_session_conflict.Command" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCommand</span></code></p>
+<p>The <cite>Command</cite> class defines a custom Django management command to check if a specific module has a scheduling 
+conflict with its sessions. The command takes the module's class code as an argument and checks for conflicts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>help</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- A brief description of what the command does, which is displayed when the <cite>help</cite> flag is used.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.check_module_session_conflict.Command.add_arguments">
+<span class="sig-name descname"><span class="pre">add_arguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CommandParser</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/classes/management/commands/check_module_session_conflict.html#Command.add_arguments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.check_module_session_conflict.Command.add_arguments" title="Link to this definition"></a></dt>
+<dd><p>Define the arguments that the command accepts. In this case, the command requires a single argument, 
+the class code of the module to check for scheduling conflicts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parser</strong> (<em>CommandParser</em>) -- The argument parser for the command.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.check_module_session_conflict.Command.handle">
+<span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/check_module_session_conflict.html#Command.handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.check_module_session_conflict.Command.handle" title="Link to this definition"></a></dt>
+<dd><p>Handle the logic for checking if the specified module has a scheduling conflict. This method is executed 
+when the command is run. It retrieves the module based on the provided class code, checks for conflicts, 
+and provides feedback to the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Additional positional arguments.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) -- A dictionary of options passed to the command, including the class code.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.management.commands.check_module_session_conflict.Command.help">
+<span class="sig-name descname"><span class="pre">help</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Checks</span> <span class="pre">if</span> <span class="pre">a</span> <span class="pre">module</span> <span class="pre">has</span> <span class="pre">a</span> <span class="pre">scheduling</span> <span class="pre">conflict</span> <span class="pre">with</span> <span class="pre">its</span> <span class="pre">sessions'</span></em><a class="headerlink" href="#classes.management.commands.check_module_session_conflict.Command.help" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-classes.management.commands.create_test_timetables">
+<span id="classes-management-commands-create-test-timetables-module"></span><h2>classes.management.commands.create_test_timetables module<a class="headerlink" href="#module-classes.management.commands.create_test_timetables" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.management.commands.create_test_timetables.Command">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.management.commands.create_test_timetables.</span></span><span class="sig-name descname"><span class="pre">Command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stdout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/create_test_timetables.html#Command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.create_test_timetables.Command" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCommand</span></code></p>
+<p>The <cite>Command</cite> class defines a custom Django management command to generate random timetables for testing purposes. 
+The command can create timetables for specific classes or all classes that need schedules, with various constraints 
+to simulate realistic teaching loads.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>help</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- A brief description of what the command does, which is displayed when the <cite>help</cite> flag is used.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.create_test_timetables.Command.add_arguments">
+<span class="sig-name descname"><span class="pre">add_arguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CommandParser</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/create_test_timetables.html#Command.add_arguments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.create_test_timetables.Command.add_arguments" title="Link to this definition"></a></dt>
+<dd><p>Define the arguments that the command accepts. The command can accept a class code to generate a schedule 
+for a specific module, an option to generate schedules for all modules that require them, and options 
+to include weekends and set a random seed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parser</strong> (<em>CommandParser</em>) -- The argument parser for the command.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.create_test_timetables.Command.add_lab">
+<span class="sig-name descname"><span class="pre">add_lab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timetable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_weekend</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/create_test_timetables.html#Command.add_lab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.create_test_timetables.Command.add_lab" title="Link to this definition"></a></dt>
+<dd><p>Add a lab session to the timetable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timetable</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- The timetable to add the lab to.</p></li>
+<li><p><strong>include_weekend</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) -- Whether to include weekends in the lab timeslot selection.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.create_test_timetables.Command.add_lecture">
+<span class="sig-name descname"><span class="pre">add_lecture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timetable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_weekend</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/create_test_timetables.html#Command.add_lecture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.create_test_timetables.Command.add_lecture" title="Link to this definition"></a></dt>
+<dd><p>Add a lecture session to the timetable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timetable</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- The timetable to add the lecture to.</p></li>
+<li><p><strong>include_weekend</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) -- Whether to include weekends in the lecture timeslot selection.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.create_test_timetables.Command.add_tutorial">
+<span class="sig-name descname"><span class="pre">add_tutorial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timetable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_weekend</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/create_test_timetables.html#Command.add_tutorial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.create_test_timetables.Command.add_tutorial" title="Link to this definition"></a></dt>
+<dd><p>Add a tutorial session to the timetable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timetable</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- The timetable to add the tutorial to.</p></li>
+<li><p><strong>include_weekend</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) -- Whether to include weekends in the tutorial timeslot selection.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.create_test_timetables.Command.assign_timeslots">
+<span class="sig-name descname"><span class="pre">assign_timeslots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">constraints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_timetable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_weekend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/create_test_timetables.html#Command.assign_timeslots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.create_test_timetables.Command.assign_timeslots" title="Link to this definition"></a></dt>
+<dd><p>Assign timeslots to the sessions in the timetable, ensuring that constraints are met.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>constraints</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a>) -- The constraints to apply.</p></li>
+<li><p><strong>class_timetable</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>, </em><em>optional</em>) -- The timetable to assign timeslots to.</p></li>
+<li><p><strong>include_weekend</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) -- Whether to include weekends in the timeslot selection.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated timetable with assigned timeslots.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.create_test_timetables.Command.check_constraint_fulfilled">
+<span class="sig-name descname"><span class="pre">check_constraint_fulfilled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timetable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">constraints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/create_test_timetables.html#Command.check_constraint_fulfilled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.create_test_timetables.Command.check_constraint_fulfilled" title="Link to this definition"></a></dt>
+<dd><p>Check if the timetable fulfills the minimum and maximum constraints for lectures, tutorials, labs, 
+and total teaching hours.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timetable</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) -- The timetable to check.</p></li>
+<li><p><strong>constraints</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a>) -- The constraints to apply.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if the timetable fulfills the constraints, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.create_test_timetables.Command.check_max_constraints">
+<span class="sig-name descname"><span class="pre">check_max_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timetable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">constraints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/create_test_timetables.html#Command.check_max_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.create_test_timetables.Command.check_max_constraints" title="Link to this definition"></a></dt>
+<dd><p>Check if the timetable exceeds the maximum constraints for lectures, tutorials, labs, and total teaching hours.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timetable</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- The timetable to check.</p></li>
+<li><p><strong>constraints</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a>) -- The constraints to apply.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if the timetable meets the constraints, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.create_test_timetables.Command.check_scheduling_conflicts">
+<span class="sig-name descname"><span class="pre">check_scheduling_conflicts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timetable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/create_test_timetables.html#Command.check_scheduling_conflicts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.create_test_timetables.Command.check_scheduling_conflicts" title="Link to this definition"></a></dt>
+<dd><p>Check for any scheduling conflicts within the timetable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>timetable</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- The timetable to check.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> if there are no conflicts, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.create_test_timetables.Command.count_session_type">
+<span class="sig-name descname"><span class="pre">count_session_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timetable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/create_test_timetables.html#Command.count_session_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.create_test_timetables.Command.count_session_type" title="Link to this definition"></a></dt>
+<dd><p>Count the number of sessions of each type (lecture, tutorial, lab) in the timetable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>timetable</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) -- The timetable to analyze.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the counts of lectures, tutorials, and labs.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.create_test_timetables.Command.create_schedule">
+<span class="sig-name descname"><span class="pre">create_schedule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="classes.html#classes.models.Module" title="classes.models.Module"><span class="pre">Module</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">timetable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/create_test_timetables.html#Command.create_schedule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.create_test_timetables.Command.create_schedule" title="Link to this definition"></a></dt>
+<dd><p>Create session schedules based on the generated timetable and save them to the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>module</strong> (<a class="reference internal" href="classes.html#classes.models.Module" title="classes.models.Module"><em>Module</em></a>) -- The module for which the schedule is being created.</p></li>
+<li><p><strong>timetable</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) -- The generated timetable with session types and timeslots.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.create_test_timetables.Command.get_constraints">
+<span class="sig-name descname"><span class="pre">get_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="classes.html#classes.models.Module" title="classes.models.Module"><span class="pre">Module</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/create_test_timetables.html#Command.get_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.create_test_timetables.Command.get_constraints" title="Link to this definition"></a></dt>
+<dd><p>Retrieve the session constraints for a specific module. These constraints define the minimum and maximum 
+number of lectures, tutorials, and labs per week, as well as the maximum allowed teaching hours.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>module</strong> (<a class="reference internal" href="classes.html#classes.models.Module" title="classes.models.Module"><em>Module</em></a>) -- The module for which constraints are being retrieved.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the constraints for lectures, tutorials, and labs.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.create_test_timetables.Command.get_schedule">
+<span class="sig-name descname"><span class="pre">get_schedule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timetable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/create_test_timetables.html#Command.get_schedule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.create_test_timetables.Command.get_schedule" title="Link to this definition"></a></dt>
+<dd><p>Extract the schedule (list of timeslots) from the timetable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>timetable</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- The timetable to extract the schedule from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of timeslots.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.create_test_timetables.Command.get_timeslots">
+<span class="sig-name descname"><span class="pre">get_timeslots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_weekend</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/create_test_timetables.html#Command.get_timeslots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.create_test_timetables.Command.get_timeslots" title="Link to this definition"></a></dt>
+<dd><p>Generate a list of timeslots for a session, ensuring they occur on the same day and possibly excluding weekends.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) -- The number of timeslots to generate.</p></li>
+<li><p><strong>include_weekend</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) -- Whether to include weekends in the timeslot selection.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of timeslots.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.create_test_timetables.Command.get_total_hours">
+<span class="sig-name descname"><span class="pre">get_total_hours</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timetable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/create_test_timetables.html#Command.get_total_hours"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.create_test_timetables.Command.get_total_hours" title="Link to this definition"></a></dt>
+<dd><p>Calculate the total number of teaching hours in the given timetable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>timetable</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- The timetable to calculate hours for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The total number of teaching hours.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.create_test_timetables.Command.handle">
+<span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/create_test_timetables.html#Command.handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.create_test_timetables.Command.handle" title="Link to this definition"></a></dt>
+<dd><p>Handle the command execution, generating timetables based on the provided options. The method will 
+create schedules for either a specific module or all modules, with an option to include weekends in the scheduling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Additional positional arguments.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) -- A dictionary of options passed to the command.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.management.commands.create_test_timetables.Command.help">
+<span class="sig-name descname"><span class="pre">help</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Generates</span> <span class="pre">random</span> <span class="pre">timetables</span> <span class="pre">for</span> <span class="pre">testing</span> <span class="pre">purposes'</span></em><a class="headerlink" href="#classes.management.commands.create_test_timetables.Command.help" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-classes.management.commands.delete_test_competencies">
+<span id="classes-management-commands-delete-test-competencies-module"></span><h2>classes.management.commands.delete_test_competencies module<a class="headerlink" href="#module-classes.management.commands.delete_test_competencies" title="Link to this heading"></a></h2>
+</section>
+<section id="module-classes.management.commands.delete_test_sessions">
+<span id="classes-management-commands-delete-test-sessions-module"></span><h2>classes.management.commands.delete_test_sessions module<a class="headerlink" href="#module-classes.management.commands.delete_test_sessions" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.management.commands.delete_test_sessions.Command">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.management.commands.delete_test_sessions.</span></span><span class="sig-name descname"><span class="pre">Command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stdout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/delete_test_sessions.html#Command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.delete_test_sessions.Command" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCommand</span></code></p>
+<p>The <cite>Command</cite> class defines a custom Django management command to delete all module sessions that are marked 
+as test sessions. This command is useful for cleaning up test data from the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>help</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- A brief description of what the command does, which is displayed when the <cite>help</cite> flag is used.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.delete_test_sessions.Command.handle">
+<span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/classes/management/commands/delete_test_sessions.html#Command.handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.delete_test_sessions.Command.handle" title="Link to this definition"></a></dt>
+<dd><p>Handle the execution of the command, which deletes all module sessions where the <cite>test_session</cite> flag is <cite>True</cite>. 
+The method also provides feedback on the number of sessions deleted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Additional positional arguments.</p></li>
+<li><p><strong>options</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) -- A dictionary of options passed to the command.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A success message indicating the number of test sessions deleted.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.management.commands.delete_test_sessions.Command.help">
+<span class="sig-name descname"><span class="pre">help</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Delete</span> <span class="pre">all</span> <span class="pre">module</span> <span class="pre">sessions</span> <span class="pre">marked</span> <span class="pre">as</span> <span class="pre">test'</span></em><a class="headerlink" href="#classes.management.commands.delete_test_sessions.Command.help" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-classes.management.commands.populate_competencies">
+<span id="classes-management-commands-populate-competencies-module"></span><h2>classes.management.commands.populate_competencies module<a class="headerlink" href="#module-classes.management.commands.populate_competencies" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.management.commands.populate_competencies.Command">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.management.commands.populate_competencies.</span></span><span class="sig-name descname"><span class="pre">Command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stdout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/populate_competencies.html#Command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.populate_competencies.Command" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCommand</span></code></p>
+<p>The <cite>Command</cite> class defines a custom Django management command to populate the database with a list of competencies 
+from a CSV file or to randomly generate competencies for test purposes. This command is useful for bulk data 
+population and testing scenarios.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>help</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- A brief description of what the command does, which is displayed when the <cite>help</cite> flag is used.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.populate_competencies.Command.add_arguments">
+<span class="sig-name descname"><span class="pre">add_arguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CommandParser</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/classes/management/commands/populate_competencies.html#Command.add_arguments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.populate_competencies.Command.add_arguments" title="Link to this definition"></a></dt>
+<dd><p>Define the arguments that the command accepts. The command can accept a CSV file to read competencies from 
+and a <cite>--test</cite> flag to indicate random population of competencies for testing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parser</strong> (<em>CommandParser</em>) -- The argument parser for the command.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.populate_competencies.Command.biased_skill_level">
+<span class="sig-name descname"><span class="pre">biased_skill_level</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/populate_competencies.html#Command.biased_skill_level"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.populate_competencies.Command.biased_skill_level" title="Link to this definition"></a></dt>
+<dd><p>Generate a biased random skill level using a geometric distribution, with a higher probability of lower levels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A skill level, where the maximum level is 2.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.populate_competencies.Command.handle">
+<span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/classes/management/commands/populate_competencies.html#Command.handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.populate_competencies.Command.handle" title="Link to this definition"></a></dt>
+<dd><p>Handle the execution of the command. This method will either populate competencies randomly for test demonstrators 
+if the <cite>--test</cite> flag is provided, or prepare to populate competencies from a CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Additional positional arguments.</p></li>
+<li><p><strong>options</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) -- A dictionary of options passed to the command, including the CSV file path and the <cite>--test</cite> flag.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A success message indicating the operation performed.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.management.commands.populate_competencies.Command.help">
+<span class="sig-name descname"><span class="pre">help</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Populates</span> <span class="pre">database</span> <span class="pre">with</span> <span class="pre">list</span> <span class="pre">of</span> <span class="pre">competencies</span> <span class="pre">from</span> <span class="pre">csv'</span></em><a class="headerlink" href="#classes.management.commands.populate_competencies.Command.help" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.populate_competencies.Command.remove_duplicates">
+<span class="sig-name descname"><span class="pre">remove_duplicates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skill_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/populate_competencies.html#Command.remove_duplicates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.populate_competencies.Command.remove_duplicates" title="Link to this definition"></a></dt>
+<dd><p>Remove duplicate skills from the list, keeping the highest level skill for each unique skill name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>skill_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- A list of <cite>Skill</cite> objects that may contain duplicates.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of unique <cite>Skill</cite> objects with the highest level for each skill name.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-classes.management.commands.populate_modules">
+<span id="classes-management-commands-populate-modules-module"></span><h2>classes.management.commands.populate_modules module<a class="headerlink" href="#module-classes.management.commands.populate_modules" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.management.commands.populate_modules.Command">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.management.commands.populate_modules.</span></span><span class="sig-name descname"><span class="pre">Command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stdout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/populate_modules.html#Command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.populate_modules.Command" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCommand</span></code></p>
+<p>The <cite>Command</cite> class defines a custom Django management command to populate the database with a list of modules 
+from a CSV file. This command is useful for bulk importing or updating module data in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>help</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- A brief description of what the command does, which is displayed when the <cite>help</cite> flag is used.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.populate_modules.Command.add_arguments">
+<span class="sig-name descname"><span class="pre">add_arguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CommandParser</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/classes/management/commands/populate_modules.html#Command.add_arguments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.populate_modules.Command.add_arguments" title="Link to this definition"></a></dt>
+<dd><p>Define the arguments that the command accepts. The command requires a CSV file to read the module data from.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parser</strong> (<em>CommandParser</em>) -- The argument parser for the command.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.populate_modules.Command.handle">
+<span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/classes/management/commands/populate_modules.html#Command.handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.populate_modules.Command.handle" title="Link to this definition"></a></dt>
+<dd><p>Handle the execution of the command. This method reads module data from the provided CSV file, 
+and either creates new module records or updates existing ones in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Additional positional arguments.</p></li>
+<li><p><strong>options</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) -- A dictionary of options passed to the command, including the CSV file path.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A success message indicating the operation performed for each module.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.management.commands.populate_modules.Command.help">
+<span class="sig-name descname"><span class="pre">help</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Populates</span> <span class="pre">database</span> <span class="pre">with</span> <span class="pre">list</span> <span class="pre">of</span> <span class="pre">modules</span> <span class="pre">from</span> <span class="pre">csv'</span></em><a class="headerlink" href="#classes.management.commands.populate_modules.Command.help" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-classes.management.commands.populate_sessions">
+<span id="classes-management-commands-populate-sessions-module"></span><h2>classes.management.commands.populate_sessions module<a class="headerlink" href="#module-classes.management.commands.populate_sessions" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.management.commands.populate_sessions.Command">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.management.commands.populate_sessions.</span></span><span class="sig-name descname"><span class="pre">Command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stdout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/populate_sessions.html#Command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.populate_sessions.Command" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCommand</span></code></p>
+<p>The <cite>Command</cite> class defines a custom Django management command to populate the database with a list of module 
+sessions from a CSV file, or to randomly generate module sessions for testing purposes. This command is useful 
+for bulk importing or generating test data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>help</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- A brief description of what the command does, which is displayed when the <cite>help</cite> flag is used.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.populate_sessions.Command.add_arguments">
+<span class="sig-name descname"><span class="pre">add_arguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CommandParser</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/classes/management/commands/populate_sessions.html#Command.add_arguments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.populate_sessions.Command.add_arguments" title="Link to this definition"></a></dt>
+<dd><p>Define the arguments that the command accepts. The command can accept a CSV file to read session data from 
+and a <cite>--test</cite> flag to indicate random population of module sessions for testing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parser</strong> (<em>CommandParser</em>) -- The argument parser for the command.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.populate_sessions.Command.handle">
+<span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/classes/management/commands/populate_sessions.html#Command.handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.populate_sessions.Command.handle" title="Link to this definition"></a></dt>
+<dd><p>Handle the execution of the command. This method will either populate module sessions randomly for testing 
+if the <cite>--test</cite> flag is provided, or prepare to populate module sessions from a CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Additional positional arguments.</p></li>
+<li><p><strong>options</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) -- A dictionary of options passed to the command, including the CSV file path and the <cite>--test</cite> flag.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A success message indicating the operation performed.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.management.commands.populate_sessions.Command.help">
+<span class="sig-name descname"><span class="pre">help</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Populates</span> <span class="pre">database</span> <span class="pre">with</span> <span class="pre">list</span> <span class="pre">of</span> <span class="pre">module</span> <span class="pre">sessions</span> <span class="pre">from</span> <span class="pre">csv'</span></em><a class="headerlink" href="#classes.management.commands.populate_sessions.Command.help" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.populate_sessions.Command.remove_duplicates">
+<span class="sig-name descname"><span class="pre">remove_duplicates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skill_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/populate_sessions.html#Command.remove_duplicates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.populate_sessions.Command.remove_duplicates" title="Link to this definition"></a></dt>
+<dd><p>Remove duplicate skills from the list, keeping the highest level skill for each unique skill name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>skill_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- A list of <cite>Skill</cite> objects that may contain duplicates.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of unique <cite>Skill</cite> objects with the highest level for each skill name.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-classes.management.commands.populate_test_skills">
+<span id="classes-management-commands-populate-test-skills-module"></span><h2>classes.management.commands.populate_test_skills module<a class="headerlink" href="#module-classes.management.commands.populate_test_skills" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.management.commands.populate_test_skills.Command">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.management.commands.populate_test_skills.</span></span><span class="sig-name descname"><span class="pre">Command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stdout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/management/commands/populate_test_skills.html#Command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.populate_test_skills.Command" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCommand</span></code></p>
+<p>The <cite>Command</cite> class defines a custom Django management command to populate the database with a list of skills 
+from a CSV file. This command is useful for bulk importing skill data into the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>help</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- A brief description of what the command does, which is displayed when the <cite>help</cite> flag is used.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.populate_test_skills.Command.add_arguments">
+<span class="sig-name descname"><span class="pre">add_arguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CommandParser</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/classes/management/commands/populate_test_skills.html#Command.add_arguments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.populate_test_skills.Command.add_arguments" title="Link to this definition"></a></dt>
+<dd><p>Define the arguments that the command accepts. The command requires a CSV file to read the skill data from.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parser</strong> (<em>CommandParser</em>) -- The argument parser for the command.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.management.commands.populate_test_skills.Command.handle">
+<span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/classes/management/commands/populate_test_skills.html#Command.handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.management.commands.populate_test_skills.Command.handle" title="Link to this definition"></a></dt>
+<dd><p>Handle the execution of the command. This method reads skill data from the provided CSV file 
+and creates new skill records in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Additional positional arguments.</p></li>
+<li><p><strong>options</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) -- A dictionary of options passed to the command, including the CSV file path.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A success or error message indicating the operation performed.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.management.commands.populate_test_skills.Command.help">
+<span class="sig-name descname"><span class="pre">help</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Populates</span> <span class="pre">database</span> <span class="pre">with</span> <span class="pre">list</span> <span class="pre">of</span> <span class="pre">skills</span> <span class="pre">from</span> <span class="pre">csv'</span></em><a class="headerlink" href="#classes.management.commands.populate_test_skills.Command.help" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-classes.management.commands">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-classes.management.commands" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classes.management.html" class="btn btn-neutral float-left" title="classes.management package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classes.utils.html" class="btn btn-neutral float-right" title="classes.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>classes package &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="classes.admin_inlines package" href="classes.admin_inlines.html" />
+    <link rel="prev" title="allocations.utils package" href="allocations.utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_issues.html">Known Issues</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API References</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="admin.html">admin package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.html">allocations package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">classes package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html">classes.admin_inlines package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.html">classes.management package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.utils.html">classes.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-classes.admin">classes.admin module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#classes.admin.CompetencyAdmin"><code class="docutils literal notranslate"><span class="pre">CompetencyAdmin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes.admin.CompetencyMixin"><code class="docutils literal notranslate"><span class="pre">CompetencyMixin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes.admin.ModuleAdmin"><code class="docutils literal notranslate"><span class="pre">ModuleAdmin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes.admin.ModuleSessionAdmin"><code class="docutils literal notranslate"><span class="pre">ModuleSessionAdmin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes.admin.ModuleSessionMixin"><code class="docutils literal notranslate"><span class="pre">ModuleSessionMixin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes.admin.RequirementsAdmin"><code class="docutils literal notranslate"><span class="pre">RequirementsAdmin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes.admin.RequirementsMixin"><code class="docutils literal notranslate"><span class="pre">RequirementsMixin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes.admin.SessionScheduleAdmin"><code class="docutils literal notranslate"><span class="pre">SessionScheduleAdmin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes.admin.SkillAdmin"><code class="docutils literal notranslate"><span class="pre">SkillAdmin</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-classes.apps">classes.apps module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#classes.apps.ClassesConfig"><code class="docutils literal notranslate"><span class="pre">ClassesConfig</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-classes.models">classes.models module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#classes.models.Competency"><code class="docutils literal notranslate"><span class="pre">Competency</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes.models.Module"><code class="docutils literal notranslate"><span class="pre">Module</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes.models.ModuleSession"><code class="docutils literal notranslate"><span class="pre">ModuleSession</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes.models.RequirementSkill"><code class="docutils literal notranslate"><span class="pre">RequirementSkill</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes.models.SessionSchedule"><code class="docutils literal notranslate"><span class="pre">SessionSchedule</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes.models.Skill"><code class="docutils literal notranslate"><span class="pre">Skill</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes.models.SkillManager"><code class="docutils literal notranslate"><span class="pre">SkillManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes.models.update_lecturer_availability_after_module_save"><code class="docutils literal notranslate"><span class="pre">update_lecturer_availability_after_module_save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes.models.update_lecturer_availability_before_module_save"><code class="docutils literal notranslate"><span class="pre">update_lecturer_availability_before_module_save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-classes">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="demonstrator_timetabling_tool.html">demonstrator_timetabling_tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timetable.html">timetable package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="users.html">users package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API References</a></li>
+      <li class="breadcrumb-item active">classes package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/classes.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="classes-package">
+<h1>classes package<a class="headerlink" href="#classes-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classes.admin_inlines.html">classes.admin_inlines package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classes.admin_inlines.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes.admin_inlines.html#module-classes.admin_inlines.module_lecturer_inline">classes.admin_inlines.module_lecturer_inline module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_lecturer_inline.ModuleInline"><code class="docutils literal notranslate"><span class="pre">ModuleInline</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_lecturer_inline.ModuleInline.extra"><code class="docutils literal notranslate"><span class="pre">ModuleInline.extra</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_lecturer_inline.ModuleInline.media"><code class="docutils literal notranslate"><span class="pre">ModuleInline.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_lecturer_inline.ModuleInline.model"><code class="docutils literal notranslate"><span class="pre">ModuleInline.model</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_lecturer_inline.ModuleInlineForm"><code class="docutils literal notranslate"><span class="pre">ModuleInlineForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_lecturer_inline.ModuleInlineForm.media"><code class="docutils literal notranslate"><span class="pre">ModuleInlineForm.media</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.admin_inlines.html#module-classes.admin_inlines.module_session_inline">classes.admin_inlines.module_session_inline module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_session_inline.ModuleSessionInline"><code class="docutils literal notranslate"><span class="pre">ModuleSessionInline</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_session_inline.ModuleSessionInline.extra"><code class="docutils literal notranslate"><span class="pre">ModuleSessionInline.extra</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_session_inline.ModuleSessionInline.fields"><code class="docutils literal notranslate"><span class="pre">ModuleSessionInline.fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_session_inline.ModuleSessionInline.inlines"><code class="docutils literal notranslate"><span class="pre">ModuleSessionInline.inlines</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_session_inline.ModuleSessionInline.media"><code class="docutils literal notranslate"><span class="pre">ModuleSessionInline.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_session_inline.ModuleSessionInline.model"><code class="docutils literal notranslate"><span class="pre">ModuleSessionInline.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_session_inline.ModuleSessionInline.readonly_fields"><code class="docutils literal notranslate"><span class="pre">ModuleSessionInline.readonly_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_session_inline.ModuleSessionInline.view_session_details"><code class="docutils literal notranslate"><span class="pre">ModuleSessionInline.view_session_details()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_session_inline.SessionScheduleInline"><code class="docutils literal notranslate"><span class="pre">SessionScheduleInline</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_session_inline.SessionScheduleInline.extra"><code class="docutils literal notranslate"><span class="pre">SessionScheduleInline.extra</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_session_inline.SessionScheduleInline.fields"><code class="docutils literal notranslate"><span class="pre">SessionScheduleInline.fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_session_inline.SessionScheduleInline.get_class_type"><code class="docutils literal notranslate"><span class="pre">SessionScheduleInline.get_class_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_session_inline.SessionScheduleInline.media"><code class="docutils literal notranslate"><span class="pre">SessionScheduleInline.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_session_inline.SessionScheduleInline.model"><code class="docutils literal notranslate"><span class="pre">SessionScheduleInline.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.module_session_inline.SessionScheduleInline.readonly_fields"><code class="docutils literal notranslate"><span class="pre">SessionScheduleInline.readonly_fields</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.admin_inlines.html#module-classes.admin_inlines.skill_inline">classes.admin_inlines.skill_inline module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.CompetencyInline"><code class="docutils literal notranslate"><span class="pre">CompetencyInline</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.CompetencyInline.extra"><code class="docutils literal notranslate"><span class="pre">CompetencyInline.extra</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.CompetencyInline.form"><code class="docutils literal notranslate"><span class="pre">CompetencyInline.form</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.CompetencyInline.media"><code class="docutils literal notranslate"><span class="pre">CompetencyInline.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.CompetencyInline.model"><code class="docutils literal notranslate"><span class="pre">CompetencyInline.model</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.CompetencyInlineForm"><code class="docutils literal notranslate"><span class="pre">CompetencyInlineForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.CompetencyInlineForm.media"><code class="docutils literal notranslate"><span class="pre">CompetencyInlineForm.media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.RequirementInline"><code class="docutils literal notranslate"><span class="pre">RequirementInline</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.RequirementInline.extra"><code class="docutils literal notranslate"><span class="pre">RequirementInline.extra</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.RequirementInline.form"><code class="docutils literal notranslate"><span class="pre">RequirementInline.form</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.RequirementInline.media"><code class="docutils literal notranslate"><span class="pre">RequirementInline.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.RequirementInline.model"><code class="docutils literal notranslate"><span class="pre">RequirementInline.model</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.RequirementInlineForm"><code class="docutils literal notranslate"><span class="pre">RequirementInlineForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.RequirementInlineForm.media"><code class="docutils literal notranslate"><span class="pre">RequirementInlineForm.media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.SkillInlineForm"><code class="docutils literal notranslate"><span class="pre">SkillInlineForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.SkillInlineForm.__init__"><code class="docutils literal notranslate"><span class="pre">SkillInlineForm.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.SkillInlineForm.media"><code class="docutils literal notranslate"><span class="pre">SkillInlineForm.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.admin_inlines.html#classes.admin_inlines.skill_inline.SkillInlineForm.save"><code class="docutils literal notranslate"><span class="pre">SkillInlineForm.save()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.admin_inlines.html#module-classes.admin_inlines">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="classes.management.html">classes.management package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classes.management.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classes.management.commands.html">classes.management.commands package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.add_new_skill">classes.management.commands.add_new_skill module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.check_module_session_conflict">classes.management.commands.check_module_session_conflict module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.create_test_timetables">classes.management.commands.create_test_timetables module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.delete_test_competencies">classes.management.commands.delete_test_competencies module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.delete_test_sessions">classes.management.commands.delete_test_sessions module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.populate_competencies">classes.management.commands.populate_competencies module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.populate_modules">classes.management.commands.populate_modules module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.populate_sessions">classes.management.commands.populate_sessions module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands.populate_test_skills">classes.management.commands.populate_test_skills module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classes.management.commands.html#module-classes.management.commands">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classes.management.html#module-classes.management">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="classes.utils.html">classes.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classes.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes.utils.html#module-classes.utils.check_module_session_conflict">classes.utils.check_module_session_conflict module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes.utils.html#module-classes.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-classes.admin">
+<span id="classes-admin-module"></span><h2>classes.admin module<a class="headerlink" href="#module-classes.admin" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.admin.CompetencyAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.admin.</span></span><span class="sig-name descname"><span class="pre">CompetencyAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin_site</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#CompetencyAdmin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.CompetencyAdmin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelAdmin</span></code>, <a class="reference internal" href="#classes.admin.CompetencyMixin" title="classes.admin.CompetencyMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompetencyMixin</span></code></a></p>
+<p>The <cite>CompetencyAdmin</cite> class customizes the Django admin interface for the <cite>Competency</cite> model. 
+It includes list displays and search fields for managing competencies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_display</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to display in the list view of the admin interface.</p></li>
+<li><p><strong>search_fields</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to include in the search functionality.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.CompetencyAdmin.list_display">
+<span class="sig-name descname"><span class="pre">list_display</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['get_demonstrator_name',</span> <span class="pre">'get_skill_display']</span></em><a class="headerlink" href="#classes.admin.CompetencyAdmin.list_display" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="classes.admin.CompetencyAdmin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#classes.admin.CompetencyAdmin.media" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.CompetencyAdmin.search_fields">
+<span class="sig-name descname"><span class="pre">search_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['skill__name']</span></em><a class="headerlink" href="#classes.admin.CompetencyAdmin.search_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.admin.CompetencyMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.admin.</span></span><span class="sig-name descname"><span class="pre">CompetencyMixin</span></span><a class="reference internal" href="_modules/classes/admin.html#CompetencyMixin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.CompetencyMixin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>The <cite>CompetencyMixin</cite> class provides utility methods for the <cite>CompetencyAdmin</cite> class, including methods 
+for retrieving demonstrator names and displaying skill levels.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.CompetencyMixin.get_demonstrator_name">
+<span class="sig-name descname"><span class="pre">get_demonstrator_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#CompetencyMixin.get_demonstrator_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.CompetencyMixin.get_demonstrator_name" title="Link to this definition"></a></dt>
+<dd><p>Return the name of the demonstrator associated with the competency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#classes.models.Competency" title="classes.models.Competency"><em>Competency</em></a>) -- The competency instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The demonstrator's full name.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.CompetencyMixin.get_skill_display">
+<span class="sig-name descname"><span class="pre">get_skill_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#CompetencyMixin.get_skill_display"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.CompetencyMixin.get_skill_display" title="Link to this definition"></a></dt>
+<dd><p>Return a formatted display of the skill level and name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#classes.models.Competency" title="classes.models.Competency"><em>Competency</em></a>) -- The competency instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The formatted skill display.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.admin.ModuleAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.admin.</span></span><span class="sig-name descname"><span class="pre">ModuleAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin_site</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#ModuleAdmin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.ModuleAdmin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelAdmin</span></code></p>
+<p>The <cite>ModuleAdmin</cite> class customizes the Django admin interface for the <cite>Module</cite> model. It includes list displays, 
+fields, inlines, and custom actions for managing modules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_display</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to display in the list view of the admin interface.</p></li>
+<li><p><strong>fields</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to include in the form for adding/editing modules.</p></li>
+<li><p><strong>inlines</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Inline models to include in the form.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.ModuleAdmin.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['class_code',</span> <span class="pre">'name',</span> <span class="pre">'lecturer',</span> <span class="pre">'semester']</span></em><a class="headerlink" href="#classes.admin.ModuleAdmin.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.ModuleAdmin.inlines">
+<span class="sig-name descname"><span class="pre">inlines</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'classes.admin_inlines.module_session_inline.ModuleSessionInline'&gt;]</span></em><a class="headerlink" href="#classes.admin.ModuleAdmin.inlines" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.ModuleAdmin.list_display">
+<span class="sig-name descname"><span class="pre">list_display</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['class_code',</span> <span class="pre">'name',</span> <span class="pre">'formatted_lecturer_name',</span> <span class="pre">'formatted_semester',</span> <span class="pre">'num_sessions',</span> <span class="pre">'num_schedules',</span> <span class="pre">'view_module_sessions']</span></em><a class="headerlink" href="#classes.admin.ModuleAdmin.list_display" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="classes.admin.ModuleAdmin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#classes.admin.ModuleAdmin.media" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.ModuleAdmin.num_schedules">
+<span class="sig-name descname"><span class="pre">num_schedules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#ModuleAdmin.num_schedules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.ModuleAdmin.num_schedules" title="Link to this definition"></a></dt>
+<dd><p>Return the number of timeslots used by the module's sessions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#classes.models.Module" title="classes.models.Module"><em>Module</em></a>) -- The module instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The count of timeslots used.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.ModuleAdmin.num_sessions">
+<span class="sig-name descname"><span class="pre">num_sessions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#ModuleAdmin.num_sessions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.ModuleAdmin.num_sessions" title="Link to this definition"></a></dt>
+<dd><p>Return the number of session types for the module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#classes.models.Module" title="classes.models.Module"><em>Module</em></a>) -- The module instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The count of session types.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.ModuleAdmin.view_module_sessions">
+<span class="sig-name descname"><span class="pre">view_module_sessions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#ModuleAdmin.view_module_sessions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.ModuleAdmin.view_module_sessions" title="Link to this definition"></a></dt>
+<dd><p>Provide a link to view all sessions associated with the module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#classes.models.Module" title="classes.models.Module"><em>Module</em></a>) -- The module instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A formatted HTML link to the sessions list.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.admin.ModuleSessionAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.admin.</span></span><span class="sig-name descname"><span class="pre">ModuleSessionAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin_site</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#ModuleSessionAdmin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.ModuleSessionAdmin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelAdmin</span></code>, <a class="reference internal" href="#classes.admin.ModuleSessionMixin" title="classes.admin.ModuleSessionMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModuleSessionMixin</span></code></a></p>
+<p>The <cite>ModuleSessionAdmin</cite> class customizes the Django admin interface for the <cite>ModuleSession</cite> model. It includes list displays, 
+filters, inlines, actions, and search fields for managing module sessions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inlines</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Inline models to include in the form.</p></li>
+<li><p><strong>list_display</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to display in the list view of the admin interface.</p></li>
+<li><p><strong>list_filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Filters to apply to the list view of the admin interface.</p></li>
+<li><p><strong>actions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Custom actions available in the admin interface.</p></li>
+<li><p><strong>search_fields</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to include in the search functionality.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.ModuleSessionAdmin.actions">
+<span class="sig-name descname"><span class="pre">actions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['total_required_demonstrators',</span> <span class="pre">'ensure_correct_allocation',</span> <span class="pre">'view_allocations']</span></em><a class="headerlink" href="#classes.admin.ModuleSessionAdmin.actions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.ModuleSessionAdmin.inlines">
+<span class="sig-name descname"><span class="pre">inlines</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'classes.admin_inlines.skill_inline.RequirementInline'&gt;]</span></em><a class="headerlink" href="#classes.admin.ModuleSessionAdmin.inlines" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.ModuleSessionAdmin.list_display">
+<span class="sig-name descname"><span class="pre">list_display</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['get_class_code',</span> <span class="pre">'session_type',</span> <span class="pre">'required_demonstrator',</span> <span class="pre">'view_module']</span></em><a class="headerlink" href="#classes.admin.ModuleSessionAdmin.list_display" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.ModuleSessionAdmin.list_filter">
+<span class="sig-name descname"><span class="pre">list_filter</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['session_type']</span></em><a class="headerlink" href="#classes.admin.ModuleSessionAdmin.list_filter" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="classes.admin.ModuleSessionAdmin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#classes.admin.ModuleSessionAdmin.media" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.ModuleSessionAdmin.search_fields">
+<span class="sig-name descname"><span class="pre">search_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['class_code__class_code']</span></em><a class="headerlink" href="#classes.admin.ModuleSessionAdmin.search_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.admin.ModuleSessionMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.admin.</span></span><span class="sig-name descname"><span class="pre">ModuleSessionMixin</span></span><a class="reference internal" href="_modules/classes/admin.html#ModuleSessionMixin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.ModuleSessionMixin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>The <cite>ModuleSessionMixin</cite> class provides utility methods and actions for the <cite>ModuleSessionAdmin</cite> class, 
+including methods for retrieving class codes, ensuring correct allocation, and viewing module sessions.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.ModuleSessionMixin.changelist_view">
+<span class="sig-name descname"><span class="pre">changelist_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#ModuleSessionMixin.changelist_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.ModuleSessionMixin.changelist_view" title="Link to this definition"></a></dt>
+<dd><p>Customize the changelist view to filter sessions by class code if provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>extra_context</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) -- Additional context for the changelist view.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The modified changelist view.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.ModuleSessionMixin.ensure_correct_allocation">
+<span class="sig-name descname"><span class="pre">ensure_correct_allocation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#ModuleSessionMixin.ensure_correct_allocation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.ModuleSessionMixin.ensure_correct_allocation" title="Link to this definition"></a></dt>
+<dd><p>Ensure that the allocations for the selected sessions are correct.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>queryset</strong> (<em>QuerySet</em>) -- The queryset of selected sessions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.ModuleSessionMixin.get_class_code">
+<span class="sig-name descname"><span class="pre">get_class_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#ModuleSessionMixin.get_class_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.ModuleSessionMixin.get_class_code" title="Link to this definition"></a></dt>
+<dd><p>Return the class code associated with the session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#classes.models.ModuleSession" title="classes.models.ModuleSession"><em>ModuleSession</em></a>) -- The module session instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The class code.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.ModuleSessionMixin.get_queryset">
+<span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#ModuleSessionMixin.get_queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.ModuleSessionMixin.get_queryset" title="Link to this definition"></a></dt>
+<dd><p>Filter the queryset based on the class code if provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The filtered queryset.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QuerySet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.ModuleSessionMixin.get_search_results">
+<span class="sig-name descname"><span class="pre">get_search_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">HttpRequest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/querysets/#django.db.models.query.QuerySet" title="(in Django v5.1)"><span class="pre">QuerySet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_term</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/querysets/#django.db.models.query.QuerySet" title="(in Django v5.1)"><span class="pre">QuerySet</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/classes/admin.html#ModuleSessionMixin.get_search_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.ModuleSessionMixin.get_search_results" title="Link to this definition"></a></dt>
+<dd><p>Customize the search results to include class codes that match the search term.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>queryset</strong> (<em>QuerySet</em>) -- The queryset of sessions to search.</p></li>
+<li><p><strong>search_term</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- The search term entered by the user.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The filtered queryset and a boolean indicating whether distinct results are required.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>[QuerySet, <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.ModuleSessionMixin.total_required_demonstrators">
+<span class="sig-name descname"><span class="pre">total_required_demonstrators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#ModuleSessionMixin.total_required_demonstrators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.ModuleSessionMixin.total_required_demonstrators" title="Link to this definition"></a></dt>
+<dd><p>Calculate and display the total number of required demonstrators for the selected sessions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>queryset</strong> (<em>QuerySet</em>) -- The queryset of selected sessions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.ModuleSessionMixin.view_allocations">
+<span class="sig-name descname"><span class="pre">view_allocations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#ModuleSessionMixin.view_allocations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.ModuleSessionMixin.view_allocations" title="Link to this definition"></a></dt>
+<dd><p>Provide a link to view allocations for the selected sessions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>queryset</strong> (<em>QuerySet</em>) -- The queryset of selected sessions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A redirect response to the allocations list page.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponseRedirect</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.ModuleSessionMixin.view_module">
+<span class="sig-name descname"><span class="pre">view_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#ModuleSessionMixin.view_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.ModuleSessionMixin.view_module" title="Link to this definition"></a></dt>
+<dd><p>Provide a link to view the module details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#classes.models.ModuleSession" title="classes.models.ModuleSession"><em>ModuleSession</em></a>) -- The module session instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A formatted HTML link to the module details page.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.ModuleSessionMixin.view_module_session">
+<span class="sig-name descname"><span class="pre">view_module_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#ModuleSessionMixin.view_module_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.ModuleSessionMixin.view_module_session" title="Link to this definition"></a></dt>
+<dd><p>Provide a link to view the module session details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#classes.models.ModuleSession" title="classes.models.ModuleSession"><em>ModuleSession</em></a>) -- The module session instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A formatted HTML link to the session details page.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.admin.RequirementsAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.admin.</span></span><span class="sig-name descname"><span class="pre">RequirementsAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin_site</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#RequirementsAdmin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.RequirementsAdmin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelAdmin</span></code>, <a class="reference internal" href="#classes.admin.RequirementsMixin" title="classes.admin.RequirementsMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequirementsMixin</span></code></a></p>
+<p>The <cite>RequirementsAdmin</cite> class customizes the Django admin interface for the <cite>RequirementSkill</cite> model. 
+It includes list displays, search fields, and fields for managing requirement skills.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_display</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to display in the list view of the admin interface.</p></li>
+<li><p><strong>search_fields</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to include in the search functionality.</p></li>
+<li><p><strong>fields</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to include in the form for adding/editing requirement skills.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.RequirementsAdmin.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['class_session',</span> <span class="pre">'skill']</span></em><a class="headerlink" href="#classes.admin.RequirementsAdmin.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.RequirementsAdmin.list_display">
+<span class="sig-name descname"><span class="pre">list_display</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['get_class_code',</span> <span class="pre">'get_skill_display']</span></em><a class="headerlink" href="#classes.admin.RequirementsAdmin.list_display" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="classes.admin.RequirementsAdmin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#classes.admin.RequirementsAdmin.media" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.RequirementsAdmin.search_fields">
+<span class="sig-name descname"><span class="pre">search_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['class_session__class_code__class_code',</span> <span class="pre">'skill__name']</span></em><a class="headerlink" href="#classes.admin.RequirementsAdmin.search_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.admin.RequirementsMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.admin.</span></span><span class="sig-name descname"><span class="pre">RequirementsMixin</span></span><a class="reference internal" href="_modules/classes/admin.html#RequirementsMixin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.RequirementsMixin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>The <cite>RequirementsMixin</cite> class provides utility methods for the <cite>RequirementsAdmin</cite> class, including methods 
+for retrieving class codes, displaying skill levels, and viewing module sessions.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.RequirementsMixin.get_class_code">
+<span class="sig-name descname"><span class="pre">get_class_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#RequirementsMixin.get_class_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.RequirementsMixin.get_class_code" title="Link to this definition"></a></dt>
+<dd><p>Return the class code associated with the requirement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#classes.models.RequirementSkill" title="classes.models.RequirementSkill"><em>RequirementSkill</em></a>) -- The requirement skill instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The class code.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.RequirementsMixin.get_skill_display">
+<span class="sig-name descname"><span class="pre">get_skill_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#RequirementsMixin.get_skill_display"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.RequirementsMixin.get_skill_display" title="Link to this definition"></a></dt>
+<dd><p>Return a formatted display of the skill level and name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#classes.models.RequirementSkill" title="classes.models.RequirementSkill"><em>RequirementSkill</em></a>) -- The requirement skill instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The formatted skill display.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.RequirementsMixin.view_module_session">
+<span class="sig-name descname"><span class="pre">view_module_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#RequirementsMixin.view_module_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.RequirementsMixin.view_module_session" title="Link to this definition"></a></dt>
+<dd><p>Provide a link to view the module session details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#classes.models.RequirementSkill" title="classes.models.RequirementSkill"><em>RequirementSkill</em></a>) -- The requirement skill instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A formatted HTML link to the session details page.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.admin.SessionScheduleAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.admin.</span></span><span class="sig-name descname"><span class="pre">SessionScheduleAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin_site</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#SessionScheduleAdmin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.SessionScheduleAdmin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelAdmin</span></code></p>
+<p>The <cite>SessionScheduleAdmin</cite> class customizes the Django admin interface for the <cite>SessionSchedule</cite> model. 
+It includes list displays and search fields for managing session schedules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_display</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to display in the list view of the admin interface.</p></li>
+<li><p><strong>search_fields</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to include in the search functionality.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.SessionScheduleAdmin.get_class_code">
+<span class="sig-name descname"><span class="pre">get_class_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#SessionScheduleAdmin.get_class_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.SessionScheduleAdmin.get_class_code" title="Link to this definition"></a></dt>
+<dd><p>Return the class code associated with the session schedule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#classes.models.SessionSchedule" title="classes.models.SessionSchedule"><em>SessionSchedule</em></a>) -- The session schedule instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The class code.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.SessionScheduleAdmin.get_class_type">
+<span class="sig-name descname"><span class="pre">get_class_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#SessionScheduleAdmin.get_class_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.SessionScheduleAdmin.get_class_type" title="Link to this definition"></a></dt>
+<dd><p>Return the class type associated with the session schedule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#classes.models.SessionSchedule" title="classes.models.SessionSchedule"><em>SessionSchedule</em></a>) -- The session schedule instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The class type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.SessionScheduleAdmin.list_display">
+<span class="sig-name descname"><span class="pre">list_display</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['get_class_code',</span> <span class="pre">'get_class_type',</span> <span class="pre">'timeslot']</span></em><a class="headerlink" href="#classes.admin.SessionScheduleAdmin.list_display" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="classes.admin.SessionScheduleAdmin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#classes.admin.SessionScheduleAdmin.media" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.SessionScheduleAdmin.search_fields">
+<span class="sig-name descname"><span class="pre">search_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['class_session__class_code__class_code']</span></em><a class="headerlink" href="#classes.admin.SessionScheduleAdmin.search_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.admin.SkillAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.admin.</span></span><span class="sig-name descname"><span class="pre">SkillAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin_site</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/admin.html#SkillAdmin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.SkillAdmin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelAdmin</span></code></p>
+<p>The <cite>SkillAdmin</cite> class customizes the Django admin interface for the <cite>Skill</cite> model. It includes search fields, 
+list displays, and fields for managing skills.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>search_fields</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to include in the search functionality.</p></li>
+<li><p><strong>list_display</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to display in the list view of the admin interface.</p></li>
+<li><p><strong>fields</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) -- Fields to include in the form for adding/editing skills.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.SkillAdmin.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['name']</span></em><a class="headerlink" href="#classes.admin.SkillAdmin.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.SkillAdmin.list_display">
+<span class="sig-name descname"><span class="pre">list_display</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['name',</span> <span class="pre">'level']</span></em><a class="headerlink" href="#classes.admin.SkillAdmin.list_display" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="classes.admin.SkillAdmin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#classes.admin.SkillAdmin.media" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.admin.SkillAdmin.save_model">
+<span class="sig-name descname"><span class="pre">save_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">form</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">change</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/classes/admin.html#SkillAdmin.save_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.admin.SkillAdmin.save_model" title="Link to this definition"></a></dt>
+<dd><p>Customize the save behavior to ensure a new skill is created or an existing one is updated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) -- The current HTTP request object.</p></li>
+<li><p><strong>obj</strong> (<a class="reference internal" href="#classes.models.Skill" title="classes.models.Skill"><em>Skill</em></a>) -- The skill instance being saved.</p></li>
+<li><p><strong>form</strong> (<em>ModelForm</em>) -- The form used to input the skill data.</p></li>
+<li><p><strong>change</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) -- Boolean indicating whether this is an update to an existing object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.admin.SkillAdmin.search_fields">
+<span class="sig-name descname"><span class="pre">search_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['name']</span></em><a class="headerlink" href="#classes.admin.SkillAdmin.search_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-classes.apps">
+<span id="classes-apps-module"></span><h2>classes.apps module<a class="headerlink" href="#module-classes.apps" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.apps.ClassesConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.apps.</span></span><span class="sig-name descname"><span class="pre">ClassesConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_module</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/apps.html#ClassesConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.apps.ClassesConfig" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/applications/#django.apps.AppConfig" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AppConfig</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.apps.ClassesConfig.default_auto_field">
+<span class="sig-name descname"><span class="pre">default_auto_field</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'django.db.models.BigAutoField'</span></em><a class="headerlink" href="#classes.apps.ClassesConfig.default_auto_field" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.apps.ClassesConfig.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'classes'</span></em><a class="headerlink" href="#classes.apps.ClassesConfig.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.apps.ClassesConfig.verbose_name">
+<span class="sig-name descname"><span class="pre">verbose_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Class</span> <span class="pre">Management'</span></em><a class="headerlink" href="#classes.apps.ClassesConfig.verbose_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-classes.models">
+<span id="classes-models-module"></span><h2>classes.models module<a class="headerlink" href="#module-classes.models" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.models.Competency">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.models.</span></span><span class="sig-name descname"><span class="pre">Competency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#Competency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.Competency" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/instances/#django.db.models.Model" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a></p>
+<p>The <cite>Competency</cite> model represents the competency of a demonstrator in a specific skill.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>skill</strong> (<em>ForeignKey</em>) -- A foreign key linking the competency to a <cite>Skill</cite>.</p></li>
+<li><p><strong>demonstrator</strong> (<em>ForeignKey</em>) -- A foreign key linking the competency to a <cite>Demonstrator</cite>.</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><em>BigAutoField</em></a>) -- Primary key: ID</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="classes.models.Competency.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#classes.models.Competency.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.ObjectDoesNotExist" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="classes.models.Competency.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#classes.models.Competency.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.MultipleObjectsReturned" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Competency.demonstrator">
+<span class="sig-name descname"><span class="pre">demonstrator</span></span><a class="headerlink" href="#classes.models.Competency.demonstrator" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> to <a class="reference internal" href="users.html#users.models.Demonstrator" title="users.models.Demonstrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Demonstrator</span></code></a></p>
+<p>Demonstrator (related name: <code class="xref py py-attr docutils literal notranslate"><span class="pre">competency</span></code>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Competency.demonstrator_id">
+<span class="sig-name descname"><span class="pre">demonstrator_id</span></span><a class="headerlink" href="#classes.models.Competency.demonstrator_id" title="Link to this definition"></a></dt>
+<dd><p>Internal field, use <a class="reference internal" href="#classes.models.Competency.demonstrator" title="classes.models.Competency.demonstrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">demonstrator</span></code></a> instead.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Competency.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#classes.models.Competency.id" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BigAutoField</span></code></a></p>
+<p>Primary key: ID</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Competency.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#classes.models.Competency.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Competency.skill">
+<span class="sig-name descname"><span class="pre">skill</span></span><a class="headerlink" href="#classes.models.Competency.skill" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> to <a class="reference internal" href="#classes.models.Skill" title="classes.models.Skill"><code class="xref py py-class docutils literal notranslate"><span class="pre">Skill</span></code></a></p>
+<p>Skill (related name: <code class="xref py py-attr docutils literal notranslate"><span class="pre">competency</span></code>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Competency.skill_id">
+<span class="sig-name descname"><span class="pre">skill_id</span></span><a class="headerlink" href="#classes.models.Competency.skill_id" title="Link to this definition"></a></dt>
+<dd><p>Internal field, use <a class="reference internal" href="#classes.models.Competency.skill" title="classes.models.Competency.skill"><code class="xref py py-class docutils literal notranslate"><span class="pre">skill</span></code></a> instead.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.models.Module">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.models.</span></span><span class="sig-name descname"><span class="pre">Module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#Module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.Module" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/instances/#django.db.models.Model" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a></p>
+<p>The <cite>Module</cite> model represents an academic module within the system. It includes details about the module such as 
+the class code, name, assigned lecturer, and the semester it belongs to.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>class_code</strong> (<em>CharField</em>) -- A unique identifier for the module.</p></li>
+<li><p><strong>name</strong> (<em>CharField</em>) -- The name of the module.</p></li>
+<li><p><strong>lecturer</strong> (<em>ForeignKey</em>) -- A foreign key linking the module to a <cite>Lecturer</cite>. This field can be null if no lecturer is assigned.</p></li>
+<li><p><strong>semester</strong> (<em>ForeignKey</em>) -- A foreign key linking the module to a <cite>Semester</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Reverse relationships:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>modulesession</strong> (Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="#classes.models.ModuleSession" title="classes.models.ModuleSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModuleSession</span></code></a>) -- All module sessions of this module (related name of <a class="reference internal" href="#classes.models.ModuleSession.class_code" title="classes.models.ModuleSession.class_code"><code class="xref py py-attr docutils literal notranslate"><span class="pre">class_code</span></code></a>)</p>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="classes.models.Module.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#classes.models.Module.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.ObjectDoesNotExist" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="classes.models.Module.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#classes.models.Module.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.MultipleObjectsReturned" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Module.class_code">
+<span class="sig-name descname"><span class="pre">class_code</span></span><a class="headerlink" href="#classes.models.Module.class_code" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.CharField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code></a></p>
+<p>Primary key: Class code</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.models.Module.count_sessions">
+<span class="sig-name descname"><span class="pre">count_sessions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#Module.count_sessions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.Module.count_sessions" title="Link to this definition"></a></dt>
+<dd><p>Count the number of session types and timeslots used by the module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple containing the count of session types and timeslots.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.models.Module.formatted_lecturer_name">
+<span class="sig-name descname"><span class="pre">formatted_lecturer_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#Module.formatted_lecturer_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.Module.formatted_lecturer_name" title="Link to this definition"></a></dt>
+<dd><p>Return the full name of the assigned lecturer, or a default message if no lecturer is assigned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The lecturer's full name or a default message.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.models.Module.formatted_semester">
+<span class="sig-name descname"><span class="pre">formatted_semester</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#Module.formatted_semester"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.Module.formatted_semester" title="Link to this definition"></a></dt>
+<dd><p>Return a formatted string of the semester's year and display name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The formatted semester string.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.models.Module.get_schedule">
+<span class="sig-name descname"><span class="pre">get_schedule</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#Module.get_schedule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.Module.get_schedule" title="Link to this definition"></a></dt>
+<dd><p>Retrieve the schedule for the module, listing all session types and their associated timeslots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of dictionaries containing session types and timeslots.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.models.Module.get_session_types">
+<span class="sig-name descname"><span class="pre">get_session_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#Module.get_session_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.Module.get_session_types" title="Link to this definition"></a></dt>
+<dd><p>Return a tuple indicating the types of sessions (Lecture, Tutorial, Lab, Other) associated with the module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple indicating the presence of each session type.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.models.Module.has_conflict">
+<span class="sig-name descname"><span class="pre">has_conflict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#Module.has_conflict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.Module.has_conflict" title="Link to this definition"></a></dt>
+<dd><p>Check if the module has any scheduling conflicts among its sessions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>True</cite> if there is a conflict, <cite>False</cite> otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Module.lecturer">
+<span class="sig-name descname"><span class="pre">lecturer</span></span><a class="headerlink" href="#classes.models.Module.lecturer" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> to <a class="reference internal" href="users.html#users.models.Lecturer" title="users.models.Lecturer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lecturer</span></code></a></p>
+<p>Lecturer (related name: <code class="xref py py-attr docutils literal notranslate"><span class="pre">module</span></code>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Module.lecturer_id">
+<span class="sig-name descname"><span class="pre">lecturer_id</span></span><a class="headerlink" href="#classes.models.Module.lecturer_id" title="Link to this definition"></a></dt>
+<dd><p>Internal field, use <a class="reference internal" href="#classes.models.Module.lecturer" title="classes.models.Module.lecturer"><code class="xref py py-class docutils literal notranslate"><span class="pre">lecturer</span></code></a> instead.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Module.modulesession_set">
+<span class="sig-name descname"><span class="pre">modulesession_set</span></span><a class="headerlink" href="#classes.models.Module.modulesession_set" title="Link to this definition"></a></dt>
+<dd><p>Type: Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="#classes.models.ModuleSession" title="classes.models.ModuleSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModuleSession</span></code></a></p>
+<p>All module sessions of this module (related name of <a class="reference internal" href="#classes.models.ModuleSession.class_code" title="classes.models.ModuleSession.class_code"><code class="xref py py-attr docutils literal notranslate"><span class="pre">class_code</span></code></a>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Module.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#classes.models.Module.name" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.CharField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code></a></p>
+<p>Name</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Module.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#classes.models.Module.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Module.semester">
+<span class="sig-name descname"><span class="pre">semester</span></span><a class="headerlink" href="#classes.models.Module.semester" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> to <a class="reference internal" href="timetable.html#timetable.models.Semester" title="timetable.models.Semester"><code class="xref py py-class docutils literal notranslate"><span class="pre">Semester</span></code></a></p>
+<p>Semester (related name: <code class="xref py py-attr docutils literal notranslate"><span class="pre">module</span></code>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Module.semester_id">
+<span class="sig-name descname"><span class="pre">semester_id</span></span><a class="headerlink" href="#classes.models.Module.semester_id" title="Link to this definition"></a></dt>
+<dd><p>Internal field, use <a class="reference internal" href="#classes.models.Module.semester" title="classes.models.Module.semester"><code class="xref py py-class docutils literal notranslate"><span class="pre">semester</span></code></a> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.models.Module.update_lecturer_availability">
+<span class="sig-name descname"><span class="pre">update_lecturer_availability</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#Module.update_lecturer_availability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.Module.update_lecturer_availability" title="Link to this definition"></a></dt>
+<dd><p>Update the availability of the lecturer based on the module's timeslots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.models.ModuleSession">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.models.</span></span><span class="sig-name descname"><span class="pre">ModuleSession</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#ModuleSession"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.ModuleSession" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/instances/#django.db.models.Model" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a></p>
+<p>The <cite>ModuleSession</cite> model represents a specific session within a module, such as a lecture, tutorial, or lab.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>class_code</strong> (<em>ForeignKey</em>) -- A foreign key linking the session to a <cite>Module</cite>.</p></li>
+<li><p><strong>session_type</strong> (<em>CharField</em>) -- A string representing the type of session (e.g., Lecture, Tutorial, Lab).</p></li>
+<li><p><strong>required_demonstrator</strong> (<em>IntegerField</em>) -- The number of demonstrators required for the session.</p></li>
+<li><p><strong>test_session</strong> (<em>BooleanField</em>) -- A boolean indicating whether this is a test session.</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><em>BigAutoField</em></a>) -- Primary key: ID</p></li>
+</ul>
+</dd>
+</dl>
+<p>Reverse relationships:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>requirementskill</strong> (Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="#classes.models.RequirementSkill" title="classes.models.RequirementSkill"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequirementSkill</span></code></a>) -- All requirement skills of this module session (related name of <a class="reference internal" href="#classes.models.RequirementSkill.class_session" title="classes.models.RequirementSkill.class_session"><code class="xref py py-attr docutils literal notranslate"><span class="pre">class_session</span></code></a>)</p></li>
+<li><p><strong>sessionschedule</strong> (Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="#classes.models.SessionSchedule" title="classes.models.SessionSchedule"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionSchedule</span></code></a>) -- All session schedules of this module session (related name of <a class="reference internal" href="#classes.models.SessionSchedule.class_session" title="classes.models.SessionSchedule.class_session"><code class="xref py py-attr docutils literal notranslate"><span class="pre">class_session</span></code></a>)</p></li>
+<li><p><strong>allocation</strong> (Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="allocations.html#allocations.models.Allocation" title="allocations.models.Allocation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Allocation</span></code></a>) -- All allocations of this module session (related name of <a class="reference internal" href="allocations.html#allocations.models.Allocation.class_session" title="allocations.models.Allocation.class_session"><code class="xref py py-attr docutils literal notranslate"><span class="pre">class_session</span></code></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="classes.models.ModuleSession.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#classes.models.ModuleSession.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.ObjectDoesNotExist" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="classes.models.ModuleSession.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#classes.models.ModuleSession.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.MultipleObjectsReturned" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.ModuleSession.allocation_set">
+<span class="sig-name descname"><span class="pre">allocation_set</span></span><a class="headerlink" href="#classes.models.ModuleSession.allocation_set" title="Link to this definition"></a></dt>
+<dd><p>Type: Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="allocations.html#allocations.models.Allocation" title="allocations.models.Allocation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Allocation</span></code></a></p>
+<p>All allocations of this module session (related name of <a class="reference internal" href="allocations.html#allocations.models.Allocation.class_session" title="allocations.models.Allocation.class_session"><code class="xref py py-attr docutils literal notranslate"><span class="pre">class_session</span></code></a>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.ModuleSession.class_code">
+<span class="sig-name descname"><span class="pre">class_code</span></span><a class="headerlink" href="#classes.models.ModuleSession.class_code" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> to <a class="reference internal" href="#classes.models.Module" title="classes.models.Module"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
+<p>Class code (related name: <code class="xref py py-attr docutils literal notranslate"><span class="pre">modulesession</span></code>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.ModuleSession.class_code_id">
+<span class="sig-name descname"><span class="pre">class_code_id</span></span><a class="headerlink" href="#classes.models.ModuleSession.class_code_id" title="Link to this definition"></a></dt>
+<dd><p>Internal field, use <a class="reference internal" href="#classes.models.ModuleSession.class_code" title="classes.models.ModuleSession.class_code"><code class="xref py py-class docutils literal notranslate"><span class="pre">class_code</span></code></a> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.models.ModuleSession.ensure_correct_allocation">
+<span class="sig-name descname"><span class="pre">ensure_correct_allocation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#ModuleSession.ensure_correct_allocation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.ModuleSession.ensure_correct_allocation" title="Link to this definition"></a></dt>
+<dd><p>Ensure the correct number of allocations (demonstrators) are assigned to the session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.models.ModuleSession.get_class_code">
+<span class="sig-name descname"><span class="pre">get_class_code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#ModuleSession.get_class_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.ModuleSession.get_class_code" title="Link to this definition"></a></dt>
+<dd><p>Return the class code associated with the session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The class code.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.models.ModuleSession.get_timeslots">
+<span class="sig-name descname"><span class="pre">get_timeslots</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#ModuleSession.get_timeslots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.ModuleSession.get_timeslots" title="Link to this definition"></a></dt>
+<dd><p>Retrieve the timeslots associated with the session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A queryset of timeslots.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>QuerySet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.ModuleSession.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#classes.models.ModuleSession.id" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BigAutoField</span></code></a></p>
+<p>Primary key: ID</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.ModuleSession.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#classes.models.ModuleSession.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.ModuleSession.required_demonstrator">
+<span class="sig-name descname"><span class="pre">required_demonstrator</span></span><a class="headerlink" href="#classes.models.ModuleSession.required_demonstrator" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.IntegerField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntegerField</span></code></a></p>
+<p>Required demonstrator</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.ModuleSession.requirementskill_set">
+<span class="sig-name descname"><span class="pre">requirementskill_set</span></span><a class="headerlink" href="#classes.models.ModuleSession.requirementskill_set" title="Link to this definition"></a></dt>
+<dd><p>Type: Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="#classes.models.RequirementSkill" title="classes.models.RequirementSkill"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequirementSkill</span></code></a></p>
+<p>All requirement skills of this module session (related name of <a class="reference internal" href="#classes.models.RequirementSkill.class_session" title="classes.models.RequirementSkill.class_session"><code class="xref py py-attr docutils literal notranslate"><span class="pre">class_session</span></code></a>)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.models.ModuleSession.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#ModuleSession.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.ModuleSession.save" title="Link to this definition"></a></dt>
+<dd><p>Override the save method to ensure correct allocation of demonstrators based on the session requirements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.ModuleSession.session_type">
+<span class="sig-name descname"><span class="pre">session_type</span></span><a class="headerlink" href="#classes.models.ModuleSession.session_type" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.CharField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code></a></p>
+<p>Session type</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.ModuleSession.sessionschedule_set">
+<span class="sig-name descname"><span class="pre">sessionschedule_set</span></span><a class="headerlink" href="#classes.models.ModuleSession.sessionschedule_set" title="Link to this definition"></a></dt>
+<dd><p>Type: Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="#classes.models.SessionSchedule" title="classes.models.SessionSchedule"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionSchedule</span></code></a></p>
+<p>All session schedules of this module session (related name of <a class="reference internal" href="#classes.models.SessionSchedule.class_session" title="classes.models.SessionSchedule.class_session"><code class="xref py py-attr docutils literal notranslate"><span class="pre">class_session</span></code></a>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.ModuleSession.test_session">
+<span class="sig-name descname"><span class="pre">test_session</span></span><a class="headerlink" href="#classes.models.ModuleSession.test_session" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BooleanField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BooleanField</span></code></a></p>
+<p>Test session</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.models.RequirementSkill">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.models.</span></span><span class="sig-name descname"><span class="pre">RequirementSkill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#RequirementSkill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.RequirementSkill" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/instances/#django.db.models.Model" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a></p>
+<p>The <cite>RequirementSkill</cite> model represents a required skill for a specific module session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>class_session</strong> (<em>ForeignKey</em>) -- A foreign key linking the requirement to a <cite>ModuleSession</cite>.</p></li>
+<li><p><strong>skill</strong> (<em>ForeignKey</em>) -- A foreign key linking the requirement to a <cite>Skill</cite>.</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><em>BigAutoField</em></a>) -- Primary key: ID</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="classes.models.RequirementSkill.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#classes.models.RequirementSkill.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.ObjectDoesNotExist" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="classes.models.RequirementSkill.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#classes.models.RequirementSkill.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.MultipleObjectsReturned" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.RequirementSkill.class_session">
+<span class="sig-name descname"><span class="pre">class_session</span></span><a class="headerlink" href="#classes.models.RequirementSkill.class_session" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> to <a class="reference internal" href="#classes.models.ModuleSession" title="classes.models.ModuleSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModuleSession</span></code></a></p>
+<p>Class session (related name: <code class="xref py py-attr docutils literal notranslate"><span class="pre">requirementskill</span></code>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.RequirementSkill.class_session_id">
+<span class="sig-name descname"><span class="pre">class_session_id</span></span><a class="headerlink" href="#classes.models.RequirementSkill.class_session_id" title="Link to this definition"></a></dt>
+<dd><p>Internal field, use <a class="reference internal" href="#classes.models.RequirementSkill.class_session" title="classes.models.RequirementSkill.class_session"><code class="xref py py-class docutils literal notranslate"><span class="pre">class_session</span></code></a> instead.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.RequirementSkill.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#classes.models.RequirementSkill.id" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BigAutoField</span></code></a></p>
+<p>Primary key: ID</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.RequirementSkill.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#classes.models.RequirementSkill.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.models.RequirementSkill.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#RequirementSkill.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.RequirementSkill.save" title="Link to this definition"></a></dt>
+<dd><p>Override the save method to ensure the required skill is correctly linked or created.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.RequirementSkill.skill">
+<span class="sig-name descname"><span class="pre">skill</span></span><a class="headerlink" href="#classes.models.RequirementSkill.skill" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> to <a class="reference internal" href="#classes.models.Skill" title="classes.models.Skill"><code class="xref py py-class docutils literal notranslate"><span class="pre">Skill</span></code></a></p>
+<p>Skill (related name: <code class="xref py py-attr docutils literal notranslate"><span class="pre">requirementskill</span></code>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.RequirementSkill.skill_id">
+<span class="sig-name descname"><span class="pre">skill_id</span></span><a class="headerlink" href="#classes.models.RequirementSkill.skill_id" title="Link to this definition"></a></dt>
+<dd><p>Internal field, use <a class="reference internal" href="#classes.models.RequirementSkill.skill" title="classes.models.RequirementSkill.skill"><code class="xref py py-class docutils literal notranslate"><span class="pre">skill</span></code></a> instead.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.models.SessionSchedule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.models.</span></span><span class="sig-name descname"><span class="pre">SessionSchedule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#SessionSchedule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.SessionSchedule" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/instances/#django.db.models.Model" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a></p>
+<p>The <cite>SessionSchedule</cite> model represents the schedule for a specific session, linking a module session to a timeslot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>class_session</strong> (<em>ForeignKey</em>) -- A foreign key linking the schedule to a <cite>ModuleSession</cite>.</p></li>
+<li><p><strong>timeslot</strong> (<em>ForeignKey</em>) -- A foreign key linking the schedule to a <cite>Timeslot</cite>.</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><em>BigAutoField</em></a>) -- Primary key: ID</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="classes.models.SessionSchedule.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#classes.models.SessionSchedule.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.ObjectDoesNotExist" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="classes.models.SessionSchedule.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#classes.models.SessionSchedule.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.MultipleObjectsReturned" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.SessionSchedule.class_session">
+<span class="sig-name descname"><span class="pre">class_session</span></span><a class="headerlink" href="#classes.models.SessionSchedule.class_session" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> to <a class="reference internal" href="#classes.models.ModuleSession" title="classes.models.ModuleSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModuleSession</span></code></a></p>
+<p>Class session (related name: <code class="xref py py-attr docutils literal notranslate"><span class="pre">sessionschedule</span></code>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.SessionSchedule.class_session_id">
+<span class="sig-name descname"><span class="pre">class_session_id</span></span><a class="headerlink" href="#classes.models.SessionSchedule.class_session_id" title="Link to this definition"></a></dt>
+<dd><p>Internal field, use <a class="reference internal" href="#classes.models.SessionSchedule.class_session" title="classes.models.SessionSchedule.class_session"><code class="xref py py-class docutils literal notranslate"><span class="pre">class_session</span></code></a> instead.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.SessionSchedule.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#classes.models.SessionSchedule.id" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BigAutoField</span></code></a></p>
+<p>Primary key: ID</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.SessionSchedule.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#classes.models.SessionSchedule.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.SessionSchedule.timeslot">
+<span class="sig-name descname"><span class="pre">timeslot</span></span><a class="headerlink" href="#classes.models.SessionSchedule.timeslot" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> to <a class="reference internal" href="timetable.html#timetable.models.Timeslot" title="timetable.models.Timeslot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timeslot</span></code></a></p>
+<p>Timeslot (related name: <code class="xref py py-attr docutils literal notranslate"><span class="pre">sessionschedule</span></code>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.SessionSchedule.timeslot_id">
+<span class="sig-name descname"><span class="pre">timeslot_id</span></span><a class="headerlink" href="#classes.models.SessionSchedule.timeslot_id" title="Link to this definition"></a></dt>
+<dd><p>Internal field, use <a class="reference internal" href="#classes.models.SessionSchedule.timeslot" title="classes.models.SessionSchedule.timeslot"><code class="xref py py-class docutils literal notranslate"><span class="pre">timeslot</span></code></a> instead.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.models.Skill">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.models.</span></span><span class="sig-name descname"><span class="pre">Skill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#Skill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.Skill" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/instances/#django.db.models.Model" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a></p>
+<p>The <cite>Skill</cite> model represents a specific skill at a certain level, such as Beginner, Intermediate, or Expert.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>LEVEL_CHOICES</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a>) -- A list of tuples representing the different skill levels.</p></li>
+<li><p><strong>name</strong> (<em>CharField</em>) -- The name of the skill.</p></li>
+<li><p><strong>level</strong> (<em>IntegerField</em>) -- The skill level (0=Beginner, 1=Intermediate, 2=Expert).</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><em>BigAutoField</em></a>) -- Primary key: ID</p></li>
+</ul>
+</dd>
+</dl>
+<p>Reverse relationships:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>requirementskill</strong> (Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="#classes.models.RequirementSkill" title="classes.models.RequirementSkill"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequirementSkill</span></code></a>) -- All requirement skills of this skill (related name of <a class="reference internal" href="#classes.models.RequirementSkill.skill" title="classes.models.RequirementSkill.skill"><code class="xref py py-attr docutils literal notranslate"><span class="pre">skill</span></code></a>)</p></li>
+<li><p><strong>competency</strong> (Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="#classes.models.Competency" title="classes.models.Competency"><code class="xref py py-class docutils literal notranslate"><span class="pre">Competency</span></code></a>) -- All Competencies of this skill (related name of <a class="reference internal" href="#classes.models.Competency.skill" title="classes.models.Competency.skill"><code class="xref py py-attr docutils literal notranslate"><span class="pre">skill</span></code></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="classes.models.Skill.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#classes.models.Skill.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.ObjectDoesNotExist" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Skill.LEVEL_CHOICES">
+<span class="sig-name descname"><span class="pre">LEVEL_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[(0,</span> <span class="pre">'Beginner'),</span> <span class="pre">(1,</span> <span class="pre">'Intermediate'),</span> <span class="pre">(2,</span> <span class="pre">'Expert')]</span></em><a class="headerlink" href="#classes.models.Skill.LEVEL_CHOICES" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="classes.models.Skill.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#classes.models.Skill.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/exceptions/#django.core.exceptions.MultipleObjectsReturned" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Skill.competency_set">
+<span class="sig-name descname"><span class="pre">competency_set</span></span><a class="headerlink" href="#classes.models.Skill.competency_set" title="Link to this definition"></a></dt>
+<dd><p>Type: Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="#classes.models.Competency" title="classes.models.Competency"><code class="xref py py-class docutils literal notranslate"><span class="pre">Competency</span></code></a></p>
+<p>All Competencies of this skill (related name of <a class="reference internal" href="#classes.models.Competency.skill" title="classes.models.Competency.skill"><code class="xref py py-attr docutils literal notranslate"><span class="pre">skill</span></code></a>)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.models.Skill.get_level_display">
+<span class="sig-name descname"><span class="pre">get_level_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.IntegerField:</span> <span class="pre">level&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#classes.models.Skill.get_level_display" title="Link to this definition"></a></dt>
+<dd><p>Shows the label of the <a class="reference internal" href="#classes.models.Skill.level" title="classes.models.Skill.level"><code class="xref py py-attr docutils literal notranslate"><span class="pre">level</span></code></a>. See <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/instances/#django.db.models.Model.get_FOO_display" title="(in Django v5.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_FOO_display()</span></code></a> for more information.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Skill.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#classes.models.Skill.id" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.BigAutoField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BigAutoField</span></code></a></p>
+<p>Primary key: ID</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Skill.level">
+<span class="sig-name descname"><span class="pre">level</span></span><a class="headerlink" href="#classes.models.Skill.level" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.IntegerField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntegerField</span></code></a></p>
+<p>Level</p>
+<p>Choices:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></li>
+</ul>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Skill.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#classes.models.Skill.name" title="Link to this definition"></a></dt>
+<dd><p>Type: <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.CharField" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code></a></p>
+<p>Name</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Skill.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;classes.models.SkillManager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#classes.models.Skill.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classes.models.Skill.requirementskill_set">
+<span class="sig-name descname"><span class="pre">requirementskill_set</span></span><a class="headerlink" href="#classes.models.Skill.requirementskill_set" title="Link to this definition"></a></dt>
+<dd><p>Type: Reverse <a class="reference external" href="https://docs.djangoproject.com/en/stable/ref/models/fields/#django.db.models.ForeignKey" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a> from <a class="reference internal" href="#classes.models.RequirementSkill" title="classes.models.RequirementSkill"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequirementSkill</span></code></a></p>
+<p>All requirement skills of this skill (related name of <a class="reference internal" href="#classes.models.RequirementSkill.skill" title="classes.models.RequirementSkill.skill"><code class="xref py py-attr docutils literal notranslate"><span class="pre">skill</span></code></a>)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="classes.models.SkillManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classes.models.</span></span><span class="sig-name descname"><span class="pre">SkillManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#SkillManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.SkillManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/db/managers/#django.db.models.Manager" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Manager</span></code></a></p>
+<p>The <cite>SkillManager</cite> class provides custom manager methods for the <cite>Skill</cite> model, particularly for creating skills 
+across all levels (Beginner, Intermediate, Expert) with a single method call.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>create</strong> (<em>Method</em>) -- Method to create a skill with all levels.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="classes.models.SkillManager.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#SkillManager.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.SkillManager.create" title="Link to this definition"></a></dt>
+<dd><p>Create a skill across all levels (Beginner, Intermediate, Expert).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) -- The name of the skill.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of created <cite>Skill</cite> objects, one for each level.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="classes.models.update_lecturer_availability_after_module_save">
+<span class="sig-prename descclassname"><span class="pre">classes.models.</span></span><span class="sig-name descname"><span class="pre">update_lecturer_availability_after_module_save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#update_lecturer_availability_after_module_save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.update_lecturer_availability_after_module_save" title="Link to this definition"></a></dt>
+<dd><p>Signal receiver that updates the lecturer's availability after saving a module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sender</strong> (<em>Model</em>) -- The model class that sent the signal, in this case, <cite>Module</cite>.</p></li>
+<li><p><strong>instance</strong> (<a class="reference internal" href="#classes.models.Module" title="classes.models.Module"><em>Module</em></a>) -- The actual instance of <cite>Module</cite> that is being saved.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) -- Additional arguments passed to the signal handler.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="classes.models.update_lecturer_availability_before_module_save">
+<span class="sig-prename descclassname"><span class="pre">classes.models.</span></span><span class="sig-name descname"><span class="pre">update_lecturer_availability_before_module_save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classes/models.html#update_lecturer_availability_before_module_save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classes.models.update_lecturer_availability_before_module_save" title="Link to this definition"></a></dt>
+<dd><p>Signal receiver that updates the lecturer's availability before saving a module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sender</strong> (<em>Model</em>) -- The model class that sent the signal, in this case, <cite>Module</cite>.</p></li>
+<li><p><strong>instance</strong> (<a class="reference internal" href="#classes.models.Module" title="classes.models.Module"><em>Module</em></a>) -- The actual instance of <cite>Module</cite> that is being saved.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) -- Additional arguments passed to the signal handler.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-classes">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-classes" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="allocations.utils.html" class="btn btn-neutral float-left" title="allocations.utils package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classes.admin_inlines.html" class="btn btn-neutral float-right" title="classes.admin_inlines package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

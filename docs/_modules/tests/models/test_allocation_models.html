@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.models.test_allocation_models &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tests.models.test_allocation_models</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tests.models.test_allocation_models</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
+<span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span><span class="p">,</span> <span class="n">MagicMock</span>
+<span class="kn">from</span> <span class="nn">users.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">Demonstrator</span><span class="p">,</span> <span class="n">Lecturer</span>
+<span class="kn">from</span> <span class="nn">allocations.models</span> <span class="kn">import</span> <span class="n">Allocation</span><span class="p">,</span> <span class="n">AllocationDomain</span>
+<span class="kn">from</span> <span class="nn">classes.models</span> <span class="kn">import</span> <span class="n">ModuleSession</span><span class="p">,</span> <span class="n">Module</span>
+<span class="kn">from</span> <span class="nn">timetable.models</span> <span class="kn">import</span> <span class="n">Semester</span>
+
+<div class="viewcode-block" id="AllocationModelTest">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_allocation_models.AllocationModelTest">[docs]</a>
+<span class="k">class</span> <span class="nc">AllocationModelTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `AllocationModelTest` class contains test cases for the `Allocation` model in the Django application.</span>
+
+<span class="sd">    :param setUp: Initializes the test environment, creating instances of `Demonstrator`, `Semester`, `Lecturer`, `Module`, `ModuleSession`, and `Allocation`.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_create_allocation: Tests the creation of an `Allocation` instance, verifying that it is saved correctly and associated with the correct `Demonstrator` and `ModuleSession`.</span>
+<span class="sd">    :type test_create_allocation: Method</span>
+<span class="sd">    :param test_allocate_demonstrator_to_null: Tests the behavior of the `Allocation` model when the `Demonstrator` field is set to `None`.</span>
+<span class="sd">    :type test_allocate_demonstrator_to_null: Method</span>
+<span class="sd">    :param test_demonstrator_deletion: Tests the behavior of the `Allocation` model when the associated `Demonstrator` is deleted.</span>
+<span class="sd">    :type test_demonstrator_deletion: Method</span>
+<span class="sd">    :param test_class_session_deletion: Tests the behavior of the `Allocation` model when the associated `ModuleSession` is deleted.</span>
+<span class="sd">    :type test_class_session_deletion: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="AllocationModelTest.setUp">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_allocation_models.AllocationModelTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;demo&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span> <span class="s2">&quot;demo@test.com&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">semester</span> <span class="o">=</span> <span class="n">Semester</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="s2">&quot;2023/2024&quot;</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s2">&quot;2023-09-01&quot;</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s2">&quot;2024-01-15&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span> <span class="o">=</span> <span class="n">Lecturer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;lecturer&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s2">&quot;lec@test.com&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_code</span><span class="o">=</span><span class="s2">&quot;CS101&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Computer Science 101&quot;</span><span class="p">,</span> <span class="n">lecturer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">semester</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module_session</span> <span class="o">=</span> <span class="n">ModuleSession</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_code</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">session_type</span><span class="o">=</span><span class="s2">&quot;Lab&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocation</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">demonstrator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="p">,</span> <span class="n">class_session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module_session</span><span class="p">,</span> <span class="n">approved</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AllocationModelTest.test_create_allocation">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_allocation_models.AllocationModelTest.test_create_allocation">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_create_allocation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">class_session</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_session</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">approved</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AllocationModelTest.test_allocate_demonstrator_to_null">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_allocation_models.AllocationModelTest.test_allocate_demonstrator_to_null">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_allocate_demonstrator_to_null</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">approved</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AllocationModelTest.test_demonstrator_deletion">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_allocation_models.AllocationModelTest.test_demonstrator_deletion">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_demonstrator_deletion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">refresh_from_db</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">approved</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AllocationModelTest.test_class_session_deletion">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_allocation_models.AllocationModelTest.test_class_session_deletion">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_class_session_deletion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module_session</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">())</span></div>
+</div>
+
+
+<div class="viewcode-block" id="AllocationDomainModelTest">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_allocation_models.AllocationDomainModelTest">[docs]</a>
+<span class="k">class</span> <span class="nc">AllocationDomainModelTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `AllocationDomainModelTest` class contains test cases for the `AllocationDomain` model in the Django application.</span>
+
+<span class="sd">    :param setUp: Initializes the test environment, creating instances of `Demonstrator`, `Lecturer`, `Semester`, `Module`, `ModuleSession`, `Allocation`, and `AllocationDomain`.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_create_allocation_domain: Tests the creation of an `AllocationDomain` instance, verifying that it is saved correctly and associated with the correct `Allocation`.</span>
+<span class="sd">    :type test_create_allocation_domain: Method</span>
+<span class="sd">    :param test_add_hard_constraint_demonstrator: Tests adding a `Demonstrator` to the hard constraints of an `AllocationDomain`.</span>
+<span class="sd">    :type test_add_hard_constraint_demonstrator: Method</span>
+<span class="sd">    :param test_add_primary_soft_constraint_demonstrator: Tests adding a `Demonstrator` to the primary soft constraints of an `AllocationDomain`.</span>
+<span class="sd">    :type test_add_primary_soft_constraint_demonstrator: Method</span>
+<span class="sd">    :param test_add_secondary_soft_constraint_demonstrator: Tests adding a `Demonstrator` to the secondary soft constraints of an `AllocationDomain`.</span>
+<span class="sd">    :type test_add_secondary_soft_constraint_demonstrator: Method</span>
+<span class="sd">    :param test_add_tertiary_soft_constraint_demonstrator: Tests adding a `Demonstrator` to the tertiary soft constraints of an `AllocationDomain`.</span>
+<span class="sd">    :type test_add_tertiary_soft_constraint_demonstrator: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="AllocationDomainModelTest.setUp">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_allocation_models.AllocationDomainModelTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;demo&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span> <span class="s2">&quot;demo@test.com&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span> <span class="o">=</span> <span class="n">Lecturer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;lecturer&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span> <span class="s2">&quot;lec@test.com&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">semester</span> <span class="o">=</span> <span class="n">Semester</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="s2">&quot;2023/2024&quot;</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s2">&quot;2023-09-01&quot;</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s2">&quot;2024-01-15&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_code</span><span class="o">=</span><span class="s2">&quot;CS101&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Computer Science 101&quot;</span><span class="p">,</span> <span class="n">lecturer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">semester</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module_session</span> <span class="o">=</span> <span class="n">ModuleSession</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_code</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">session_type</span><span class="o">=</span><span class="s2">&quot;Lab&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocation</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">demonstrator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="p">,</span> <span class="n">class_session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module_session</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocation_domain</span> <span class="o">=</span> <span class="n">AllocationDomain</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">allocation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AllocationDomainModelTest.test_create_allocation_domain">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_allocation_models.AllocationDomainModelTest.test_create_allocation_domain">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_create_allocation_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation_domain</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation_domain</span><span class="o">.</span><span class="n">allocation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AllocationDomainModelTest.test_add_hard_constraint_demonstrator">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_allocation_models.AllocationDomainModelTest.test_add_hard_constraint_demonstrator">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_add_hard_constraint_demonstrator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocation_domain</span><span class="o">.</span><span class="n">hard_constraint_demonstrators</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">allocation_domain</span><span class="o">.</span><span class="n">hard_constraint_demonstrators</span><span class="o">.</span><span class="n">all</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="AllocationDomainModelTest.test_add_primary_soft_constraint_demonstrator">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_allocation_models.AllocationDomainModelTest.test_add_primary_soft_constraint_demonstrator">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_add_primary_soft_constraint_demonstrator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocation_domain</span><span class="o">.</span><span class="n">primary_soft_constraint_demonstrators</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">allocation_domain</span><span class="o">.</span><span class="n">primary_soft_constraint_demonstrators</span><span class="o">.</span><span class="n">all</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="AllocationDomainModelTest.test_add_secondary_soft_constraint_demonstrator">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_allocation_models.AllocationDomainModelTest.test_add_secondary_soft_constraint_demonstrator">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_add_secondary_soft_constraint_demonstrator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocation_domain</span><span class="o">.</span><span class="n">secondary_soft_constraint_demonstrators</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">allocation_domain</span><span class="o">.</span><span class="n">secondary_soft_constraint_demonstrators</span><span class="o">.</span><span class="n">all</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="AllocationDomainModelTest.test_add_tertiary_soft_constraint_demonstrator">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_allocation_models.AllocationDomainModelTest.test_add_tertiary_soft_constraint_demonstrator">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_add_tertiary_soft_constraint_demonstrator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocation_domain</span><span class="o">.</span><span class="n">tertiary_soft_constraint_demonstrators</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">allocation_domain</span><span class="o">.</span><span class="n">tertiary_soft_constraint_demonstrators</span><span class="o">.</span><span class="n">all</span><span class="p">())</span></div>
+</div>
+
+
+<div class="viewcode-block" id="AllocationSignalTest">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_allocation_models.AllocationSignalTest">[docs]</a>
+<span class="k">class</span> <span class="nc">AllocationSignalTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `AllocationSignalTest` class contains test cases for signals related to the `Allocation` model in the Django application.</span>
+
+<span class="sd">    :param setUp: Initializes the test environment, creating instances of `Demonstrator`, `Lecturer`, `Semester`, `Module`, `ModuleSession`, `Allocation`, and `AllocationDomain`.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_demonstrator_deletion_signal: Tests that the appropriate signal is sent and handled when a `Demonstrator` is deleted, ensuring that related `Allocation` instances are updated correctly.</span>
+<span class="sd">    :type test_demonstrator_deletion_signal: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="AllocationSignalTest.setUp">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_allocation_models.AllocationSignalTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;demo&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span> <span class="s2">&quot;demo@test.com&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span> <span class="o">=</span> <span class="n">Lecturer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;lecturer&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span> <span class="s2">&quot;lec@test.com&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">semester</span> <span class="o">=</span> <span class="n">Semester</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="s2">&quot;2023/2024&quot;</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="s2">&quot;2023-09-01&quot;</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s2">&quot;2024-01-15&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_code</span><span class="o">=</span><span class="s2">&quot;CS101&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Computer Science 101&quot;</span><span class="p">,</span> <span class="n">lecturer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lecturer</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">semester</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module_session</span> <span class="o">=</span> <span class="n">ModuleSession</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_code</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">session_type</span><span class="o">=</span><span class="s2">&quot;Lab&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocation</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">demonstrator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="p">,</span> <span class="n">class_session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module_session</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocation_domain</span> <span class="o">=</span> <span class="n">AllocationDomain</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">allocation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="AllocationSignalTest.test_demonstrator_deletion_signal">
+<a class="viewcode-back" href="../../../tests.models.html#tests.models.test_allocation_models.AllocationSignalTest.test_demonstrator_deletion_signal">[docs]</a>
+    <span class="nd">@patch</span><span class="p">(</span><span class="s1">&#39;allocations.models.Allocation.objects.filter&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_demonstrator_deletion_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_filter</span><span class="p">):</span>
+        <span class="n">mock_filter</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="n">mock_filter</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="n">demonstrator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">demonstrator</span><span class="p">)</span>
+        <span class="n">mock_filter</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="n">approved</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

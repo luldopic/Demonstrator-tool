@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>allocations.utils.constraint_manager &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">allocations.utils.constraint_manager</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for allocations.utils.constraint_manager</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">allocations.models</span> <span class="kn">import</span> <span class="n">Allocation</span>
+<span class="kn">from</span> <span class="nn">users.models</span> <span class="kn">import</span> <span class="n">UserAvailability</span><span class="p">,</span> <span class="n">Demonstrator</span>
+<span class="kn">from</span> <span class="nn">classes.models</span> <span class="kn">import</span> <span class="n">Competency</span><span class="p">,</span> <span class="n">RequirementSkill</span><span class="p">,</span> <span class="n">Module</span><span class="p">,</span> <span class="n">ModuleSession</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">ceil</span>
+
+<div class="viewcode-block" id="ConstraintManager">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_manager.ConstraintManager">[docs]</a>
+<span class="k">class</span> <span class="nc">ConstraintManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `ConstraintManager` class is a base class for managing constraints during the allocation of demonstrators </span>
+<span class="sd">    to various sessions. This class serves as the foundation for more specific constraint managers that handle </span>
+<span class="sd">    both hard and soft constraints.</span>
+
+<span class="sd">    This class does not implement any functionality directly but provides a structure for subclasses to enforce </span>
+<span class="sd">    constraints on allocations.</span>
+
+<span class="sd">    :param allocation: An instance of the `Allocation` model representing the current allocation being processed.</span>
+<span class="sd">    :type allocation: `Allocation`</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="HardConstraintManager">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_manager.HardConstraintManager">[docs]</a>
+<span class="k">class</span> <span class="nc">HardConstraintManager</span><span class="p">(</span><span class="n">ConstraintManager</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `HardConstraintManager` class is responsible for enforcing hard constraints during the allocation process. </span>
+<span class="sd">    These constraints ensure that no demonstrator is double booked, that demonstrators are fully available for </span>
+<span class="sd">    the sessions they are assigned to, and that previously approved allocations are not modified.</span>
+
+<span class="sd">    This class provides static methods that check specific hard constraints on allocations.</span>
+
+<span class="sd">    :param allocation: An instance of the `Allocation` model representing the current allocation being processed.</span>
+<span class="sd">    :type allocation: `Allocation`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="HardConstraintManager.is_demonstrator_not_double_booked">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_manager.HardConstraintManager.is_demonstrator_not_double_booked">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">is_demonstrator_not_double_booked</span><span class="p">(</span><span class="n">allocation</span><span class="p">:</span> <span class="n">Allocation</span><span class="p">,</span> <span class="n">dem</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the demonstrator assigned to the allocation is not double booked. </span>
+
+<span class="sd">        :param allocation: The allocation to check.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        :param dem: An optional specific demonstrator to check. If `None`, the method checks the demonstrator assigned to the allocation.</span>
+<span class="sd">        :type dem: `Demonstrator`, optional</span>
+<span class="sd">        :return: `True` if the demonstrator is not double booked, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">dem</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">demonstrator</span> <span class="o">=</span> <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">demonstrator</span> <span class="o">=</span> <span class="n">dem</span>
+        <span class="k">if</span> <span class="n">demonstrator</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="n">all_allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">demonstrator</span><span class="o">=</span><span class="n">demonstrator</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">allocation</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">current_session_timeslots</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">allocation</span><span class="o">.</span><span class="n">class_session</span><span class="o">.</span><span class="n">get_timeslots</span><span class="p">())</span>
+        
+        <span class="k">for</span> <span class="n">existing_allocation</span> <span class="ow">in</span> <span class="n">all_allocations</span><span class="p">:</span>
+            <span class="n">existing_timeslots</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">existing_allocation</span><span class="o">.</span><span class="n">class_session</span><span class="o">.</span><span class="n">get_timeslots</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">current_session_timeslots</span> <span class="o">&amp;</span> <span class="n">existing_timeslots</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+        
+    
+<div class="viewcode-block" id="HardConstraintManager.is_demonstator_available_for_all">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_manager.HardConstraintManager.is_demonstator_available_for_all">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">is_demonstator_available_for_all</span><span class="p">(</span><span class="n">allocation</span><span class="p">:</span> <span class="n">Allocation</span><span class="p">,</span> <span class="n">dem</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the demonstrator assigned to the allocation is available for all timeslots of the session.</span>
+
+<span class="sd">        :param allocation: The allocation to check.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        :param dem: An optional specific demonstrator to check. If `None`, the method checks the demonstrator assigned to the allocation.</span>
+<span class="sd">        :type dem: `Demonstrator`, optional</span>
+<span class="sd">        :return: `True` if the demonstrator is available for all timeslots, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">dem</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">demonstrator</span> <span class="o">=</span> <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">demonstrator</span> <span class="o">=</span> <span class="n">dem</span>
+        <span class="k">if</span> <span class="n">demonstrator</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="n">timeslots</span> <span class="o">=</span> <span class="n">allocation</span><span class="o">.</span><span class="n">class_session</span><span class="o">.</span><span class="n">get_timeslots</span><span class="p">()</span>
+        <span class="n">is_available_for_all</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span>
+            <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user</span> <span class="o">=</span> <span class="n">demonstrator</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">timeslot</span><span class="o">=</span><span class="n">timeslot</span><span class="p">)</span><span class="o">.</span><span class="n">is_available</span> 
+            <span class="k">for</span> <span class="n">timeslot</span> <span class="ow">in</span> <span class="n">timeslots</span>
+                                            
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">is_available_for_all</span></div>
+
+    
+<div class="viewcode-block" id="HardConstraintManager.is_allocation_not_previously_approved">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_manager.HardConstraintManager.is_allocation_not_previously_approved">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">is_allocation_not_previously_approved</span><span class="p">(</span><span class="n">allocation</span><span class="p">:</span> <span class="n">Allocation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the allocation has not been previously approved.</span>
+
+<span class="sd">        :param allocation: The allocation to check.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        :return: `True` if the allocation is not previously approved, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="n">allocation</span><span class="o">.</span><span class="n">approved</span></div>
+</div>
+
+
+<div class="viewcode-block" id="SoftConstraintManager">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_manager.SoftConstraintManager">[docs]</a>
+<span class="k">class</span> <span class="nc">SoftConstraintManager</span><span class="p">(</span><span class="n">ConstraintManager</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `SoftConstraintManager` class serves as a base class for enforcing soft constraints during the allocation process. </span>
+<span class="sd">    Soft constraints can include primary, secondary, and tertiary constraints that provide additional flexibility </span>
+<span class="sd">    compared to hard constraints.</span>
+
+<span class="sd">    This class provides utility methods and serves as the base for more specific soft constraint managers.</span>
+
+<span class="sd">    :param allocation: An instance of the `Allocation` model representing the current allocation being processed.</span>
+<span class="sd">    :type allocation: `Allocation`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SoftConstraintManager.is_subset">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_manager.SoftConstraintManager.is_subset">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">is_subset</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if `list1` is a subset of `list2`.</span>
+
+<span class="sd">        :param list1: The list to check as a subset.</span>
+<span class="sd">        :type list1: list</span>
+<span class="sd">        :param list2: The list to check against.</span>
+<span class="sd">        :type list2: list</span>
+<span class="sd">        :return: `True` if `list1` is a subset of `list2`, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">list2</span><span class="p">))</span></div>
+</div>
+
+
+<div class="viewcode-block" id="PrimaryConstraintManager">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_manager.PrimaryConstraintManager">[docs]</a>
+<span class="k">class</span> <span class="nc">PrimaryConstraintManager</span><span class="p">(</span><span class="n">SoftConstraintManager</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `PrimaryConstraintManager` class handles primary soft constraints during the allocation process. </span>
+<span class="sd">    These constraints include ensuring that sessions have at least half of the required demonstrators and </span>
+<span class="sd">    that all demonstrators meet the minimum skill requirements.</span>
+
+<span class="sd">    This class provides static methods that enforce primary soft constraints on allocations.</span>
+
+<span class="sd">    :param allocation: An instance of the `Allocation` model representing the current allocation being processed.</span>
+<span class="sd">    :type allocation: `Allocation`</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+<div class="viewcode-block" id="PrimaryConstraintManager.session_has_half_demonstrators">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_manager.PrimaryConstraintManager.session_has_half_demonstrators">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">session_has_half_demonstrators</span><span class="p">(</span><span class="n">allocation</span><span class="p">:</span> <span class="n">Allocation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the session associated with the allocation has at least half of the required number of demonstrators.</span>
+
+<span class="sd">        :param allocation: The allocation to check.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        :return: `True` if the session has at least half the required number of demonstrators, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">module_session</span><span class="p">:</span> <span class="n">ModuleSession</span> <span class="o">=</span> <span class="n">allocation</span><span class="o">.</span><span class="n">class_session</span>
+        <span class="n">session_allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="n">module_session</span><span class="p">,</span>
+                                                        <span class="n">demonstrator__isnull</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="n">required_number</span> <span class="o">=</span> <span class="n">module_session</span><span class="o">.</span><span class="n">required_demonstrator</span>
+        <span class="n">half_required</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="n">required_number</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">session_allocations</span> <span class="o">&gt;=</span> <span class="n">half_required</span></div>
+
+    
+<div class="viewcode-block" id="PrimaryConstraintManager.demonstrator_has_beginner_skill">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_manager.PrimaryConstraintManager.demonstrator_has_beginner_skill">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">demonstrator_has_beginner_skill</span><span class="p">(</span><span class="n">allocation</span><span class="p">:</span> <span class="n">Allocation</span><span class="p">,</span> <span class="n">dem</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the demonstrator assigned to the allocation has at least a beginner skill level in the required skills.</span>
+
+<span class="sd">        :param allocation: The allocation to check.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        :param dem: An optional specific demonstrator to check. If `None`, the method checks the demonstrator assigned to the allocation.</span>
+<span class="sd">        :type dem: `Demonstrator`, optional</span>
+<span class="sd">        :return: `True` if the demonstrator has the required beginner skills, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">dem</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">demonstrator</span> <span class="o">=</span> <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">demonstrator</span> <span class="o">=</span> <span class="n">dem</span>
+        
+        <span class="n">required_skills</span> <span class="o">=</span> <span class="n">RequirementSkill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="n">allocation</span><span class="o">.</span><span class="n">class_session</span><span class="p">)</span>
+        <span class="n">demonstrator_competencies</span> <span class="o">=</span> <span class="n">Competency</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="n">demonstrator</span><span class="p">)</span>
+        
+        <span class="n">skill_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">skill</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">skill</span> <span class="ow">in</span> <span class="n">required_skills</span><span class="p">]</span>
+        <span class="n">competency_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">competency</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">competency</span> <span class="ow">in</span> <span class="n">demonstrator_competencies</span><span class="p">]</span>
+        
+        <span class="k">return</span> <span class="n">SoftConstraintManager</span><span class="o">.</span><span class="n">is_subset</span><span class="p">(</span><span class="n">skill_list</span><span class="p">,</span> <span class="n">competency_list</span><span class="p">)</span></div>
+</div>
+
+        
+<div class="viewcode-block" id="SecondaryConstraintManager">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_manager.SecondaryConstraintManager">[docs]</a>
+<span class="k">class</span> <span class="nc">SecondaryConstraintManager</span><span class="p">(</span><span class="n">SoftConstraintManager</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `SecondaryConstraintManager` class handles secondary soft constraints during the allocation process. </span>
+<span class="sd">    These constraints ensure that sessions have the exact number of required demonstrators and that the demonstrators </span>
+<span class="sd">    meet or exceed the skill level required for the session.</span>
+
+<span class="sd">    This class provides static methods that enforce secondary soft constraints on allocations.</span>
+
+<span class="sd">    :param allocation: An instance of the `Allocation` model representing the current allocation being processed.</span>
+<span class="sd">    :type allocation: `Allocation`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="SecondaryConstraintManager.session_has_all_demonstrators">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_manager.SecondaryConstraintManager.session_has_all_demonstrators">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">session_has_all_demonstrators</span><span class="p">(</span><span class="n">allocation</span><span class="p">:</span> <span class="n">Allocation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the session associated with the allocation has the exact number of required demonstrators.</span>
+
+<span class="sd">        :param allocation: The allocation to check.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        :return: `True` if the session has the required number of demonstrators, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">module_session</span><span class="p">:</span> <span class="n">ModuleSession</span> <span class="o">=</span> <span class="n">allocation</span><span class="o">.</span><span class="n">class_session</span>
+        <span class="n">session_allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="n">module_session</span><span class="p">,</span>
+                                                        <span class="n">demonstrator__isnull</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="n">required_number</span> <span class="o">=</span> <span class="n">module_session</span><span class="o">.</span><span class="n">required_demonstrator</span>
+        <span class="k">return</span> <span class="n">session_allocations</span> <span class="o">==</span> <span class="n">required_number</span></div>
+
+    
+<div class="viewcode-block" id="SecondaryConstraintManager.demonstrator_has_skill_or_higher">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_manager.SecondaryConstraintManager.demonstrator_has_skill_or_higher">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">demonstrator_has_skill_or_higher</span><span class="p">(</span><span class="n">allocation</span><span class="p">:</span> <span class="n">Allocation</span><span class="p">,</span> <span class="n">dem</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the demonstrator assigned to the allocation meets or exceeds the required skill level.</span>
+
+<span class="sd">        :param allocation: The allocation to check.</span>
+<span class="sd">        :type allocation: `Allocation`</span>
+<span class="sd">        :param dem: An optional specific demonstrator to check. If `None`, the method checks the demonstrator assigned to the allocation.</span>
+<span class="sd">        :type dem: `Demonstrator`, optional</span>
+<span class="sd">        :return: `True` if the demonstrator has the required skill level or higher, `False` otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">dem</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">demonstrator</span> <span class="o">=</span> <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">demonstrator</span> <span class="o">=</span> <span class="n">dem</span>
+        <span class="n">required_skills</span> <span class="o">=</span> <span class="n">RequirementSkill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="n">allocation</span><span class="o">.</span><span class="n">class_session</span><span class="p">)</span>
+        <span class="n">demonstrator_competencies</span> <span class="o">=</span> <span class="n">Competency</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="n">demonstrator</span><span class="p">)</span>
+        
+        <span class="n">competency_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">comp</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">comp</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">level</span> <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">demonstrator_competencies</span><span class="p">}</span>
+        
+        <span class="k">for</span> <span class="n">required_skill</span> <span class="ow">in</span> <span class="n">required_skills</span><span class="p">:</span>
+            <span class="n">skill_name</span> <span class="o">=</span> <span class="n">required_skill</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">skill_level</span> <span class="o">=</span> <span class="n">required_skill</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">level</span>
+            <span class="k">if</span> <span class="n">skill_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">competency_dict</span> <span class="ow">or</span> <span class="n">competency_dict</span><span class="p">[</span><span class="n">skill_name</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">skill_level</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        
+        <span class="k">return</span> <span class="kc">True</span></div>
+</div>
+
+        
+<div class="viewcode-block" id="TertiaryConstraintManager">
+<a class="viewcode-back" href="../../../allocations.utils.html#allocations.utils.constraint_manager.TertiaryConstraintManager">[docs]</a>
+<span class="k">class</span> <span class="nc">TertiaryConstraintManager</span><span class="p">(</span><span class="n">SoftConstraintManager</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `TertiaryConstraintManager` class is intended to handle tertiary soft constraints during the allocation process. </span>
+<span class="sd">    These constraints may include preferences such as assigning the lecturer&#39;s preferred demonstrator or </span>
+<span class="sd">    ensuring demonstrators meet the required skill level.</span>
+
+<span class="sd">    This class currently serves as a placeholder for future implementations of tertiary constraints.</span>
+
+<span class="sd">    :param allocation: An instance of the `Allocation` model representing the current allocation being processed.</span>
+<span class="sd">    :type allocation: `Allocation`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

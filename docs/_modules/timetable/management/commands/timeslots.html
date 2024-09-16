@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>timetable.management.commands.timeslots &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">timetable.management.commands.timeslots</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for timetable.management.commands.timeslots</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<div class="viewcode-block" id="Timetable">
+<a class="viewcode-back" href="../../../../timetable.management.commands.html#timetable.management.commands.timeslots.Timetable">[docs]</a>
+<span class="k">class</span> <span class="nc">Timetable</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `Timetable` class represents a weekly schedule for a given year and semester. It provides functionality </span>
+<span class="sd">    for generating time slots, populating them into a schedule, and identifying open (unallocated) slots.</span>
+
+<span class="sd">    :param year: The academic year associated with the timetable.</span>
+<span class="sd">    :type year: int</span>
+<span class="sd">    :param semester: The semester associated with the timetable.</span>
+<span class="sd">    :type semester: int</span>
+<span class="sd">    :param timeslot: A dictionary mapping each time slot to its allocated status (None if unallocated).</span>
+<span class="sd">    :type timeslot: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Timetable.__init__">
+<a class="viewcode-back" href="../../../../timetable.management.commands.html#timetable.management.commands.timeslots.Timetable.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">semester</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the `Timetable` with the given year and semester, and populate the timeslot dictionary.</span>
+
+<span class="sd">        :param year: The academic year.</span>
+<span class="sd">        :type year: int</span>
+<span class="sd">        :param semester: The semester.</span>
+<span class="sd">        :type semester: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="n">year</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">semester</span> <span class="o">=</span> <span class="n">semester</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">Timetable</span><span class="o">.</span><span class="n">populate_timeslot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="Timetable.getOpen">
+<a class="viewcode-back" href="../../../../timetable.management.commands.html#timetable.management.commands.timeslots.Timetable.getOpen">[docs]</a>
+    <span class="k">def</span> <span class="nf">getOpen</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve a list of all open (unallocated) time slots.</span>
+
+<span class="sd">        :return: A list of time slots that are currently unallocated.</span>
+<span class="sd">        :rtype: list of tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">open_slots</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeslot</span><span class="p">[</span><span class="n">slot</span><span class="p">]</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">open_slots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">slot</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">open_slots</span></div>
+
+    
+<div class="viewcode-block" id="Timetable.generate_time_slots">
+<a class="viewcode-back" href="../../../../timetable.management.commands.html#timetable.management.commands.timeslots.Timetable.generate_time_slots">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">generate_time_slots</span><span class="p">(</span><span class="n">start_time</span> <span class="o">=</span> <span class="s2">&quot;09:00&quot;</span><span class="p">,</span> 
+                            <span class="n">end_time</span> <span class="o">=</span> <span class="s2">&quot;18:00&quot;</span><span class="p">,</span> 
+                            <span class="n">interval_minutes</span> <span class="o">=</span> <span class="mi">60</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a list of time slots for a single day, based on the given start time, end time, and interval.</span>
+
+<span class="sd">        :param start_time: The starting time of the first slot (default is 09:00).</span>
+<span class="sd">        :type start_time: str</span>
+<span class="sd">        :param end_time: The ending time after which no slots should start (default is 18:00).</span>
+<span class="sd">        :type end_time: str</span>
+<span class="sd">        :param interval_minutes: The length of each time slot in minutes (default is 60 minutes).</span>
+<span class="sd">        :type interval_minutes: int</span>
+<span class="sd">        :return: A list of tuples, each representing a time slot (start time, end time).</span>
+<span class="sd">        :rtype: list of tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span><span class="s2">&quot;%H:%M&quot;</span><span class="p">)</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">end_time</span><span class="p">,</span> <span class="s1">&#39;%H:%M&#39;</span><span class="p">)</span>
+        <span class="n">interval</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="n">interval_minutes</span><span class="p">)</span>
+        
+        <span class="n">current_time</span> <span class="o">=</span> <span class="n">start_time</span>
+        <span class="n">time_slots</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">while</span> <span class="n">current_time</span> <span class="o">&lt;=</span> <span class="n">end_time</span><span class="o">-</span><span class="n">interval</span><span class="p">:</span>
+            <span class="n">slot_start</span> <span class="o">=</span> <span class="n">current_time</span>
+            <span class="n">slot_end</span> <span class="o">=</span> <span class="n">current_time</span> <span class="o">+</span> <span class="n">interval</span>
+            <span class="n">slot</span> <span class="o">=</span> <span class="p">(</span><span class="n">slot_start</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M&#39;</span><span class="p">),</span> <span class="n">slot_end</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M&#39;</span><span class="p">))</span>
+            <span class="n">time_slots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">slot</span><span class="p">)</span>
+            <span class="n">current_time</span> <span class="o">+=</span> <span class="n">interval</span>
+        
+        <span class="k">return</span> <span class="n">time_slots</span></div>
+
+    
+<div class="viewcode-block" id="Timetable.populate_timeslot">
+<a class="viewcode-back" href="../../../../timetable.management.commands.html#timetable.management.commands.timeslots.Timetable.populate_timeslot">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">populate_timeslot</span><span class="p">(</span><span class="n">timetable</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Populate the timetable with time slots for each day of the week. Each slot is initially unallocated.</span>
+
+<span class="sd">        :param timetable: The dictionary to populate with time slots.</span>
+<span class="sd">        :type timetable: dict</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">timetable</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">week</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Monday&quot;</span><span class="p">,</span> <span class="s2">&quot;Tuesday&quot;</span><span class="p">,</span> <span class="s2">&quot;Wednesday&quot;</span><span class="p">,</span> <span class="s2">&quot;Thursday&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Friday&quot;</span><span class="p">,</span> <span class="s2">&quot;Saturday&quot;</span><span class="p">,</span> <span class="s2">&quot;Sunday&quot;</span><span class="p">]</span>
+        <span class="n">timeslots</span> <span class="o">=</span> <span class="n">Timetable</span><span class="o">.</span><span class="n">generate_time_slots</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">day</span> <span class="ow">in</span> <span class="n">week</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="n">timeslots</span><span class="p">:</span>
+                <span class="n">temp_slot</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">slot</span><span class="p">)</span>
+                <span class="n">temp_slot</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">day</span><span class="p">)</span>
+                <span class="n">timetable</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">temp_slot</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

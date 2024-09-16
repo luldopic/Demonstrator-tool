@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Known Issues &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API References" href="modules.html" />
+    <link rel="prev" title="User Manual" href="user_manual.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_manual.html">User Manual</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Known Issues</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#authorisation-and-authentication">Authorisation and Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#admin-panel-inlines">Admin panel inlines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#permissions">Permissions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#class-management">Class Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#allocation-management">Allocation Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#accessibility">Accessibility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#user-management">User Management</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Known Issues</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/known_issues.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="known-issues">
+<span id="id1"></span><h1>Known Issues<a class="headerlink" href="#known-issues" title="Link to this heading"></a></h1>
+<p>as of version v 0.1.0</p>
+<section id="authorisation-and-authentication">
+<h2>Authorisation and Authentication<a class="headerlink" href="#authorisation-and-authentication" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Registration page does not display error messages when there is an issues with the form submitted</p></li>
+<li><p>Logging in with users not created using the <cite>createsuperuser</cite> method is currently bugged. Users are unable to login if they are regularly created</p></li>
+<li><dl class="simple">
+<dt>Users using the <cite>createsuperuser</cite> method are inconsistently able to login into the user site.</dt><dd><ul>
+<li><p>Logging in through the admin site then navigate to /dashboard seems to be a workaround</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>User who successfully register on the user site are redirected to their dashboard but their records are not consistently reflected on the database. It may not reflected on the database for a while or never reflect at all. They also don't have a user availability and any changes to their profiles are not saved.</p></li>
+</ul>
+</section>
+<section id="admin-panel-inlines">
+<h2>Admin panel inlines<a class="headerlink" href="#admin-panel-inlines" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>The module session inline in the admin site fails to properly recognise skills when adding or changing requirements</dt><dd><ul>
+<li><p>Change the requirement in the requirement skills admin section</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The module and module session inlines in the admin site is missing a way of viewing the schedule tied to them</dt><dd><ul>
+<li><p>Navigate to the session schedule page and filter the class by class code in the search bar</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The demonstrator inlines in the admin site failsto properly recognise skills when adding or changing competencies</dt><dd><ul>
+<li><p>Change the competencies in the competency admin section</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The user inlines in the admin site is missing a way of viewing the user availability tied to the user</dt><dd><ul>
+<li><p>Navigate to the user availability page and filter the user by name</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="permissions">
+<h2>Permissions<a class="headerlink" href="#permissions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>The button to view the classes details from the allocation page on the user site redirects to the same page as the lecturer page thus allowing a demonstrator to change the details despite not having the permissions to\</p></li>
+</ul>
+</section>
+<section id="class-management">
+<h2>Class Management<a class="headerlink" href="#class-management" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Currently, it is difficult to create a schedule for a module. The current method of creating a schedule requires the admin to find the corresponding module sessions object number and one by one, create a session schedule for that module session.</p></li>
+<li><p>There is an issue where the session type not properly displayed on the class detail list on the user site.</p></li>
+</ul>
+</section>
+<section id="allocation-management">
+<h2>Allocation Management<a class="headerlink" href="#allocation-management" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Batch allocation of demonstrator takes a while and leaving the pages while the process is ongoing sometimes prevents allocation. Multithreading is required in the future to allow for better concurrency.</p></li>
+<li><p>There is no indication of the progress of the allocation process.</p></li>
+<li><p>There is no indication of the allocation system failing to allocate.</p></li>
+<li><p>The allocation page is missing a search bar to filter by class code. To circumvent, go to the Module session admin page, select the module session you wish to view the allocations for and select <cite>View Allocations of Selected Session</cite> in the action dropdown.</p></li>
+</ul>
+</section>
+<section id="accessibility">
+<h2>Accessibility<a class="headerlink" href="#accessibility" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>There are no confirmation dialog for any of the functionality in the user site (including logging out)</p></li>
+<li><p>There are no accessibility options in either site and the options button in the user site is no functional.</p></li>
+<li><p>The notification system is non-functional</p></li>
+<li><p>There are missing messages in the case of errors in forms (i.e login or registration)</p></li>
+<li><p>Skills can't be filtered or searched in the user site when changing competencies or requirement skills</p></li>
+</ul>
+</section>
+<section id="user-management">
+<h2>User Management<a class="headerlink" href="#user-management" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>If a user changes their availability from not available to available using either the admin site or the user site, the system doesn't check whether that change is valid (e.g. user is still a demonstrator in that timeslot)</p></li>
+<li><p>User availability is not fetching in the profile if the user is not a demonstrator (in the demonstrator model not just checked in the user details) despite useravailability not being tied to being a demonstrator model. As a workaround, assign the user as a demonstrator and set all availability as not available in order for them to not be selected as a demonstrator.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="user_manual.html" class="btn btn-neutral float-left" title="User Manual" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-right" title="API References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

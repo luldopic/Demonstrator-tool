@@ -1,0 +1,67 @@
+{% extends "master.html" %}
+
+{% load custom_tags %}
+
+{% block content %}
+<h1>Module Details: {{ module.name }}</h1>
+<div>
+    <p><strong>Class Code:</strong> {{ module.class_code }}</p>
+    <p><strong>Semester:</strong> {{ module.formatted_semester }}</p>
+    <p><strong>Lecturer:</strong> {{ module.formatted_lecturer_name }}</p>
+    <p><strong>Teaching Hours:</strong> {{ module.count_sessions.1 }}</p>
+</div>
+
+<h2>Sessions</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Session Type</th>
+            <th>Number of Teaching Hours</th>
+            <th>Number of Required Demonstrators</th>
+            <th>Required Skill</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for session in sessions %}
+        <tr>
+            <td>{{ session.session_type }}</td>
+            <td>{{ session.hours }}</td>
+            <td>{{ session.required_demonstrators }}</td>
+            <td>{{ session.required_skill }}</td>
+            <td>
+                <a href="{% url 'edit_session' session.id %}" class="btn btn-warning">Edit</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Timetable</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Day / Time</th>
+            {% for hour in hours %}
+            <th>{{ hour }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for day, day_name in days %}
+        <tr>
+            <td>{{ day_name }}</td>
+            {% for hour in hours %}
+            <td class="timetable-cell">
+                {% if timetable_data|get_item:day|get_item:hour %}
+                    {{ timetable_data|get_item:day|get_item:hour }}
+                {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'class_list' %}" class="btn btn-primary">Back to Class List</a>
+{% endblock content %}

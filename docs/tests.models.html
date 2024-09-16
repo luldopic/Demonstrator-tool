@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.models package &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="tests.utils package" href="tests.utils.html" />
+    <link rel="prev" title="tests.allocation_eval package" href="tests.allocation_eval.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_issues.html">Known Issues</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API References</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="admin.html">admin package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="allocations.html">allocations package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html">classes package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demonstrator_timetabling_tool.html">demonstrator_timetabling_tool package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="tests.html">tests package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="tests.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="tests.admin.html">tests.admin package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.allocation_eval.html">tests.allocation_eval package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">tests.models package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.utils.html">tests.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.views.html">tests.views package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#module-tests">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="timetable.html">timetable package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="users.html">users package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API References</a></li>
+          <li class="breadcrumb-item"><a href="tests.html">tests package</a></li>
+      <li class="breadcrumb-item active">tests.models package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tests.models.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tests-models-package">
+<h1>tests.models package<a class="headerlink" href="#tests-models-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-tests.models.test_allocation_models">
+<span id="tests-models-test-allocation-models-module"></span><h2>tests.models.test_allocation_models module<a class="headerlink" href="#module-tests.models.test_allocation_models" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.models.test_allocation_models.AllocationDomainModelTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.models.test_allocation_models.</span></span><span class="sig-name descname"><span class="pre">AllocationDomainModelTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_allocation_models.html#AllocationDomainModelTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_allocation_models.AllocationDomainModelTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>AllocationDomainModelTest</cite> class contains test cases for the <cite>AllocationDomain</cite> model in the Django application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment, creating instances of <cite>Demonstrator</cite>, <cite>Lecturer</cite>, <cite>Semester</cite>, <cite>Module</cite>, <cite>ModuleSession</cite>, <cite>Allocation</cite>, and <cite>AllocationDomain</cite>.</p></li>
+<li><p><strong>test_create_allocation_domain</strong> (<em>Method</em>) -- Tests the creation of an <cite>AllocationDomain</cite> instance, verifying that it is saved correctly and associated with the correct <cite>Allocation</cite>.</p></li>
+<li><p><strong>test_add_hard_constraint_demonstrator</strong> (<em>Method</em>) -- Tests adding a <cite>Demonstrator</cite> to the hard constraints of an <cite>AllocationDomain</cite>.</p></li>
+<li><p><strong>test_add_primary_soft_constraint_demonstrator</strong> (<em>Method</em>) -- Tests adding a <cite>Demonstrator</cite> to the primary soft constraints of an <cite>AllocationDomain</cite>.</p></li>
+<li><p><strong>test_add_secondary_soft_constraint_demonstrator</strong> (<em>Method</em>) -- Tests adding a <cite>Demonstrator</cite> to the secondary soft constraints of an <cite>AllocationDomain</cite>.</p></li>
+<li><p><strong>test_add_tertiary_soft_constraint_demonstrator</strong> (<em>Method</em>) -- Tests adding a <cite>Demonstrator</cite> to the tertiary soft constraints of an <cite>AllocationDomain</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_allocation_models.AllocationDomainModelTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_allocation_models.html#AllocationDomainModelTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_allocation_models.AllocationDomainModelTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_allocation_models.AllocationDomainModelTest.test_add_hard_constraint_demonstrator">
+<span class="sig-name descname"><span class="pre">test_add_hard_constraint_demonstrator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_allocation_models.html#AllocationDomainModelTest.test_add_hard_constraint_demonstrator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_allocation_models.AllocationDomainModelTest.test_add_hard_constraint_demonstrator" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_allocation_models.AllocationDomainModelTest.test_add_primary_soft_constraint_demonstrator">
+<span class="sig-name descname"><span class="pre">test_add_primary_soft_constraint_demonstrator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_allocation_models.html#AllocationDomainModelTest.test_add_primary_soft_constraint_demonstrator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_allocation_models.AllocationDomainModelTest.test_add_primary_soft_constraint_demonstrator" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_allocation_models.AllocationDomainModelTest.test_add_secondary_soft_constraint_demonstrator">
+<span class="sig-name descname"><span class="pre">test_add_secondary_soft_constraint_demonstrator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_allocation_models.html#AllocationDomainModelTest.test_add_secondary_soft_constraint_demonstrator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_allocation_models.AllocationDomainModelTest.test_add_secondary_soft_constraint_demonstrator" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_allocation_models.AllocationDomainModelTest.test_add_tertiary_soft_constraint_demonstrator">
+<span class="sig-name descname"><span class="pre">test_add_tertiary_soft_constraint_demonstrator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_allocation_models.html#AllocationDomainModelTest.test_add_tertiary_soft_constraint_demonstrator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_allocation_models.AllocationDomainModelTest.test_add_tertiary_soft_constraint_demonstrator" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_allocation_models.AllocationDomainModelTest.test_create_allocation_domain">
+<span class="sig-name descname"><span class="pre">test_create_allocation_domain</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_allocation_models.html#AllocationDomainModelTest.test_create_allocation_domain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_allocation_models.AllocationDomainModelTest.test_create_allocation_domain" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.models.test_allocation_models.AllocationModelTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.models.test_allocation_models.</span></span><span class="sig-name descname"><span class="pre">AllocationModelTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_allocation_models.html#AllocationModelTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_allocation_models.AllocationModelTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>AllocationModelTest</cite> class contains test cases for the <cite>Allocation</cite> model in the Django application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment, creating instances of <cite>Demonstrator</cite>, <cite>Semester</cite>, <cite>Lecturer</cite>, <cite>Module</cite>, <cite>ModuleSession</cite>, and <cite>Allocation</cite>.</p></li>
+<li><p><strong>test_create_allocation</strong> (<em>Method</em>) -- Tests the creation of an <cite>Allocation</cite> instance, verifying that it is saved correctly and associated with the correct <cite>Demonstrator</cite> and <cite>ModuleSession</cite>.</p></li>
+<li><p><strong>test_allocate_demonstrator_to_null</strong> (<em>Method</em>) -- Tests the behavior of the <cite>Allocation</cite> model when the <cite>Demonstrator</cite> field is set to <cite>None</cite>.</p></li>
+<li><p><strong>test_demonstrator_deletion</strong> (<em>Method</em>) -- Tests the behavior of the <cite>Allocation</cite> model when the associated <cite>Demonstrator</cite> is deleted.</p></li>
+<li><p><strong>test_class_session_deletion</strong> (<em>Method</em>) -- Tests the behavior of the <cite>Allocation</cite> model when the associated <cite>ModuleSession</cite> is deleted.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_allocation_models.AllocationModelTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_allocation_models.html#AllocationModelTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_allocation_models.AllocationModelTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_allocation_models.AllocationModelTest.test_allocate_demonstrator_to_null">
+<span class="sig-name descname"><span class="pre">test_allocate_demonstrator_to_null</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_allocation_models.html#AllocationModelTest.test_allocate_demonstrator_to_null"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_allocation_models.AllocationModelTest.test_allocate_demonstrator_to_null" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_allocation_models.AllocationModelTest.test_class_session_deletion">
+<span class="sig-name descname"><span class="pre">test_class_session_deletion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_allocation_models.html#AllocationModelTest.test_class_session_deletion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_allocation_models.AllocationModelTest.test_class_session_deletion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_allocation_models.AllocationModelTest.test_create_allocation">
+<span class="sig-name descname"><span class="pre">test_create_allocation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_allocation_models.html#AllocationModelTest.test_create_allocation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_allocation_models.AllocationModelTest.test_create_allocation" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_allocation_models.AllocationModelTest.test_demonstrator_deletion">
+<span class="sig-name descname"><span class="pre">test_demonstrator_deletion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_allocation_models.html#AllocationModelTest.test_demonstrator_deletion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_allocation_models.AllocationModelTest.test_demonstrator_deletion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.models.test_allocation_models.AllocationSignalTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.models.test_allocation_models.</span></span><span class="sig-name descname"><span class="pre">AllocationSignalTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_allocation_models.html#AllocationSignalTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_allocation_models.AllocationSignalTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>AllocationSignalTest</cite> class contains test cases for signals related to the <cite>Allocation</cite> model in the Django application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment, creating instances of <cite>Demonstrator</cite>, <cite>Lecturer</cite>, <cite>Semester</cite>, <cite>Module</cite>, <cite>ModuleSession</cite>, <cite>Allocation</cite>, and <cite>AllocationDomain</cite>.</p></li>
+<li><p><strong>test_demonstrator_deletion_signal</strong> (<em>Method</em>) -- Tests that the appropriate signal is sent and handled when a <cite>Demonstrator</cite> is deleted, ensuring that related <cite>Allocation</cite> instances are updated correctly.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_allocation_models.AllocationSignalTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_allocation_models.html#AllocationSignalTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_allocation_models.AllocationSignalTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_allocation_models.AllocationSignalTest.test_demonstrator_deletion_signal">
+<span class="sig-name descname"><span class="pre">test_demonstrator_deletion_signal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_filter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_allocation_models.html#AllocationSignalTest.test_demonstrator_deletion_signal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_allocation_models.AllocationSignalTest.test_demonstrator_deletion_signal" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-tests.models.test_classes_models">
+<span id="tests-models-test-classes-models-module"></span><h2>tests.models.test_classes_models module<a class="headerlink" href="#module-tests.models.test_classes_models" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.CompetencyModelTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.models.test_classes_models.</span></span><span class="sig-name descname"><span class="pre">CompetencyModelTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#CompetencyModelTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.CompetencyModelTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>CompetencyModelTest</cite> class contains test cases for the <cite>Competency</cite> model in the Django application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment, creating instances of <cite>Demonstrator</cite>, <cite>Skill</cite>, and <cite>Competency</cite>.</p></li>
+<li><p><strong>test_create_competency</strong> (<em>Method</em>) -- Tests the creation of a <cite>Competency</cite> instance and verifies that it is saved correctly.</p></li>
+<li><p><strong>test_unique_together</strong> (<em>Method</em>) -- Tests the unique constraint on the <cite>skill</cite> and <cite>demonstrator</cite> fields to ensure duplicate competencies cannot be created.</p></li>
+<li><p><strong>test_verbose_name</strong> (<em>Method</em>) -- Tests the verbose name for the plural form of <cite>Competency</cite>.</p></li>
+<li><p><strong>test_skill_deletion</strong> (<em>Method</em>) -- Tests the behavior when the associated skill is deleted, ensuring the competency is also deleted.</p></li>
+<li><p><strong>test_demonstrator_deletion</strong> (<em>Method</em>) -- Tests the behavior when the associated demonstrator is deleted, ensuring the competency is also deleted.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.CompetencyModelTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#CompetencyModelTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.CompetencyModelTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.CompetencyModelTest.test_create_competency">
+<span class="sig-name descname"><span class="pre">test_create_competency</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#CompetencyModelTest.test_create_competency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.CompetencyModelTest.test_create_competency" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.CompetencyModelTest.test_demonstrator_deletion">
+<span class="sig-name descname"><span class="pre">test_demonstrator_deletion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#CompetencyModelTest.test_demonstrator_deletion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.CompetencyModelTest.test_demonstrator_deletion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.CompetencyModelTest.test_skill_deletion">
+<span class="sig-name descname"><span class="pre">test_skill_deletion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#CompetencyModelTest.test_skill_deletion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.CompetencyModelTest.test_skill_deletion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.CompetencyModelTest.test_unique_together">
+<span class="sig-name descname"><span class="pre">test_unique_together</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#CompetencyModelTest.test_unique_together"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.CompetencyModelTest.test_unique_together" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.CompetencyModelTest.test_verbose_name">
+<span class="sig-name descname"><span class="pre">test_verbose_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#CompetencyModelTest.test_verbose_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.CompetencyModelTest.test_verbose_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleModelTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.models.test_classes_models.</span></span><span class="sig-name descname"><span class="pre">ModuleModelTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleModelTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleModelTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>ModuleModelTest</cite> class contains test cases for the <cite>Module</cite> model in the Django application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment, creating instances of <cite>Semester</cite>, <cite>Lecturer</cite>, and <cite>Module</cite>.</p></li>
+<li><p><strong>test_create_module</strong> (<em>Method</em>) -- Tests the creation of a <cite>Module</cite> instance and verifies that it is saved correctly.</p></li>
+<li><p><strong>test_formatted_lecturer_name</strong> (<em>Method</em>) -- Tests the <cite>formatted_lecturer_name</cite> method to ensure it returns the correct formatted name of the lecturer.</p></li>
+<li><p><strong>test_formatted_semester</strong> (<em>Method</em>) -- Tests the <cite>formatted_semester</cite> method to ensure it returns the correct formatted semester.</p></li>
+<li><p><strong>test_get_session_types</strong> (<em>Method</em>) -- Tests the <cite>get_session_types</cite> method to ensure it returns the correct session types associated with the module.</p></li>
+<li><p><strong>test_get_schedule</strong> (<em>Method</em>) -- Tests the <cite>get_schedule</cite> method to ensure it returns the correct schedule information.</p></li>
+<li><p><strong>test_has_conflict</strong> (<em>Method</em>) -- Tests the <cite>has_conflict</cite> method to ensure it correctly identifies scheduling conflicts.</p></li>
+<li><p><strong>test_count_sessions</strong> (<em>Method</em>) -- Tests the <cite>count_sessions</cite> method to ensure it correctly counts the number of sessions and schedules.</p></li>
+<li><p><strong>test_update_lecturer_availability</strong> (<em>Method</em>) -- Tests the <cite>update_lecturer_availability</cite> method to ensure it updates the lecturer's availability correctly.</p></li>
+<li><p><strong>test_lecturer_deletion</strong> (<em>Method</em>) -- Tests the behavior when the associated lecturer is deleted.</p></li>
+<li><p><strong>test_semester_deletion</strong> (<em>Method</em>) -- Tests the behavior when the associated semester is deleted, ensuring it raises a <cite>ProtectedError</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleModelTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleModelTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleModelTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleModelTest.test_count_sessions">
+<span class="sig-name descname"><span class="pre">test_count_sessions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleModelTest.test_count_sessions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleModelTest.test_count_sessions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleModelTest.test_create_module">
+<span class="sig-name descname"><span class="pre">test_create_module</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleModelTest.test_create_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleModelTest.test_create_module" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleModelTest.test_formatted_lecturer_name">
+<span class="sig-name descname"><span class="pre">test_formatted_lecturer_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleModelTest.test_formatted_lecturer_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleModelTest.test_formatted_lecturer_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleModelTest.test_formatted_semester">
+<span class="sig-name descname"><span class="pre">test_formatted_semester</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleModelTest.test_formatted_semester"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleModelTest.test_formatted_semester" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleModelTest.test_get_schedule">
+<span class="sig-name descname"><span class="pre">test_get_schedule</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleModelTest.test_get_schedule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleModelTest.test_get_schedule" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleModelTest.test_get_session_types">
+<span class="sig-name descname"><span class="pre">test_get_session_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleModelTest.test_get_session_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleModelTest.test_get_session_types" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleModelTest.test_has_conflict">
+<span class="sig-name descname"><span class="pre">test_has_conflict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleModelTest.test_has_conflict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleModelTest.test_has_conflict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleModelTest.test_lecturer_deletion">
+<span class="sig-name descname"><span class="pre">test_lecturer_deletion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleModelTest.test_lecturer_deletion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleModelTest.test_lecturer_deletion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleModelTest.test_semester_deletion">
+<span class="sig-name descname"><span class="pre">test_semester_deletion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleModelTest.test_semester_deletion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleModelTest.test_semester_deletion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleModelTest.test_update_lecturer_availability">
+<span class="sig-name descname"><span class="pre">test_update_lecturer_availability</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleModelTest.test_update_lecturer_availability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleModelTest.test_update_lecturer_availability" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleSessionModelTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.models.test_classes_models.</span></span><span class="sig-name descname"><span class="pre">ModuleSessionModelTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleSessionModelTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleSessionModelTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>ModuleSessionModelTest</cite> class contains test cases for the <cite>ModuleSession</cite> model in the Django application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment, creating instances of <cite>Semester</cite>, <cite>Lecturer</cite>, <cite>Module</cite>, and <cite>ModuleSession</cite>.</p></li>
+<li><p><strong>test_create_module_session</strong> (<em>Method</em>) -- Tests the creation of a <cite>ModuleSession</cite> instance and verifies that it is saved correctly.</p></li>
+<li><p><strong>test_get_class_code</strong> (<em>Method</em>) -- Tests the <cite>get_class_code</cite> method to ensure it returns the correct class code.</p></li>
+<li><p><strong>test_get_timeslots</strong> (<em>Method</em>) -- Tests the <cite>get_timeslots</cite> method to ensure it returns the correct timeslots associated with the session.</p></li>
+<li><p><strong>test_ensure_correct_allocation</strong> (<em>Method</em>) -- Tests the <cite>ensure_correct_allocation</cite> method to ensure it correctly allocates demonstrators.</p></li>
+<li><p><strong>test_custom_save</strong> (<em>Method</em>) -- Tests the custom save method to ensure it correctly saves the <cite>ModuleSession</cite> and creates the necessary allocations.</p></li>
+<li><p><strong>test_module_deletion</strong> (<em>Method</em>) -- Tests the behavior when the associated module is deleted, ensuring it raises a <cite>ProtectedError</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleSessionModelTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleSessionModelTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleSessionModelTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleSessionModelTest.test_create_module_session">
+<span class="sig-name descname"><span class="pre">test_create_module_session</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleSessionModelTest.test_create_module_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleSessionModelTest.test_create_module_session" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleSessionModelTest.test_custom_save">
+<span class="sig-name descname"><span class="pre">test_custom_save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleSessionModelTest.test_custom_save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleSessionModelTest.test_custom_save" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleSessionModelTest.test_ensure_correct_allocation">
+<span class="sig-name descname"><span class="pre">test_ensure_correct_allocation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleSessionModelTest.test_ensure_correct_allocation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleSessionModelTest.test_ensure_correct_allocation" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleSessionModelTest.test_get_class_code">
+<span class="sig-name descname"><span class="pre">test_get_class_code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleSessionModelTest.test_get_class_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleSessionModelTest.test_get_class_code" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleSessionModelTest.test_get_timeslots">
+<span class="sig-name descname"><span class="pre">test_get_timeslots</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleSessionModelTest.test_get_timeslots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleSessionModelTest.test_get_timeslots" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.ModuleSessionModelTest.test_module_deletion">
+<span class="sig-name descname"><span class="pre">test_module_deletion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#ModuleSessionModelTest.test_module_deletion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.ModuleSessionModelTest.test_module_deletion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.RequirementSkillModelTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.models.test_classes_models.</span></span><span class="sig-name descname"><span class="pre">RequirementSkillModelTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#RequirementSkillModelTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.RequirementSkillModelTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>RequirementSkillModelTest</cite> class contains test cases for the <cite>RequirementSkill</cite> model in the Django application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment, creating instances of <cite>Semester</cite>, <cite>Lecturer</cite>, <cite>Module</cite>, <cite>ModuleSession</cite>, <cite>Skill</cite>, and <cite>RequirementSkill</cite>.</p></li>
+<li><p><strong>test_create_requirement</strong> (<em>Method</em>) -- Tests the creation of a <cite>RequirementSkill</cite> instance and verifies that it is saved correctly.</p></li>
+<li><p><strong>test_unique_together</strong> (<em>Method</em>) -- Tests the unique constraint on the <cite>class_session</cite> and <cite>skill</cite> fields to ensure duplicate requirement skills cannot be created.</p></li>
+<li><p><strong>test_skill_deletion</strong> (<em>Method</em>) -- Tests the behavior when the associated skill is deleted, ensuring it raises a <cite>ProtectedError</cite>.</p></li>
+<li><p><strong>test_class_session_deletion</strong> (<em>Method</em>) -- Tests the behavior when the associated class session is deleted, ensuring the requirement skill is also deleted.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.RequirementSkillModelTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#RequirementSkillModelTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.RequirementSkillModelTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.RequirementSkillModelTest.test_class_session_deletion">
+<span class="sig-name descname"><span class="pre">test_class_session_deletion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#RequirementSkillModelTest.test_class_session_deletion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.RequirementSkillModelTest.test_class_session_deletion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.RequirementSkillModelTest.test_create_requirement">
+<span class="sig-name descname"><span class="pre">test_create_requirement</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#RequirementSkillModelTest.test_create_requirement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.RequirementSkillModelTest.test_create_requirement" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.RequirementSkillModelTest.test_skill_deletion">
+<span class="sig-name descname"><span class="pre">test_skill_deletion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#RequirementSkillModelTest.test_skill_deletion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.RequirementSkillModelTest.test_skill_deletion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.RequirementSkillModelTest.test_unique_together">
+<span class="sig-name descname"><span class="pre">test_unique_together</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#RequirementSkillModelTest.test_unique_together"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.RequirementSkillModelTest.test_unique_together" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.SessionScheduleModelTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.models.test_classes_models.</span></span><span class="sig-name descname"><span class="pre">SessionScheduleModelTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#SessionScheduleModelTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.SessionScheduleModelTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>SessionScheduleModelTest</cite> class contains test cases for the <cite>SessionSchedule</cite> model in the Django application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment, creating instances of <cite>Semester</cite>, <cite>Lecturer</cite>, <cite>Module</cite>, <cite>ModuleSession</cite>, <cite>Timeslot</cite>, and <cite>SessionSchedule</cite>.</p></li>
+<li><p><strong>test_create_session_schedule</strong> (<em>Method</em>) -- Tests the creation of a <cite>SessionSchedule</cite> instance and verifies that it is saved correctly.</p></li>
+<li><p><strong>test_unique_together</strong> (<em>Method</em>) -- Tests the unique constraint on the <cite>class_session</cite> and <cite>timeslot</cite> fields to ensure duplicate schedules cannot be created.</p></li>
+<li><p><strong>test_class_session_deletion</strong> (<em>Method</em>) -- Tests the behavior when the associated class session is deleted, ensuring the session schedule is also deleted.</p></li>
+<li><p><strong>test_timeslot_deletion</strong> (<em>Method</em>) -- Tests the behavior when the associated timeslot is deleted, ensuring it raises a <cite>ProtectedError</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.SessionScheduleModelTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#SessionScheduleModelTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.SessionScheduleModelTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.SessionScheduleModelTest.test_class_session_deletion">
+<span class="sig-name descname"><span class="pre">test_class_session_deletion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#SessionScheduleModelTest.test_class_session_deletion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.SessionScheduleModelTest.test_class_session_deletion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.SessionScheduleModelTest.test_create_session_schedule">
+<span class="sig-name descname"><span class="pre">test_create_session_schedule</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#SessionScheduleModelTest.test_create_session_schedule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.SessionScheduleModelTest.test_create_session_schedule" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.SessionScheduleModelTest.test_timeslot_deletion">
+<span class="sig-name descname"><span class="pre">test_timeslot_deletion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#SessionScheduleModelTest.test_timeslot_deletion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.SessionScheduleModelTest.test_timeslot_deletion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.SessionScheduleModelTest.test_unique_together">
+<span class="sig-name descname"><span class="pre">test_unique_together</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#SessionScheduleModelTest.test_unique_together"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.SessionScheduleModelTest.test_unique_together" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.SkillManagerTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.models.test_classes_models.</span></span><span class="sig-name descname"><span class="pre">SkillManagerTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#SkillManagerTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.SkillManagerTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>SkillManagerTest</cite> class contains test cases for the custom manager methods in the <cite>Skill</cite> model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>test_custom_create</strong> (<em>Method</em>) -- Tests the custom create method for the <cite>Skill</cite> model to ensure it creates skills with different levels.</p></li>
+<li><p><strong>test_value_error</strong> (<em>Method</em>) -- Tests the behavior when trying to create a skill with an invalid name, ensuring it raises a <cite>ValueError</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.SkillManagerTest.test_custom_create">
+<span class="sig-name descname"><span class="pre">test_custom_create</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#SkillManagerTest.test_custom_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.SkillManagerTest.test_custom_create" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.SkillManagerTest.test_value_error">
+<span class="sig-name descname"><span class="pre">test_value_error</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#SkillManagerTest.test_value_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.SkillManagerTest.test_value_error" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.SkillModelTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.models.test_classes_models.</span></span><span class="sig-name descname"><span class="pre">SkillModelTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#SkillModelTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.SkillModelTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>SkillModelTest</cite> class contains test cases for the <cite>Skill</cite> model in the Django application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment, creating instances of <cite>Skill</cite>.</p></li>
+<li><p><strong>test_create_skill</strong> (<em>Method</em>) -- Tests the creation of a <cite>Skill</cite> instance and verifies that it is saved correctly.</p></li>
+<li><p><strong>test_unique_together</strong> (<em>Method</em>) -- Tests the unique constraint on the <cite>name</cite> and <cite>level</cite> fields to ensure duplicate skills cannot be created.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.SkillModelTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#SkillModelTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.SkillModelTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.SkillModelTest.test_create_skill">
+<span class="sig-name descname"><span class="pre">test_create_skill</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#SkillModelTest.test_create_skill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.SkillModelTest.test_create_skill" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_classes_models.SkillModelTest.test_unique_together">
+<span class="sig-name descname"><span class="pre">test_unique_together</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_classes_models.html#SkillModelTest.test_unique_together"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_classes_models.SkillModelTest.test_unique_together" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-tests.models.test_timetable_models">
+<span id="tests-models-test-timetable-models-module"></span><h2>tests.models.test_timetable_models module<a class="headerlink" href="#module-tests.models.test_timetable_models" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.models.test_timetable_models.SemesterModelTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.models.test_timetable_models.</span></span><span class="sig-name descname"><span class="pre">SemesterModelTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_timetable_models.html#SemesterModelTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_timetable_models.SemesterModelTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>SemesterModelTest</cite> class contains test cases for the <cite>Semester</cite> model in the Django application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment, creating an instance of <cite>Semester</cite>.</p></li>
+<li><p><strong>test_semester_creation</strong> (<em>Method</em>) -- Tests the creation of a <cite>Semester</cite> instance and verifies that it is saved correctly.</p></li>
+<li><p><strong>test_semester_date_validation</strong> (<em>Method</em>) -- Tests that the start date is before the end date for a <cite>Semester</cite>.</p></li>
+<li><p><strong>test_unique_together</strong> (<em>Method</em>) -- Tests the unique constraint on the <cite>year</cite> and <cite>semester</cite> fields to ensure duplicate semesters cannot be created.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_timetable_models.SemesterModelTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_timetable_models.html#SemesterModelTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_timetable_models.SemesterModelTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_timetable_models.SemesterModelTest.test_semester_creation">
+<span class="sig-name descname"><span class="pre">test_semester_creation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_timetable_models.html#SemesterModelTest.test_semester_creation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_timetable_models.SemesterModelTest.test_semester_creation" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_timetable_models.SemesterModelTest.test_semester_date_validation">
+<span class="sig-name descname"><span class="pre">test_semester_date_validation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_timetable_models.html#SemesterModelTest.test_semester_date_validation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_timetable_models.SemesterModelTest.test_semester_date_validation" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_timetable_models.SemesterModelTest.test_unique_together">
+<span class="sig-name descname"><span class="pre">test_unique_together</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_timetable_models.html#SemesterModelTest.test_unique_together"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_timetable_models.SemesterModelTest.test_unique_together" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.models.test_timetable_models.TimeslotModelTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.models.test_timetable_models.</span></span><span class="sig-name descname"><span class="pre">TimeslotModelTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_timetable_models.html#TimeslotModelTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_timetable_models.TimeslotModelTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>TimeslotModelTest</cite> class contains test cases for the <cite>Timeslot</cite> model in the Django application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment, creating an instance of <cite>Timeslot</cite>.</p></li>
+<li><p><strong>test_timeslot_creation</strong> (<em>Method</em>) -- Tests the creation of a <cite>Timeslot</cite> instance and verifies that it is saved correctly.</p></li>
+<li><p><strong>test_timeslot_day_choices</strong> (<em>Method</em>) -- Tests that the day choices for <cite>Timeslot</cite> are correctly configured.</p></li>
+<li><p><strong>test_get_random_slot</strong> (<em>Method</em>) -- Tests the <cite>get_random_slot</cite> method to ensure it returns a random timeslot or <cite>None</cite> if no timeslots exist.</p></li>
+<li><p><strong>test_are_same_day</strong> (<em>Method</em>) -- Tests the <cite>are_same_day</cite> method to ensure it correctly identifies if all timeslots are on the same day.</p></li>
+<li><p><strong>test_get_next</strong> (<em>Method</em>) -- Tests the <cite>get_next</cite> method to ensure it returns the correct next timeslot.</p></li>
+<li><p><strong>test_unique_together</strong> (<em>Method</em>) -- Tests the unique constraint on the <cite>day</cite>, <cite>start_time</cite>, and <cite>end_time</cite> fields to ensure duplicate timeslots cannot be created.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_timetable_models.TimeslotModelTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_timetable_models.html#TimeslotModelTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_timetable_models.TimeslotModelTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_timetable_models.TimeslotModelTest.test_are_same_day">
+<span class="sig-name descname"><span class="pre">test_are_same_day</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_timetable_models.html#TimeslotModelTest.test_are_same_day"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_timetable_models.TimeslotModelTest.test_are_same_day" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_timetable_models.TimeslotModelTest.test_get_next">
+<span class="sig-name descname"><span class="pre">test_get_next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_timetable_models.html#TimeslotModelTest.test_get_next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_timetable_models.TimeslotModelTest.test_get_next" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_timetable_models.TimeslotModelTest.test_get_random_slot">
+<span class="sig-name descname"><span class="pre">test_get_random_slot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_timetable_models.html#TimeslotModelTest.test_get_random_slot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_timetable_models.TimeslotModelTest.test_get_random_slot" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_timetable_models.TimeslotModelTest.test_timeslot_creation">
+<span class="sig-name descname"><span class="pre">test_timeslot_creation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_timetable_models.html#TimeslotModelTest.test_timeslot_creation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_timetable_models.TimeslotModelTest.test_timeslot_creation" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_timetable_models.TimeslotModelTest.test_timeslot_day_choices">
+<span class="sig-name descname"><span class="pre">test_timeslot_day_choices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_timetable_models.html#TimeslotModelTest.test_timeslot_day_choices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_timetable_models.TimeslotModelTest.test_timeslot_day_choices" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_timetable_models.TimeslotModelTest.test_unique_together">
+<span class="sig-name descname"><span class="pre">test_unique_together</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_timetable_models.html#TimeslotModelTest.test_unique_together"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_timetable_models.TimeslotModelTest.test_unique_together" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-tests.models.test_users_models">
+<span id="tests-models-test-users-models-module"></span><h2>tests.models.test_users_models module<a class="headerlink" href="#module-tests.models.test_users_models" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.models.test_users_models.DemonstratorModelTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.models.test_users_models.</span></span><span class="sig-name descname"><span class="pre">DemonstratorModelTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#DemonstratorModelTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.DemonstratorModelTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>DemonstratorModelTest</cite> class contains test cases for the <cite>Demonstrator</cite> model in the Django application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment, creating instances of <cite>User</cite> and <cite>Demonstrator</cite>.</p></li>
+<li><p><strong>test_get_first_name</strong> (<em>Method</em>) -- Tests the <cite>get_first_name</cite> method to ensure it returns the correct first name of the demonstrator.</p></li>
+<li><p><strong>test_get_last_name</strong> (<em>Method</em>) -- Tests the <cite>get_last_name</cite> method to ensure it returns the correct last name of the demonstrator.</p></li>
+<li><p><strong>test_is_available</strong> (<em>Method</em>) -- Tests the <cite>is_available</cite> method to ensure it correctly identifies if the demonstrator is available for a given timeslot.</p></li>
+<li><p><strong>test_create_demonstrator_from_user</strong> (<em>Method</em>) -- Tests the creation of a <cite>Demonstrator</cite> instance from a <cite>User</cite> and verifies that it is associated correctly.</p></li>
+<li><p><strong>test_assign_user_demonstrator_role</strong> (<em>Method</em>) -- Tests the assignment of the demonstrator role to a user.</p></li>
+<li><p><strong>test_delete_demonstrator</strong> (<em>Method</em>) -- Tests the deletion of a demonstrator and ensures that the role is removed from the user.</p></li>
+<li><p><strong>test_remove_demonstrator_role_from_user</strong> (<em>Method</em>) -- Tests the removal of the demonstrator role from a user.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.DemonstratorModelTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#DemonstratorModelTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.DemonstratorModelTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.DemonstratorModelTest.test_assign_user_demonstrator_role">
+<span class="sig-name descname"><span class="pre">test_assign_user_demonstrator_role</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#DemonstratorModelTest.test_assign_user_demonstrator_role"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.DemonstratorModelTest.test_assign_user_demonstrator_role" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.DemonstratorModelTest.test_create_demonstrator_from_user">
+<span class="sig-name descname"><span class="pre">test_create_demonstrator_from_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#DemonstratorModelTest.test_create_demonstrator_from_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.DemonstratorModelTest.test_create_demonstrator_from_user" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.DemonstratorModelTest.test_delete_demonstrator">
+<span class="sig-name descname"><span class="pre">test_delete_demonstrator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#DemonstratorModelTest.test_delete_demonstrator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.DemonstratorModelTest.test_delete_demonstrator" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.DemonstratorModelTest.test_get_first_name">
+<span class="sig-name descname"><span class="pre">test_get_first_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#DemonstratorModelTest.test_get_first_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.DemonstratorModelTest.test_get_first_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.DemonstratorModelTest.test_get_last_name">
+<span class="sig-name descname"><span class="pre">test_get_last_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#DemonstratorModelTest.test_get_last_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.DemonstratorModelTest.test_get_last_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.DemonstratorModelTest.test_is_available">
+<span class="sig-name descname"><span class="pre">test_is_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#DemonstratorModelTest.test_is_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.DemonstratorModelTest.test_is_available" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.DemonstratorModelTest.test_remove_demonstrator_role_from_user">
+<span class="sig-name descname"><span class="pre">test_remove_demonstrator_role_from_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#DemonstratorModelTest.test_remove_demonstrator_role_from_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.DemonstratorModelTest.test_remove_demonstrator_role_from_user" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.models.test_users_models.LecturerModelTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.models.test_users_models.</span></span><span class="sig-name descname"><span class="pre">LecturerModelTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#LecturerModelTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.LecturerModelTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>LecturerModelTest</cite> class contains test cases for the <cite>Lecturer</cite> model in the Django application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment, creating instances of <cite>User</cite> and <cite>Lecturer</cite>.</p></li>
+<li><p><strong>test_get_first_name</strong> (<em>Method</em>) -- Tests the <cite>get_first_name</cite> method to ensure it returns the correct first name of the lecturer.</p></li>
+<li><p><strong>test_get_last_name</strong> (<em>Method</em>) -- Tests the <cite>get_last_name</cite> method to ensure it returns the correct last name of the lecturer.</p></li>
+<li><p><strong>test_is_available</strong> (<em>Method</em>) -- Tests the <cite>is_available</cite> method to ensure it correctly identifies if the lecturer is available for a given timeslot.</p></li>
+<li><p><strong>test_create_lecturer_from_user</strong> (<em>Method</em>) -- Tests the creation of a <cite>Lecturer</cite> instance from a <cite>User</cite> and verifies that it is associated correctly.</p></li>
+<li><p><strong>test_assign_user_lecturer_role</strong> (<em>Method</em>) -- Tests the assignment of the lecturer role to a user.</p></li>
+<li><p><strong>test_delete_lecturer</strong> (<em>Method</em>) -- Tests the deletion of a lecturer and ensures that the role is removed from the user.</p></li>
+<li><p><strong>test_remove_lecturer_role_from_user</strong> (<em>Method</em>) -- Tests the removal of the lecturer role from a user.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.LecturerModelTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#LecturerModelTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.LecturerModelTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.LecturerModelTest.test_assign_user_lecturer_role">
+<span class="sig-name descname"><span class="pre">test_assign_user_lecturer_role</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#LecturerModelTest.test_assign_user_lecturer_role"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.LecturerModelTest.test_assign_user_lecturer_role" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.LecturerModelTest.test_create_lecturer_from_user">
+<span class="sig-name descname"><span class="pre">test_create_lecturer_from_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#LecturerModelTest.test_create_lecturer_from_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.LecturerModelTest.test_create_lecturer_from_user" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.LecturerModelTest.test_delete_lecturer">
+<span class="sig-name descname"><span class="pre">test_delete_lecturer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#LecturerModelTest.test_delete_lecturer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.LecturerModelTest.test_delete_lecturer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.LecturerModelTest.test_get_first_name">
+<span class="sig-name descname"><span class="pre">test_get_first_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#LecturerModelTest.test_get_first_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.LecturerModelTest.test_get_first_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.LecturerModelTest.test_get_last_name">
+<span class="sig-name descname"><span class="pre">test_get_last_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#LecturerModelTest.test_get_last_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.LecturerModelTest.test_get_last_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.LecturerModelTest.test_is_available">
+<span class="sig-name descname"><span class="pre">test_is_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#LecturerModelTest.test_is_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.LecturerModelTest.test_is_available" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.LecturerModelTest.test_remove_lecturer_role_from_user">
+<span class="sig-name descname"><span class="pre">test_remove_lecturer_role_from_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#LecturerModelTest.test_remove_lecturer_role_from_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.LecturerModelTest.test_remove_lecturer_role_from_user" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.models.test_users_models.UserAvailabilityModelTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.models.test_users_models.</span></span><span class="sig-name descname"><span class="pre">UserAvailabilityModelTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#UserAvailabilityModelTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.UserAvailabilityModelTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>UserAvailabilityModelTest</cite> class contains test cases for the <cite>UserAvailability</cite> model in the Django application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment, creating instances of <cite>User</cite>, <cite>Timeslot</cite>, and <cite>UserAvailability</cite>.</p></li>
+<li><p><strong>test_create_user_availability</strong> (<em>Method</em>) -- Tests the creation of a <cite>UserAvailability</cite> instance and verifies that it is saved correctly.</p></li>
+<li><p><strong>test_availability_status</strong> (<em>Method</em>) -- Tests the <cite>is_available</cite> field to ensure it correctly reflects the availability status of the user.</p></li>
+<li><p><strong>test_unique_together</strong> (<em>Method</em>) -- Tests the unique constraint on the <cite>user</cite> and <cite>timeslot</cite> fields to ensure duplicate availabilities cannot be created.</p></li>
+<li><p><strong>test_user_deletion</strong> (<em>Method</em>) -- Tests the behavior when the associated user is deleted, ensuring the availability record is also deleted.</p></li>
+<li><p><strong>test_timeslot_deletion</strong> (<em>Method</em>) -- Tests the behavior when the associated timeslot is deleted, ensuring the availability record is also deleted.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.UserAvailabilityModelTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#UserAvailabilityModelTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.UserAvailabilityModelTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.UserAvailabilityModelTest.test_availability_status">
+<span class="sig-name descname"><span class="pre">test_availability_status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#UserAvailabilityModelTest.test_availability_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.UserAvailabilityModelTest.test_availability_status" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.UserAvailabilityModelTest.test_create_user_availability">
+<span class="sig-name descname"><span class="pre">test_create_user_availability</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#UserAvailabilityModelTest.test_create_user_availability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.UserAvailabilityModelTest.test_create_user_availability" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.UserAvailabilityModelTest.test_timeslot_deletion">
+<span class="sig-name descname"><span class="pre">test_timeslot_deletion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#UserAvailabilityModelTest.test_timeslot_deletion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.UserAvailabilityModelTest.test_timeslot_deletion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.UserAvailabilityModelTest.test_unique_together">
+<span class="sig-name descname"><span class="pre">test_unique_together</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#UserAvailabilityModelTest.test_unique_together"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.UserAvailabilityModelTest.test_unique_together" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.UserAvailabilityModelTest.test_user_deletion">
+<span class="sig-name descname"><span class="pre">test_user_deletion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#UserAvailabilityModelTest.test_user_deletion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.UserAvailabilityModelTest.test_user_deletion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.models.test_users_models.UserModelTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.models.test_users_models.</span></span><span class="sig-name descname"><span class="pre">UserModelTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#UserModelTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.UserModelTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>The <cite>UserModelTest</cite> class contains test cases for the <cite>User</cite> model in the Django application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setUp</strong> (<em>Method</em>) -- Initializes the test environment, creating instances of <cite>User</cite> and <cite>Timeslot</cite>.</p></li>
+<li><p><strong>test_create_user</strong> (<em>Method</em>) -- Tests the creation of a <cite>User</cite> instance and verifies that it is saved correctly.</p></li>
+<li><p><strong>test_str</strong> (<em>Method</em>) -- Tests the <cite>__str__</cite> method to ensure it returns the correct string representation of the <cite>User</cite>.</p></li>
+<li><p><strong>test_is_available</strong> (<em>Method</em>) -- Tests the <cite>is_available</cite> method to ensure it correctly identifies if the user is available for a given timeslot.</p></li>
+<li><p><strong>test_fake_user</strong> (<em>Method</em>) -- Tests the <cite>is_fake</cite> field to ensure it correctly marks a user as fake.</p></li>
+<li><p><strong>test_unique_email</strong> (<em>Method</em>) -- Tests the unique constraint on the <cite>email</cite> field to ensure duplicate emails cannot be created.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.UserModelTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#UserModelTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.UserModelTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.UserModelTest.test_create_user">
+<span class="sig-name descname"><span class="pre">test_create_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#UserModelTest.test_create_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.UserModelTest.test_create_user" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.UserModelTest.test_fake_user">
+<span class="sig-name descname"><span class="pre">test_fake_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#UserModelTest.test_fake_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.UserModelTest.test_fake_user" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.UserModelTest.test_is_available">
+<span class="sig-name descname"><span class="pre">test_is_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#UserModelTest.test_is_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.UserModelTest.test_is_available" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.UserModelTest.test_str">
+<span class="sig-name descname"><span class="pre">test_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#UserModelTest.test_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.UserModelTest.test_str" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.UserModelTest.test_unique_email">
+<span class="sig-name descname"><span class="pre">test_unique_email</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#UserModelTest.test_unique_email"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.UserModelTest.test_unique_email" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.models.test_users_models.UserSignalsTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.models.test_users_models.</span></span><span class="sig-name descname"><span class="pre">UserSignalsTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#UserSignalsTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.UserSignalsTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.djangoproject.com/en/stable/topics/testing/tools/#django.test.TestCase" title="(in Django v5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.UserSignalsTest.test_add_demonstrator_role_on_user_save">
+<span class="sig-name descname"><span class="pre">test_add_demonstrator_role_on_user_save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#UserSignalsTest.test_add_demonstrator_role_on_user_save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.UserSignalsTest.test_add_demonstrator_role_on_user_save" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.models.test_users_models.UserSignalsTest.test_add_lecturer_role_on_user_create">
+<span class="sig-name descname"><span class="pre">test_add_lecturer_role_on_user_create</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/models/test_users_models.html#UserSignalsTest.test_add_lecturer_role_on_user_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.models.test_users_models.UserSignalsTest.test_add_lecturer_role_on_user_create" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-tests.models">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tests.models" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tests.allocation_eval.html" class="btn btn-neutral float-left" title="tests.allocation_eval package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests.utils.html" class="btn btn-neutral float-right" title="tests.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

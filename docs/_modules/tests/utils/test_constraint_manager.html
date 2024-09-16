@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Python" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.utils.test_constraint_manager &mdash; Demonstrator Timetabling Tool 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=42ea76e9"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Demonstrator Timetabling Tool
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Environment Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">How to Populate Database with Test Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../url_endpoint.html">URL Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../known_issues.html">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">API References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Demonstrator Timetabling Tool</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tests.utils.test_constraint_manager</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tests.utils.test_constraint_manager</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">tests</span>
+<span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
+<span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">allocations.models</span> <span class="kn">import</span> <span class="n">Allocation</span>
+<span class="kn">from</span> <span class="nn">users.models</span> <span class="kn">import</span> <span class="n">UserAvailability</span><span class="p">,</span> <span class="n">Demonstrator</span><span class="p">,</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">classes.models</span> <span class="kn">import</span> <span class="n">Competency</span><span class="p">,</span> <span class="n">RequirementSkill</span><span class="p">,</span> <span class="n">Module</span><span class="p">,</span> <span class="n">ModuleSession</span><span class="p">,</span> <span class="n">SessionSchedule</span><span class="p">,</span> <span class="n">Skill</span>
+<span class="kn">from</span> <span class="nn">timetable.models</span> <span class="kn">import</span> <span class="n">Timeslot</span><span class="p">,</span> <span class="n">Semester</span>
+<span class="kn">from</span> <span class="nn">allocations.utils</span> <span class="kn">import</span> <span class="n">constraint_manager</span> <span class="k">as</span> <span class="n">cm</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
+
+<div class="viewcode-block" id="BaseConstraintManagerTest">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.BaseConstraintManagerTest">[docs]</a>
+<span class="k">class</span> <span class="nc">BaseConstraintManagerTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `BaseConstraintManagerTest` class provides the foundational setup for all constraint manager-related tests, including the creation of test users, demonstrators, timeslots, skills, competencies, and module sessions.</span>
+
+<span class="sd">    :param setUp: Initializes the test environment with mock data for users, demonstrators, skills, competencies, timeslots, user availability, and module sessions.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="BaseConstraintManagerTest.setUp">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.BaseConstraintManagerTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>      
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test Timeslots</span>
+<span class="sd">        0: Day 0, 0900, 1000</span>
+<span class="sd">        1: Day 0, 1000, 1100</span>
+<span class="sd">        2: Day 0, 1100, 1200</span>
+<span class="sd">        3: Day 0, 1200, 1300</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">timeslots</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="n">timeslots</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Timeslot</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">day</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                                                   <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">9</span><span class="p">),</span>
+                                                   <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">10</span><span class="p">))</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test Skills</span>
+<span class="sd">        1-3: Skill 1 (Beginner -&gt; Expert)</span>
+<span class="sd">        4-6: Skill 2 (Beginner -&gt; Expert)</span>
+<span class="sd">        Key (name,level)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">skills</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">skill_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span> <span class="s2">&quot;Skill2&quot;</span><span class="p">]):</span>
+            <span class="n">skill_set</span> <span class="o">=</span> <span class="n">Skill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">skill_name</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">skill</span> <span class="ow">in</span> <span class="n">skill_set</span><span class="p">:</span>
+                <span class="n">skills</span><span class="p">[(</span><span class="n">skill_name</span><span class="p">,</span><span class="n">skill</span><span class="o">.</span><span class="n">level</span><span class="p">)]</span> <span class="o">=</span> <span class="n">skill</span>
+<span class="w">    </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test Demonstrators</span>
+<span class="sd">        Dem 0: Expert at Skill 1, Available (1,2,3,4)</span>
+<span class="sd">        Dem 1: Beginner at Skill 1, Available (1,2,3,4)</span>
+<span class="sd">        Dem 2: Intermediate at Skill 1, Available (1,2,3,4)</span>
+<span class="sd">        Dem 3: Expert at Skill 1 and 2, Available (1,2,3,4)</span>
+<span class="sd">        Dem 3: Beginner at Skill 1 and 2, Available (1,2,3,4)</span>
+<span class="sd">        Dem 4: Expert at Skill 2, Available  (1,2,3,4)</span>
+<span class="sd">        Dem 5: Expert at Skill 1, Available (-,-,-,-)</span>
+<span class="sd">        Dem 6: Expert at Skill 1, Available (1,2,-,-)</span>
+<span class="sd">        Dem 7: Expert at Skill 1, Available (1,-,-,-)</span>
+<span class="sd">        Dem 8: Expert at Skill 1, Available (-,-,3,4)</span>
+<span class="sd">        Dem 9: Expert at Skill 1 and 2, Available (1,2,3,4) pre-allocated</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">faker</span> <span class="o">=</span> <span class="n">Faker</span><span class="p">()</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dems</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+            <span class="n">users</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">username</span> <span class="o">=</span> <span class="n">faker</span><span class="o">.</span><span class="n">user_name</span><span class="p">(),</span>
+                <span class="n">email</span> <span class="o">=</span> <span class="n">faker</span><span class="o">.</span><span class="n">email</span><span class="p">(),</span>
+                <span class="n">first_name</span> <span class="o">=</span> <span class="n">faker</span><span class="o">.</span><span class="n">first_name</span><span class="p">(),</span>
+                <span class="n">last_name</span> <span class="o">=</span> <span class="n">faker</span><span class="o">.</span><span class="n">last_name</span><span class="p">(),</span>
+                <span class="n">is_demonstrator</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Demonstrator</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user</span> <span class="o">=</span> <span class="n">users</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Assigning UserAvailability and Competency</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dem_attributes</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">0</span><span class="p">:</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">[(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]],</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">[(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]],</span>
+            <span class="mi">2</span><span class="p">:</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">[(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]],</span>
+            <span class="mi">3</span><span class="p">:</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">[(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Skill2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]],</span>
+            <span class="mi">4</span><span class="p">:</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">[(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Skill2&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]],</span>
+            <span class="mi">5</span><span class="p">:</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">[(</span><span class="s2">&quot;Skill2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]],</span>
+            <span class="mi">6</span><span class="p">:</span> <span class="p">[(),</span> <span class="p">[(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]],</span>
+            <span class="mi">7</span><span class="p">:</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">[(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]],</span>
+            <span class="mi">8</span><span class="p">:</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">[(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]],</span>
+            <span class="mi">9</span><span class="p">:</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">[(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]],</span>
+            <span class="mi">10</span><span class="p">:</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">[(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Skill2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]],</span>
+        <span class="p">}</span>
+        
+        <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">dem_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c1">#Assigning UserAvailability</span>
+            <span class="k">for</span> <span class="n">timeslot_key</span> <span class="ow">in</span> <span class="n">timeslots</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">user_availability</span><span class="p">,</span> <span class="n">created</span> <span class="o">=</span> <span class="n">UserAvailability</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">users</span><span class="p">[</span><span class="n">dem_key</span><span class="p">],</span>
+                                                                                    <span class="n">timeslot</span><span class="o">=</span><span class="n">timeslots</span><span class="p">[</span><span class="n">timeslot_key</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">timeslot_key</span> <span class="ow">in</span> <span class="n">dem_attributes</span><span class="p">[</span><span class="n">dem_key</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="k">pass</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">user_availability</span><span class="o">.</span><span class="n">is_available</span><span class="o">=</span><span class="kc">False</span>
+                    <span class="n">user_availability</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                    
+            
+            <span class="c1">#Assigning Competency</span>
+            <span class="k">for</span> <span class="n">skill</span> <span class="ow">in</span> <span class="n">dem_attributes</span><span class="p">[</span><span class="n">dem_key</span><span class="p">][</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">Competency</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">skill</span> <span class="o">=</span> <span class="n">skills</span><span class="p">[</span><span class="n">skill</span><span class="p">],</span>
+                                          <span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="n">dem_key</span><span class="p">])</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test Module Sessions</span>
+<span class="sd">        0: Requires (&quot;Skill1&quot;,2). Scheduled at (1,2) Requires 1 Demonstrator(s)</span>
+<span class="sd">        1: Requires (&quot;Skill1&quot;,2). Scheduled at (1,2) Requires 2 Demonstrator(s)</span>
+<span class="sd">        2: Requires (&quot;Skill1&quot;,0). Scheduled at (1,2) Requires 1 Demonstrator(s)</span>
+<span class="sd">        3: Requires (&quot;Skill1&quot;,0). Scheduled at (1,2) Requires 2 Demonstrator(s)</span>
+<span class="sd">        4: Requires (&quot;Skill1&quot;,2) and (&quot;Skill2&quot;,2). Scheduled at (1,2) Requires 1 Demonstrator(s)</span>
+<span class="sd">        5: Requires (&quot;Skill1&quot;,2) and (&quot;Skill2&quot;,2). Scheduled at (1,2) Requires 2 Demonstrator(s)</span>
+<span class="sd">        6: Requires (&quot;Skill1&quot;,0) and (&quot;Skill2&quot;,0). Scheduled at (1,2) Requires 1 Demonstrator(s)</span>
+<span class="sd">        7: Requires (&quot;Skill1&quot;,0) and (&quot;Skill2&quot;,0). Scheduled at (1,2) Requires 2 Demonstrator(s)</span>
+<span class="sd">        </span>
+<span class="sd">        pre_assigned: Requires Requires (&quot;Skill1&quot;,2). Scheduled at (1,2,3,4) Requires 1 Demonstrator(s). Assigned to Dem 9</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">module_attributes</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">0</span><span class="p">:</span> <span class="p">([(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">)],</span><span class="mi">1</span><span class="p">),</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="p">([(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">)],</span><span class="mi">2</span><span class="p">),</span>
+            <span class="mi">2</span><span class="p">:</span> <span class="p">([(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">)],</span><span class="mi">1</span><span class="p">),</span>
+            <span class="mi">3</span><span class="p">:</span> <span class="p">([(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">)],</span><span class="mi">2</span><span class="p">),</span>
+            <span class="mi">4</span><span class="p">:</span> <span class="p">([(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="s2">&quot;Skill2&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">)],</span><span class="mi">1</span><span class="p">),</span>
+            <span class="mi">5</span><span class="p">:</span> <span class="p">([(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="s2">&quot;Skill2&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">)],</span><span class="mi">2</span><span class="p">),</span>
+            <span class="mi">6</span><span class="p">:</span> <span class="p">([(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="s2">&quot;Skill2&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">)],</span><span class="mi">1</span><span class="p">),</span>
+            <span class="mi">7</span><span class="p">:</span> <span class="p">([(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="s2">&quot;Skill2&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">)],</span><span class="mi">2</span><span class="p">)</span>
+        <span class="p">}</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">semester</span> <span class="o">=</span> <span class="n">Semester</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">year</span> <span class="o">=</span> <span class="mi">2024</span><span class="p">,</span> <span class="n">semester</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">Module</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_code</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Test Module&#39;</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">semester</span><span class="p">)</span>
+
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">module_attributes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="n">session</span><span class="p">]</span> <span class="o">=</span> <span class="n">ModuleSession</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">,</span>
+                                                                        <span class="n">session_type</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span>
+                                                                        <span class="n">required_demonstrator</span> <span class="o">=</span> <span class="n">module_attributes</span><span class="p">[</span><span class="n">session</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+            
+            <span class="c1">#Create skill requirements</span>
+            <span class="k">for</span> <span class="n">skill</span> <span class="ow">in</span> <span class="n">module_attributes</span><span class="p">[</span><span class="n">session</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">RequirementSkill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="n">session</span><span class="p">],</span>
+                                                <span class="n">skill</span> <span class="o">=</span> <span class="n">skills</span><span class="p">[</span><span class="n">skill</span><span class="p">])</span>
+            
+            <span class="c1">#Create Session Schedule</span>
+            <span class="k">for</span> <span class="n">timeslot</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+                <span class="n">SessionSchedule</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="n">session</span><span class="p">],</span>
+                                               <span class="n">timeslot</span> <span class="o">=</span> <span class="n">timeslots</span><span class="p">[</span><span class="n">timeslot</span><span class="p">])</span>
+        
+        <span class="c1">#Creating pre-assigned</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pre_assigned</span> <span class="o">=</span> <span class="n">ModuleSession</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">,</span>
+                                                        <span class="n">session_type</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span>
+                                                        <span class="n">required_demonstrator</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">RequirementSkill</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_assigned</span><span class="p">,</span>
+                                        <span class="n">skill</span> <span class="o">=</span> <span class="n">skills</span><span class="p">[(</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">)])</span>
+        <span class="k">for</span> <span class="n">timeslot</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+                <span class="n">SessionSchedule</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_assigned</span><span class="p">,</span>
+                                               <span class="n">timeslot</span> <span class="o">=</span> <span class="n">timeslots</span><span class="p">[</span><span class="n">timeslot</span><span class="p">])</span>
+        
+        <span class="n">pre_assigned</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_assigned</span><span class="p">)</span>
+        <span class="n">pre_assigned</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span>
+        <span class="n">pre_assigned</span><span class="o">.</span><span class="n">approved</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">pre_assigned</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+</div>
+
+        
+    
+                
+            
+
+<div class="viewcode-block" id="ConstraintManagerTest">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.ConstraintManagerTest">[docs]</a>
+<span class="k">class</span> <span class="nc">ConstraintManagerTest</span><span class="p">(</span><span class="n">BaseConstraintManagerTest</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `ConstraintManagerTest` class inherits from `BaseConstraintManagerTest` and serves as a placeholder for future tests related to constraint management.&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="HardConstraintManagerTest">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest">[docs]</a>
+<span class="k">class</span> <span class="nc">HardConstraintManagerTest</span><span class="p">(</span><span class="n">BaseConstraintManagerTest</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `HardConstraintManagerTest` class contains test cases for the `HardConstraintManager` in the `constraint_manager` module.</span>
+
+<span class="sd">    :param setUp: Re-initializes the test environment with mock data.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_is_demonstrator_not_booked_normal: Tests if a demonstrator is not double-booked under normal circumstances.</span>
+<span class="sd">    :type test_is_demonstrator_not_booked_normal: Method</span>
+<span class="sd">    :param test_is_demonstrator_not_booked_same_module_session: Tests if a demonstrator is double-booked when assigned to multiple allocations within the same module session.</span>
+<span class="sd">    :type test_is_demonstrator_not_booked_same_module_session: Method</span>
+<span class="sd">    :param test_is_demonstrator_not_booked_different_session_same_time: Tests if a demonstrator is double-booked when assigned to different module sessions at the same time.</span>
+<span class="sd">    :type test_is_demonstrator_not_booked_different_session_same_time: Method</span>
+<span class="sd">    :param test_is_demonstrator_available_for_all_normal: Tests if a demonstrator is available for all timeslots in a normal scenario.</span>
+<span class="sd">    :type test_is_demonstrator_available_for_all_normal: Method</span>
+<span class="sd">    :param test_is_demonstrator_available_for_all_partial: Tests if a demonstrator is partially available for the timeslots.</span>
+<span class="sd">    :type test_is_demonstrator_available_for_all_partial: Method</span>
+<span class="sd">    :param test_is_demonstrator_available_for_all_not_available: Tests if a demonstrator is not available for the required timeslots.</span>
+<span class="sd">    :type test_is_demonstrator_available_for_all_not_available: Method</span>
+<span class="sd">    :param test_is_allocation_not_previously_approved_Normal: Tests if an allocation has not been previously approved under normal circumstances.</span>
+<span class="sd">    :type test_is_allocation_not_previously_approved_Normal: Method</span>
+<span class="sd">    :param test_is_allocation_not_previously_approved_already_approved: Tests if an allocation has already been approved and correctly identified.</span>
+<span class="sd">    :type test_is_allocation_not_previously_approved_already_approved: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="HardConstraintManagerTest.setUp">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="HardConstraintManagerTest.test_is_demonstrator_not_booked_normal">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_not_booked_normal">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_is_demonstrator_not_booked_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#Normal case - Demonstrator 0 assigned to Allocation 1 (tied to Module session 0)</span>
+        <span class="n">allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstrator_not_double_booked</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="HardConstraintManagerTest.test_is_demonstrator_not_booked_same_module_session">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_not_booked_same_module_session">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_is_demonstrator_not_booked_same_module_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#Edge Case 1: Demonstrator 0 is assigned to Allocation 1 and 2 (tied to module session 1)</span>
+        <span class="n">allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstrator_not_double_booked</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>    </div>
+
+        
+<div class="viewcode-block" id="HardConstraintManagerTest.test_is_demonstrator_not_booked_different_session_same_time">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_not_booked_different_session_same_time">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_is_demonstrator_not_booked_different_session_same_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#Edge Case 2: Demonstrator 0 is assigned to Allocation 1 of module session 0 and 2)</span>
+        <span class="n">allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">Q</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstrator_not_double_booked</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>    </div>
+
+            
+<div class="viewcode-block" id="HardConstraintManagerTest.test_is_demonstrator_available_for_all_normal">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_available_for_all_normal">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_is_demonstrator_available_for_all_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#Normal case - Demonstrator 0 assigned to Allocation 1 (tied to Module session 0)</span>
+        <span class="n">allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstator_available_for_all</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="HardConstraintManagerTest.test_is_demonstrator_available_for_all_partial">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_available_for_all_partial">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_is_demonstrator_available_for_all_partial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#Edge case 1 - Demonstrator 7 assigned to Allocation 1 (tied to Module session 0)</span>
+        <span class="n">allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstator_available_for_all</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="HardConstraintManagerTest.test_is_demonstrator_available_for_all_not_available">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_demonstrator_available_for_all_not_available">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_is_demonstrator_available_for_all_not_available</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#Edge case 2 - Demonstrator 5 assigned to Allocation 1 (tied to Module session 0)</span>
+        <span class="n">allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_demonstator_available_for_all</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="HardConstraintManagerTest.test_is_allocation_not_previously_approved_Normal">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_allocation_not_previously_approved_Normal">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_is_allocation_not_previously_approved_Normal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#Normal - Demonstrator 0 assigned to Allocation 1 (tied to Module session 0)</span>
+        <span class="n">allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_allocation_not_previously_approved</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+            
+<div class="viewcode-block" id="HardConstraintManagerTest.test_is_allocation_not_previously_approved_already_approved">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.HardConstraintManagerTest.test_is_allocation_not_previously_approved_already_approved">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_is_allocation_not_previously_approved_already_approved</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#Edge Case - Demonstrator 0 assigned to Allocation 1 (tied to pre_assigned)</span>
+        <span class="n">allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_assigned</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">HardConstraintManager</span><span class="o">.</span><span class="n">is_allocation_not_previously_approved</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="SoftConstraintManageTest">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.SoftConstraintManageTest">[docs]</a>
+<span class="k">class</span> <span class="nc">SoftConstraintManageTest</span><span class="p">(</span><span class="n">BaseConstraintManagerTest</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `SoftConstraintManagerTest` class contains test cases for the `SoftConstraintManager` in the `constraint_manager` module.</span>
+
+<span class="sd">    :param test_is_subset: Tests the `is_subset` method to ensure it correctly identifies if one list is a subset of another.</span>
+<span class="sd">    :type test_is_subset: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SoftConstraintManageTest.test_is_subset">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.SoftConstraintManageTest.test_is_subset">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_is_subset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Subset scenario</span>
+        <span class="n">list1</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span> <span class="s2">&quot;Skill2&quot;</span><span class="p">]</span>
+        <span class="n">list2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span> <span class="s2">&quot;Skill2&quot;</span><span class="p">,</span> <span class="s2">&quot;Skill3&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">SoftConstraintManager</span><span class="o">.</span><span class="n">is_subset</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">))</span>
+        
+        <span class="c1"># Not a subset scenario</span>
+        <span class="n">list1</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span> <span class="s2">&quot;Skill4&quot;</span><span class="p">]</span>
+        <span class="n">list2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Skill1&quot;</span><span class="p">,</span> <span class="s2">&quot;Skill2&quot;</span><span class="p">,</span> <span class="s2">&quot;Skill3&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">SoftConstraintManager</span><span class="o">.</span><span class="n">is_subset</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">))</span></div>
+</div>
+
+
+<div class="viewcode-block" id="PrimaryConstraintManagerTest">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest">[docs]</a>
+<span class="k">class</span> <span class="nc">PrimaryConstraintManagerTest</span><span class="p">(</span><span class="n">BaseConstraintManagerTest</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `PrimaryConstraintManagerTest` class contains test cases for the `PrimaryConstraintManager` in the `constraint_manager` module.</span>
+
+<span class="sd">    :param setUp: Re-initializes the test environment with mock data.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_session_has_half_demonstrator_normal: Tests if a session has at least half of the required demonstrators under normal circumstances.</span>
+<span class="sd">    :type test_session_has_half_demonstrator_normal: Method</span>
+<span class="sd">    :param test_session_has_half_demonstrator_edge: Tests the edge case where no demonstrators are assigned, but required demonstrators are more than zero.</span>
+<span class="sd">    :type test_session_has_half_demonstrator_edge: Method</span>
+<span class="sd">    :param test_demonstrator_has_beginner_skill_normal: Tests if a demonstrator has the beginner skill under normal circumstances.</span>
+<span class="sd">    :type test_demonstrator_has_beginner_skill_normal: Method</span>
+<span class="sd">    :param test_demonstrator_has_beginner_skill_edge: Tests the edge case where a demonstrator does not possess the required skill.</span>
+<span class="sd">    :type test_demonstrator_has_beginner_skill_edge: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span>  
+<div class="viewcode-block" id="PrimaryConstraintManagerTest.setUp">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="PrimaryConstraintManagerTest.test_session_has_half_demonstrator_normal">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.test_session_has_half_demonstrator_normal">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_session_has_half_demonstrator_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#Normal case 1 - Demonstrator 0 assigned to Allocation 1 (tied to Module session 0)</span>
+        <span class="n">allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">PrimaryConstraintManager</span><span class="o">.</span><span class="n">session_has_half_demonstrators</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            
+        <span class="c1">#Normal case 2 - Demonstrator 0 assigned to Allocation 1 (tied to Module session 1)</span>
+        <span class="n">allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        
+        <span class="n">allocation</span> <span class="o">=</span> <span class="n">allocations</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">PrimaryConstraintManager</span><span class="o">.</span><span class="n">session_has_half_demonstrators</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            
+        <span class="c1">#Normal case 3 - Demonstrator 0 and 1 assigned to Allocation 1 and 2 (tied to Module session 1)</span>
+        <span class="n">allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">allocations</span><span class="p">)):</span>
+            <span class="n">allocations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">allocations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">PrimaryConstraintManager</span><span class="o">.</span><span class="n">session_has_half_demonstrators</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="PrimaryConstraintManagerTest.test_session_has_half_demonstrator_edge">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.test_session_has_half_demonstrator_edge">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_session_has_half_demonstrator_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Edge Case 1 - No demonstrators assigned, but required is more than zero</span>
+        <span class="n">allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">PrimaryConstraintManager</span><span class="o">.</span><span class="n">session_has_half_demonstrators</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+        
+        
+    
+<div class="viewcode-block" id="PrimaryConstraintManagerTest.test_demonstrator_has_beginner_skill_normal">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.test_demonstrator_has_beginner_skill_normal">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_demonstrator_has_beginner_skill_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Normal case 1: Demonstrator with beginner skill</span>
+        <span class="n">allocation</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">PrimaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_beginner_skill</span><span class="p">(</span><span class="n">allocation</span><span class="p">))</span>
+        <span class="c1"># Normal case 2: Demonstrator with intermediate skill</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> 
+        <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">PrimaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_beginner_skill</span><span class="p">(</span><span class="n">allocation</span><span class="p">))</span>
+        <span class="c1"># Normal case 3: Demonstrator with expert skill</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> 
+        <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">PrimaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_beginner_skill</span><span class="p">(</span><span class="n">allocation</span><span class="p">))</span>
+        <span class="c1"># Normal case 4: Demonstrator with beginner skill in both skill and module requires both</span>
+        <span class="n">allocation</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> 
+        <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">PrimaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_beginner_skill</span><span class="p">(</span><span class="n">allocation</span><span class="p">))</span>
+        <span class="c1"># Normal case 5: Demonstrator with expert skill in both skill and module requires both</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> 
+        <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">PrimaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_beginner_skill</span><span class="p">(</span><span class="n">allocation</span><span class="p">))</span></div>
+
+        
+
+<div class="viewcode-block" id="PrimaryConstraintManagerTest.test_demonstrator_has_beginner_skill_edge">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.PrimaryConstraintManagerTest.test_demonstrator_has_beginner_skill_edge">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_demonstrator_has_beginner_skill_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>    
+        <span class="c1"># Edge case: Demonstrator without the required skill</span>
+        <span class="n">allocation</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">PrimaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_beginner_skill</span><span class="p">(</span><span class="n">allocation</span><span class="p">))</span></div>
+</div>
+
+
+<div class="viewcode-block" id="SecondaryConstraintManagerTest">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.SecondaryConstraintManagerTest">[docs]</a>
+<span class="k">class</span> <span class="nc">SecondaryConstraintManagerTest</span><span class="p">(</span><span class="n">BaseConstraintManagerTest</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `SecondaryConstraintManagerTest` class contains test cases for the `SecondaryConstraintManager` in the `constraint_manager` module.</span>
+
+<span class="sd">    :param setUp: Re-initializes the test environment with mock data.</span>
+<span class="sd">    :type setUp: Method</span>
+<span class="sd">    :param test_has_all_demonstrator: Tests if a session has all required demonstrators.</span>
+<span class="sd">    :type test_has_all_demonstrator: Method</span>
+<span class="sd">    :param test_demonstrator_has_skill_or_higher: Tests if a demonstrator has the required skill level or higher.</span>
+<span class="sd">    :type test_demonstrator_has_skill_or_higher: Method</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+<div class="viewcode-block" id="SecondaryConstraintManagerTest.setUp">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.SecondaryConstraintManagerTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="SecondaryConstraintManagerTest.test_has_all_demonstrator">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.SecondaryConstraintManagerTest.test_has_all_demonstrator">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_has_all_demonstrator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#Normal case 1 - Demonstrator 0 assigned to Allocation 1 (tied to Module session 0)</span>
+        <span class="n">allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">SecondaryConstraintManager</span><span class="o">.</span><span class="n">session_has_all_demonstrators</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            
+        <span class="c1">#Normal case 2 - Demonstrator 0 assigned to Allocation 1 (tied to Module session 1)</span>
+        <span class="n">allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        
+        <span class="n">allocation</span> <span class="o">=</span> <span class="n">allocations</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">SecondaryConstraintManager</span><span class="o">.</span><span class="n">session_has_all_demonstrators</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            
+        <span class="c1">#Normal case 3 - Demonstrator 0 and 1 assigned to Allocation 1 and 2 (tied to Module session 1)</span>
+        <span class="n">allocations</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">class_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">allocations</span><span class="p">)):</span>
+            <span class="n">allocations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">allocations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        
+        <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">SecondaryConstraintManager</span><span class="o">.</span><span class="n">session_has_all_demonstrators</span><span class="p">(</span><span class="n">allocation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="SecondaryConstraintManagerTest.test_demonstrator_has_skill_or_higher">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.SecondaryConstraintManagerTest.test_demonstrator_has_skill_or_higher">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_demonstrator_has_skill_or_higher</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Normal case 1: Demonstrator with beginner skill assigned to module requiring beginner</span>
+        <span class="n">allocation</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">SecondaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_skill_or_higher</span><span class="p">(</span><span class="n">allocation</span><span class="p">))</span>
+        <span class="c1"># Normal case 2: Demonstrator with intermediate skill</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> 
+        <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">SecondaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_skill_or_higher</span><span class="p">(</span><span class="n">allocation</span><span class="p">))</span>
+        <span class="c1"># Normal case 3: Demonstrator with expert skill</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> 
+        <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">SecondaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_skill_or_higher</span><span class="p">(</span><span class="n">allocation</span><span class="p">))</span>
+        
+        <span class="c1"># Normal case 4: Demonstrator with beginner skill assigned to module requiring expert</span>
+        <span class="n">allocation</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">SecondaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_skill_or_higher</span><span class="p">(</span><span class="n">allocation</span><span class="p">))</span>
+        <span class="c1"># Normal case 5: Demonstrator with expert skill</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> 
+        <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">SecondaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_skill_or_higher</span><span class="p">(</span><span class="n">allocation</span><span class="p">))</span>
+        
+        <span class="c1"># Normal case 6: Demonstrator with beginner skill in both assigned to module requiring expert in both</span>
+        <span class="n">allocation</span> <span class="o">=</span> <span class="n">Allocation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">class_session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module_sessions</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">SecondaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_skill_or_higher</span><span class="p">(</span><span class="n">allocation</span><span class="p">))</span>
+        <span class="c1"># Normal case 7: Demonstrator with expert skill in both assigned to module requiring expert in both</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> 
+        <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">SecondaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_skill_or_higher</span><span class="p">(</span><span class="n">allocation</span><span class="p">))</span>
+        <span class="c1"># Normal case 8: Demonstrator with expert skill in one assigned to module requiring expert in both</span>
+        <span class="n">allocation</span><span class="o">.</span><span class="n">demonstrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> 
+        <span class="n">allocation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">SecondaryConstraintManager</span><span class="o">.</span><span class="n">demonstrator_has_skill_or_higher</span><span class="p">(</span><span class="n">allocation</span><span class="p">))</span></div>
+</div>
+
+
+<div class="viewcode-block" id="TertiaryConstraintManagerTest">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.TertiaryConstraintManagerTest">[docs]</a>
+<span class="k">class</span> <span class="nc">TertiaryConstraintManagerTest</span><span class="p">(</span><span class="n">BaseConstraintManagerTest</span><span class="p">):</span>    
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `TertiaryConstraintManagerTest` class serves as a placeholder for future tests related to the `TertiaryConstraintManager` in the `constraint_manager` module.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="TertiaryConstraintManagerTest.setUp">
+<a class="viewcode-back" href="../../../tests.utils.html#tests.utils.test_constraint_manager.TertiaryConstraintManagerTest.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span></div>
+
+    
+    <span class="k">pass</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ludovic Picard.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+{% extends "master.html" %}
+
+{% block title %}Class List{% endblock %}
+
+{% block content %}
+<h1>My Classes</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Class Code</th>
+            <th>Class Name</th>
+            <th>Semester</th>
+            <th>Number of Teaching Hours</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for module in modules %}
+        <tr>
+            <td>{{ module.class_code }}</td>
+            <td>{{ module.name }}</td>
+            <td>{{ module.formatted_semester }}</td>
+            <td>{{ module.count_sessions.1 }} Hours</td>
+            <td>
+                <a href="{% url 'module_detail' module.class_code %}" class="btn btn-info">See Class Details</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
