@@ -54,7 +54,7 @@ Ensure the following are installed on your system:
     python manage.py runserver
     ```
 
-For more detailed instructions, refer to the [Installation Guide](docs/installation.html).
+For more detailed instructions, refer to the [Installation Guide](docs/installation.md).
 
 ## Usage
 
